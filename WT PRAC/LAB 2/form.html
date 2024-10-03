@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="headerDiv">
+            <p class="headerP">Registration Form</p>
+        </div>
+    </header>
+    <div class="bodyDiv" >
+        <div class="registrationDiv">
+            <p style="color: aliceblue;font-size: larger;padding: 0px;margin: 0px;">Register Yourself.!</p>
+            <form id="registrationForm">
+                <div style="display: flex;padding: 0px;margin: 0px;">
+                    <div style="padding: 0px;">
+                        <input type="text" id="firstName" placeholder="First Name" required >
+                        <span id="firstNameError" class="error-message"></span>
+                        <input type="text" id="lastName" placeholder="Last Name" required>
+                        <span id="lastNameError" class="error-message"></span>
+                        <input type="text" id="email" placeholder="Enter Email" name="email" required>
+                        <span id="emailError" class="error-message"></span>
+                    </div>
+                    <div style="padding: 0px;">
+                        <input type="text" id="mobileNo" placeholder="Mobile No" required>
+                        <span id="mobileError" class="error-message"></span>
+                        <input type="text" id="password" placeholder="Password" required>
+                        <span id="passwordError" class="error-message"></span>
+                        <input type="text" id="confirmPassword" placeholder="Confirm Password" required>
+                        <span id="confirmPasswordError" class="error-message"></span>
+                    </div>
+                </div>
+                <button type="submit" class="submitBTN">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

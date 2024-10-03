@@ -1,0 +1,146 @@
+* {
+  background-color: #34353a;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#header {
+  display: flex;
+  align-items: center;
+  padding-top: 5%;
+  padding-left: 8%;
+  padding-right: 8%;
+  justify-content: space-between;
+}
+
+#profileImage {
+  border-radius: 50%;
+  height: 30%;
+  width: 22.5%;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 2.4%;
+}
+
+#h1 {
+  font-size: 400%;
+  font-weight: bolder;
+  color: #ffcb6c;
+  /* margin-bottom: 5%; */
+  display: inline;
+}
+.name-container {
+  align-items: center;
+}
+#profileImage {
+  border-radius: 50%;
+}
+.contact-info {
+  display: flex;
+  margin-top: 2%;
+}
+
+#mobNo {
+  color: white;
+  margin: 0;
+}
+#email {
+  color: white;
+  margin: 0;
+}
+#linkedIn {
+  color: white;
+  margin: 0;
+}
+#github {
+  color: white;
+  margin: 0;
+}
+#contactIcon {
+  color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+#aboutDiv {
+  padding-top: 5%;
+  margin-left: 3%;
+  margin-right: 3%;
+  color: white;
+}
+.horizontal-container {
+  display: flex;
+  align-items: start;
+}
+
+.custom-hr {
+  margin-top: 1%;
+  width: 20%;
+  border: none;
+  border-top: 2px solid #ffcb6c;
+  margin-right: 20px;
+}
+.ed-hr {
+  margin-top: 1%;
+  width: 4%;
+  border: none;
+  border-top: 2px solid #ffcb6c;
+  margin-right: 20px;
+}
+
+#section {
+  padding-top: 3%;
+  margin-left: 3%;
+  margin-right: 3%;
+  color: white;
+}
+#title {
+  font-size: 40px;
+  font-weight: bolder;
+  color: #ffcb6c;
+  margin-bottom: 1%;
+}
+#summary {
+  font-size: 150%;
+  font-weight: 500;
+  color: white;
+  margin-right: 7%;
+}
+#li {
+  margin-bottom: 1%;
+  font-size: 200%;
+  font-weight: 500;
+  color: white;
+}
+table {
+  width: 90%;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+td {
+  width: 33.33%;
+  padding: 5px;
+  vertical-align: top;
+  text-align: center;
+}
+
+img {
+  width: 100%;
+  height: 500px;
+}
+.auto-fit-table {
+  width: 90%;
+}
+.auto-fit-table td {
+  width: 33.33%;
+}
+.ach-img {
+  width: 100%;
+  height: 500px;
+  object-fit: contain;
+}
