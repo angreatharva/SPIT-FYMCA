@@ -5,10 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product Details</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    rel="stylesheet"
+  />
   </head>
   <body>
     <header>
-      <h1>Shoe Details</h1>
+      <div class="logo-container">
+        <img src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\brand_logo.png" alt="Brand Logo" />
+        <p id="jdi">JUST DO IT!</p>
+      </div>
+
+      <nav class="nav-menu">
+        <!-- <p class="header-item">
+          <a
+            href="#Home"
+            style="text-decoration: none; color: #000; font-weight: 500"
+            >Home</a
+          >
+        </p> -->
+        <p class="header-item">
+          <a
+            href="#products"
+            style="text-decoration: none; color: #000; font-weight: 500"
+            >Products</a
+          >
+        </p>
+        <p class="header-item">
+          <a
+            href="#outlets"
+            style="text-decoration: none; color: #000; font-weight: 500"
+            >Outlets</a
+          >
+        </p>
+        <p class="header-item">
+          <a
+            href="#contactUs"
+            style="text-decoration: none; color: #000; font-weight: 500"
+            >Contact</a
+          >
+        </p>
+      </nav>
+
+      <div class="cart-wishlist">
+        <button id="wishlistbtn">
+          <img ></img>
+        </button>
+        <button id="cartbtn">Sign In</button>
+      </div>
     </header>
+    <div id="productDetails">
+      <img id="productImage" src="" alt="Product Image" style="width: 280px;" />
+      <h2 id="productName"></h2>
+      <p id="productDescription"></p>
+      <p id="productPrice"></p>
+    </div>
+
+    <script>
+      // Retrieve product details from localStorage
+      const name = localStorage.getItem("productName");
+      const description = localStorage.getItem("productDescription");
+      const price = localStorage.getItem("productPrice");
+      const image = localStorage.getItem("productImage");
+
+      // Display product details on the page
+      document.getElementById("productName").textContent = name;
+      document.getElementById("productDescription").textContent = description;
+      document.getElementById("productPrice").textContent = price;
+      document.getElementById("productImage").src = image;
+    </script>
   </body>
 </html>
