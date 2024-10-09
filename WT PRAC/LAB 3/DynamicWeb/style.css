@@ -54,6 +54,7 @@ header {
   cursor: pointer;
   font-size: 16px;
 }
+
 #shopNow {
   padding: 10px 20px;
   background-color: #2a2a2a;
@@ -73,14 +74,17 @@ header {
   cursor: pointer;
   font-size: 16px;
 }
+
 #flipkart {
   padding-right: 2%;
 }
+
 #shoe {
   height: 300px;
   width: 550px;
   transition: transform 0.3s ease;
 }
+
 .shoeContainer {
   display: flex;
   width: 300px;
@@ -92,19 +96,21 @@ header {
   margin-right: 2%;
   transition: transform 0.3s ease;
 }
+
 .shoeContainer:hover {
   transform: scale(1.025);
 }
+
 #shoe:hover {
   /* transform: rotate(05deg); */
 }
 
-.cart-wishlist{
-    display: flex;
-    gap: 10px;
+.cart-wishlist {
+  display: flex;
+  gap: 10px;
 }
 
-#wishlistbtn{
+#wishlistbtn {
   padding: 5px 10px;
   color: #2a2a2a;
   background-color: white;
@@ -112,7 +118,8 @@ header {
   border-radius: 5px;
   cursor: pointer;
 }
-#cartbtn{
+
+#cartbtn {
   padding: 5px 10px;
   color: #2a2a2a;
   background-color: white;
@@ -121,18 +128,64 @@ header {
   cursor: pointer;
   font-size: 16px;
 }
-#cart{
+
+#cart {
   height: 25px;
   width: 25px;
 }
 
-#productDetails{
+#productDetails {
   display: flex;
   justify-content: space-evenly;
-  
+
 }
-#tax{
+
+#tax {
   color: #707072;
   font-weight: 500;
+  font-size: 16px;
+}
+
+#sizeDiv{
+  width:  50%; 
+}
+#sizeRow {
+  display: flex;
+  justify-content: space-evenly;
+  width:60%;
+}
+
+#shoeSize {
+  padding: 10px 20px;
+  width: 100px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid lightgrey;
+}
+
+#shoeSize:hover{
+  border: 1px solid black;
+}
+
+#shoeDescription{
+  margin-left: 8%;
+  width:  62.5%;
+}
+#addToBagBtn{
+  padding: 10px 20px;
+  background-color: #2a2a2a;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 16px;
+}
+#favouriteBtn{
+  padding: 10px 20px;
+  border: 1px solid #2a2a2a;
+  border-radius: 50px;
+  cursor: pointer;
+  text-align: center;
   font-size: 16px;
 }
