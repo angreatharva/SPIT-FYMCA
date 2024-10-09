@@ -29,54 +29,21 @@ public:
 
 		arrM[n] = {0};
 
-		cout << "Enter Number of digits for extraction: ";
-		cin>>num;
-
-		for(int i = 0; i < num; i++) {
-			cout << "Enter the data for " << i << " Index: ";
-			cin >> digits[i];
-		}
-
-		cout << "Digits Array: ";
-		for (int i = 0; i < num; i++)
-		{
-			cout << digits[i] << " ";
-		}
-		cout << endl;
-
-
 	}
 
 	void placing()
 	{
 		for (int i = 0; i < m; i++)
 		{
-			int hk = dextraction(n, arr[i]);
+			int hk = fshift(n, arr[i]);
 			linearProbing(hk, i);
 		}
 	}
 
-	int dextraction(int n, int k)
+	int fshift(int n, int k)
 	{
-		string val = "";
 		int value;
-		string key = to_string(k);
-
-		int j = 0;
-		int count = 1;
-
-		for(int i = key.length() -1; i >= 0; i--) {
-			if(digits[j] == count) {
-				val.push_back(key.at(i));
-				j++;
-			}
-			count++;
-
-		}
-		reverse(val.begin(), val.end());
-		value = stoi(val);
-
-		return value;
+        return value;
 	}
 
 	void linearProbing(int hk, int i)
@@ -116,7 +83,7 @@ int main()
 {
 	DigitExtraction de;
 	de.input();
-	de.placing();
-	de.output();
+	// de.placing();
+	// de.output();
 	return 0;
 }
