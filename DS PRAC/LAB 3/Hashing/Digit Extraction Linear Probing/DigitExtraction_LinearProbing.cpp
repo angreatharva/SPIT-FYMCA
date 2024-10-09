@@ -61,11 +61,20 @@ public:
 		string key = to_string(k);
 
 		cout << "dextraction Array: ";
+		int j = 0;
+		int count = 1;
 
 		for(int i = key.length() -1; i >= 0; i--) {
-			cout << key.at(i) << " ";
+			if(digits[j] == count) {
+				cout << key.at(i) << " ";
+				val.push_back(key.at(i));
+				j++;
+			}
+			count++;
+
 		}
-		 cout << endl;
+		cout << endl;
+		cout << "Val: " << val<<endl;
 
 		return value;
 	}
@@ -108,6 +117,6 @@ int main()
 	DigitExtraction de;
 	de.input();
 	de.placing();
-	// de.output();
+// 	de.output();
 	return 0;
 }

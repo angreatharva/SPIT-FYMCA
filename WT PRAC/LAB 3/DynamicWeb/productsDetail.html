@@ -50,26 +50,42 @@
 
       <div class="cart-wishlist">
         <button id="wishlistbtn">
-          <img ></img>
+          <i class="fa fa-heart" style="font-size:26px"></i>
         </button>
-        <button id="cartbtn">Sign In</button>
+        <button id="cartbtn">
+          <img id="cart"src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shopping bag.png" ></img>
+        </button>
       </div>
     </header>
+    
     <div id="productDetails">
-      <img id="productImage" src="" alt="Product Image" style="width: 280px;" />
-      <h2 id="productName"></h2>
-      <p id="productDescription"></p>
-      <p id="productPrice"></p>
+     
+
+      
+      <div>
+        <img id="productImage" src="" alt="Product Image" style="width: 280px;" />
+      </div>
+      <div>
+        <h2 id="productName"></h2>
+        <p id="productDescription"></p>
+        <p id="productPrice"></p>
+        <br>
+
+        <div id="tax">
+          <p>Inclusive of all taxes</p>
+          <p>(Also includes all applicable duties)</p>
+        </div>
+        
+      </div>
+     
     </div>
 
     <script>
-      // Retrieve product details from localStorage
       const name = localStorage.getItem("productName");
       const description = localStorage.getItem("productDescription");
       const price = localStorage.getItem("productPrice");
       const image = localStorage.getItem("productImage");
 
-      // Display product details on the page
       document.getElementById("productName").textContent = name;
       document.getElementById("productDescription").textContent = description;
       document.getElementById("productPrice").textContent = price;

@@ -105,7 +105,15 @@ header {
 }
 
 #wishlistbtn{
-  padding: 10px 20px;
+  padding: 5px 10px;
+  color: #2a2a2a;
+  background-color: white;
+  border: 2px solid #2a2a2a;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#cartbtn{
+  padding: 5px 10px;
   color: #2a2a2a;
   background-color: white;
   border: 2px solid #2a2a2a;
@@ -113,12 +121,18 @@ header {
   cursor: pointer;
   font-size: 16px;
 }
-#cartbtn{
-  padding: 10px 20px;
-  color: #2a2a2a;
-  background-color: white;
-  border: 2px solid #2a2a2a;
-  border-radius: 5px;
-  cursor: pointer;
+#cart{
+  height: 25px;
+  width: 25px;
+}
+
+#productDetails{
+  display: flex;
+  justify-content: space-evenly;
+  
+}
+#tax{
+  color: #707072;
+  font-weight: 500;
   font-size: 16px;
 }
