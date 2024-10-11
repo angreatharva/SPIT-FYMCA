@@ -1,10 +1,11 @@
 #include <iostream>
 #include <algorithm>
+#include <string>
 
 using namespace std;
-#define max 100
+#define MAX_LEN 100
 
-int n, m, arr[max], arrM[max], num,digits[max], collision = 0;
+int n, m, arr[MAX_LEN], arrM[MAX_LEN], num,digits[MAX_LEN], collision = 0;
 
 class DigitExtraction
 {
@@ -42,9 +43,24 @@ public:
 
 	int fshift(int n, int k)
 	{
-		int value;
-        return value;
+    int value = 0;
+
+    int len = to_string(n).length();
+
+    string str = to_string(k);
+
+    for (int i = str.length(); i > 0; i -= len)
+    {
+        int start = max(0, i - len);  
+        string part = str.substr(start, i - start); 
+        
+        value += stoi(part); 
+    }
+    cout << "value" << value;
+    return value;
+	    
 	}
+
 
 	void linearProbing(int hk, int i)
 	{
@@ -68,6 +84,7 @@ public:
 			linearProbing(hk, i);
 		}
 	}
+	
 	void output()
 	{
 		cout << "No. of Collision: " << collision << endl;
@@ -83,7 +100,7 @@ int main()
 {
 	DigitExtraction de;
 	de.input();
-	// de.placing();
+	de.placing();
 	// de.output();
 	return 0;
 }
