@@ -54,9 +54,16 @@ public:
         int start = max(0, i - len);  
         string part = str.substr(start, i - start); 
         
-        value += stoi(part); 
+        value += stoi(part);
+        
+        int max_value = 1;
+        for (int j = 0; j < len; j++) {
+            max_value *= 10;  // Multiply by 10 'len' times to get 10^len
+        }
+        // Ensure that value is restricted to last 'len' digits
+        value = value % max_value; 
     }
-    cout << "value" << value;
+    // cout << "value" << value;
     return value;
 	    
 	}
@@ -101,6 +108,6 @@ int main()
 	DigitExtraction de;
 	de.input();
 	de.placing();
-	// de.output();
+	de.output();
 	return 0;
 }
