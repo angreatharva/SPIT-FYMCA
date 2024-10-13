@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Favorites Page</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Your Favorite Products</h1>
+    </header>
+
+    <div id="favoritesContainer"></div>
+
+    <template id="favoriteItemTemplate">
+      <div  style="display: flex;" class="favorite-item">
+        <img src="" alt="Product Image" class="product-image" style="width: 200px;" />
+        <div class="smalldtl">
+          <h3 class="product-name"></h3>
+          <p class="product-description"></p>
+          <p class="product-size"></p>
+          <p class="product-price"></p>
+          <button class="remove-button">Remove</button>
+          <button class="move-to-bag-button">Move to Bag</button>
+        </div>
+      </div>
+    </template>
+
+    <script src="script.js"></script>
+    <script>
+      window.onload = function () {
+        loadFavorites();
+      };
+    </script>
+  </body>
+</html>

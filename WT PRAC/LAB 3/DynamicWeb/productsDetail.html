@@ -17,14 +17,8 @@
         <p id="jdi">JUST DO IT!</p>
       </div>
 
-      <nav class="nav-menu">
-        <!-- <p class="header-item">
-          <a
-            href="#Home"
-            style="text-decoration: none; color: #000; font-weight: 500"
-            >Home</a
-          >
-        </p> -->
+      <!-- <nav class="nav-menu">
+
         <p class="header-item">
           <a
             href="#products"
@@ -46,14 +40,18 @@
             >Contact</a
           >
         </p>
-      </nav>
+      </nav> -->
 
       <div class="cart-wishlist">
         <button id="wishlistbtn">
-          <i class="fa fa-heart" style="font-size:26px"></i>
+          <a href="favouritePage.html">
+          <i class="fa fa-heart" style="font-size:26px;color: #000;"></i>
+          </a>
         </button>
         <button id="cartbtn">
+          <a href="bagPage.html">
           <img id="cart"src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shopping bag.png" ></img>
+        </a>
         </button>
       </div>
     </header>
@@ -76,11 +74,11 @@
 
         <br>
 
-        <div id="addToBagBtn">
+        <div id="addToBagBtn" onclick="addToBag()">
           Add to bag
         </div>
         <br>
-        <div id="favouriteBtn">
+        <div id="favouriteBtn" onclick="addToFavorites()">
           Favourite
         </div>
         
@@ -97,70 +95,57 @@
        of recycled Flyknit and plastic, as few materials as possible and zero glue. Experience the future of design in the present. And 
        if or when you want to help extend the shoes' life, simply drop 'em off at a participating Nike store for recycling.
     </div>
-    <!-- shoe Size -->
-    <div id="sizeDiv">
+    <!-- Shoe Size -->
+     <div id="sizeDiv">
       <div id="sizeRow">
-        <div id="shoeSize">
-          <p>UK 6</p> 
-        </div>
-        <div id="shoeSize">
-          <p>UK 6.5</p> 
-        </div>
-        <div id="shoeSize">
-          <p>UK 7</p> 
-        </div>
-      </div>
-      <br>
-      <div id="sizeRow">
-        <div id="shoeSize">
-          <p>UK 7.5</p> 
-        </div>
-        <div id="shoeSize">
-          <p>UK 8</p> 
-        </div>
-        <div id="shoeSize">
-          <p>UK 8.5</p> 
-        </div>
-      </div>
-      <br>
-      <div id="sizeRow">
-        <div id="shoeSize">
-          <p>UK 9</p> 
-        </div>
-        <div id="shoeSize">
-          <p>UK 9.5</p> 
-        </div>
-        <div id="shoeSize">
-          <p>UK 10</p> 
-        </div>
-      </div>
-      <br>
-      <div id="sizeRow">
-        <div id="shoeSize">
-          <p>UK 11</p> 
-        </div>
-        <div id="shoeSize">
-          <p>UK 11.5</p> 
-        </div>
-        <div id="shoeSize">
-          <p>UK 12</p> 
-        </div>
-      </div>
+    <div class="shoeSize" onclick="selectSize(this, 'UK 6')">
+      <p>UK 6</p>
     </div>
+    <div class="shoeSize" onclick="selectSize(this, 'UK 6.5')">
+      <p>UK 6.5</p>
     </div>
-    
-    
-
-    <script>
-      const name = localStorage.getItem("productName");
-      const description = localStorage.getItem("productDescription");
-      const price = localStorage.getItem("productPrice");
-      const image = localStorage.getItem("productImage");
-
-      document.getElementById("productName").textContent = name;
-      document.getElementById("productDescription").textContent = description;
-      document.getElementById("productPrice").textContent = price;
-      document.getElementById("productImage").src = image;
-    </script>
+    <div class="shoeSize" onclick="selectSize(this, 'UK 7')">
+      <p>UK 7</p>
+    </div>
+  </div>
+  <br>
+  <div id="sizeRow">
+    <div class="shoeSize" onclick="selectSize(this, 'UK 7.5')">
+      <p>UK 7.5</p>
+    </div>
+    <div class="shoeSize" onclick="selectSize(this, 'UK 8')">
+      <p>UK 8</p>
+    </div>
+    <div class="shoeSize" onclick="selectSize(this, 'UK 8.5')">
+      <p>UK 8.5</p>
+    </div>
+  </div>
+  <br>
+  <div id="sizeRow">
+    <div class="shoeSize" onclick="selectSize(this, 'UK 9')">
+      <p>UK 9</p>
+    </div>
+    <div class="shoeSize" onclick="selectSize(this, 'UK 9.5')">
+      <p>UK 9.5</p>
+    </div>
+    <div class="shoeSize" onclick="selectSize(this, 'UK 10')">
+      <p>UK 10</p>
+    </div>
+  </div>
+  <br>
+  <div id="sizeRow">
+    <div class="shoeSize" onclick="selectSize(this, 'UK 11')">
+      <p>UK 11</p>
+    </div>
+    <div class="shoeSize" onclick="selectSize(this, 'UK 11.5')">
+      <p>UK 11.5</p>
+    </div>
+    <div class="shoeSize" onclick="selectSize(this, 'UK 12')">
+      <p>UK 12</p>
+    </div>
+  </div>
+</div>
+    </div>
+      <script src="script.js"></script>
   </body>
 </html>

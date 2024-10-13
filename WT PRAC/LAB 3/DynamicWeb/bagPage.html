@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Bag</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Your Shopping Bag</h1>
+  </header>
+
+  <div id="bagItemsContainer">
+    <!-- Bag items will be displayed here -->
+  </div>
+
+  <template id="bagItemTemplate">
+    <div class="bagItem">
+        <div style="display: flex;">
+            <img src="" alt="Product Image" style="width: 200px;" />
+            <div class="smalldtl">
+                <h2 class="productName"></h2>
+                <p class="productDescription"></p>
+                <p class="productSize"></p>
+                <p class="productPrice"></p>
+                <button class="removeButton">Remove</button>
+                <button class="buyNow">Buy Now</button>
+              </div>
+        </div>
+    </div>
+  </template>
+
+  
+
+  <script src="script.js"></script>
+  <script>
+    // Load bag products when the page loads
+    window.onload = function() {
+      loadBagProducts();
+    };
+  </script>
+</body>
+</html>

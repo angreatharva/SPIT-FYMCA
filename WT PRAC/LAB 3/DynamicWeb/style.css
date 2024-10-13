@@ -101,10 +101,6 @@ header {
   transform: scale(1.025);
 }
 
-#shoe:hover {
-  /* transform: rotate(05deg); */
-}
-
 .cart-wishlist {
   display: flex;
   gap: 10px;
@@ -155,7 +151,7 @@ header {
   width:60%;
 }
 
-#shoeSize {
+.shoeSize {
   padding: 10px 20px;
   width: 100px;
   text-align: center;
@@ -163,8 +159,11 @@ header {
   border: 1px solid lightgrey;
 }
 
-#shoeSize:hover{
+.shoeSize:hover{
   border: 1px solid black;
+}
+.shoeSize.selected {
+  border-color: black;
 }
 
 #shoeDescription{
@@ -188,4 +187,69 @@ header {
   cursor: pointer;
   text-align: center;
   font-size: 16px;
+}
+
+.remove-button {
+  background-color: #2a2a2a;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9em;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #e65a4f;
+  }
+}
+
+.removeButton {
+  background-color: #2a2a2a;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9em;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #e65a4f;
+  }
+}
+
+.move-to-bag-button {
+  color:  #2a2a2a;
+  border: 1px solid #2a2a2a;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9em;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgb(71, 185, 71);
+  }
+}
+.buyNow {
+  color:  #2a2a2a;
+  border: 1px solid #2a2a2a;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9em;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgb(71, 185, 71);
+  }
+}
+
+.smalldtl{
+  align-content: center;
 }
