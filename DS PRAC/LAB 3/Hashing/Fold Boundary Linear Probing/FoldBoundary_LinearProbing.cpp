@@ -54,6 +54,19 @@ public:
         int start = max(0, i - len);  
         string part = str.substr(start, i - start); 
         
+       while (part.length() < len)
+       {
+            part = "0" + part;
+        }
+
+        if (i == str.length() || start == 0)
+        {
+            reverse(part.begin(), part.end());
+        }
+        
+        // cout << "part :" << i << " "<< part << endl;
+
+        
         value += stoi(part);
         
         int max_value = 1;
@@ -63,7 +76,7 @@ public:
         // Ensure that value is restricted to last 'len' digits
         value = value % max_value; 
     }
-    // cout << "value" << value;
+    cout << "value" << value;
     return value;
 	    
 	}
@@ -95,9 +108,10 @@ public:
 	void output()
 	{
 		cout << "No. of Collision: " << collision << endl;
+		cout << "Value " << "Index"<<endl; 
 		for (int i = 0; i < n; i++)
 		{
-			 if(arrM[i] != 0){
+		    if(arrM[i] != 0){
 			cout << arrM[i] << " " << i <<endl;
 		    }
 		}

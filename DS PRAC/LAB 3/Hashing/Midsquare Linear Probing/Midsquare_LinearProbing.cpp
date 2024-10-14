@@ -89,7 +89,9 @@ public:
         cout << "No. of Collision: " << collision << endl;
         for (int i = 0; i < n; i++)
         {
-            cout << arrM[i] << " ";
+             if(arrM[i] != 0){
+			cout << arrM[i] << " " << i <<endl;
+		    }
         }
         cout << endl;
     }
