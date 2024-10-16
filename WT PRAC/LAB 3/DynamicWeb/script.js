@@ -1,19 +1,26 @@
 // Function to log product details and store them in localStorage
 function logShoeDetails(element) {
+  const productId = element.getAttribute("data-id");
   const name = element.getAttribute("data-name");
   const image = element.getAttribute("data-image");
   const description = element.getAttribute("data-description");
+  const descriptionLong = element.getAttribute("data-description-long");
   const price = element.getAttribute("data-price");
 
+  console.log(`Shoe Details`);
+  console.log(`ProductId: ${productId}`);
   console.log(`Name: ${name}`);
   console.log(`Image: ${image}`);
-  console.log(`Description: ${description}`);
+  console.log(`Description Small: ${description}`);
+  console.log(`Description Long: ${descriptionLong}`);
   console.log(`Price: ${price}`);
 
   // Store the product details in localStorage
+  localStorage.setItem("productId", productId);
   localStorage.setItem("productName", name);
   localStorage.setItem("productImage", image);
   localStorage.setItem("productDescription", description);
+  localStorage.setItem("productDescriptionLong", descriptionLong);
   localStorage.setItem("productPrice", price);
 
   // Navigate to the product details page
@@ -27,26 +34,65 @@ function loadProductDetails() {
   const price = localStorage.getItem("productPrice");
   const image = localStorage.getItem("productImage");
 
+  // Check if all details are available in localStorage
   if (name && description && price && image) {
     document.getElementById("productName").textContent = name;
     document.getElementById("productDescription").textContent = description;
     document.getElementById("productPrice").textContent = price;
-    document.getElementById("productImage").src = image;
+
+    // Ensure the product image element is correctly updated
+    const productImageElement = document.getElementById("productImage");
+    if (productImageElement) {
+      productImageElement.src = image;
+    } else {
+      console.error("Product image element not found.");
+    }
   } else {
-    console.error("No product details found in localStorage");
+    console.error("Product details missing in localStorage.");
   }
 }
 
-// Ensure this runs after the DOM has loaded
-window.onload = function() {
-  if (document.body.contains(document.getElementById("productName"))) {
-    loadProductDetails();
-  }
-};
+// Function to fetch products from the server
+async function fetchProductsDB() {
+  try {
+    const response = await fetch('server.php?fetch_products');
+    const products = await response.json();
 
-let selectedSize = '';
+    const productsContainer = document.getElementById('productsContainer');
+    
+
+    products.forEach(product => {
+      const shoeContainer = document.createElement('div');
+      shoeContainer.className = 'shoeContainer';
+      shoeContainer.style.display = 'inline-block';
+      shoeContainer.style.marginRight = '20px';
+      shoeContainer.setAttribute('data-id', product.Id);
+      shoeContainer.setAttribute('data-name', product.name);
+      shoeContainer.setAttribute('data-image', product.img);
+      shoeContainer.setAttribute('data-description', product.smallDesc);
+      shoeContainer.setAttribute('data-description-long', product.longDesc);
+      shoeContainer.setAttribute('data-price', `MRP : ₹ ${product.price}`);
+      shoeContainer.onclick = () => logShoeDetails(shoeContainer);
+
+      shoeContainer.innerHTML = `
+        <div style="text-align: center; width: 100%">
+          <img src="${product.img}" style="width: 280px" alt="${product.name}" />
+          <h4>${product.name}</h4>
+          <p>${product.smallDesc}</p>
+          <p>MRP : ₹ ${product.price}</p>
+        </div>
+      `;
+
+      productsContainer.appendChild(shoeContainer);
+    });
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+}
 
 // Function to select shoe size
+let selectedSize = '';
+
 function selectSize(element, size) {
   // Remove the selected class from all size elements
   const sizes = document.querySelectorAll('.shoeSize');
@@ -80,15 +126,15 @@ function addToBag() {
   // Get the existing bag products from localStorage, or initialize an empty array
   let bagProducts = JSON.parse(localStorage.getItem("bagProducts")) || [];
 
-  // Check if the product with the same name and size already exists in the bag
-  const isDuplicate = bagProducts.some(product => 
-    product.name === productDetails.name && product.size === productDetails.size
-  );
+  // // Check if the product with the same name and size already exists in the bag
+  // const isDuplicate = bagProducts.some(product => 
+  //   product.name === productDetails.name && product.size === productDetails.size
+  // );
 
-  if (isDuplicate) {
-    alert("This product with the selected size is already in your bag.");
-    return;
-  }
+  // if (isDuplicate) {
+  //   alert("This product with the selected size is already in your bag.");
+  //   return;
+  // }
 
   // Add the new product to the array
   bagProducts.push(productDetails);
@@ -99,7 +145,6 @@ function addToBag() {
   // Navigate to the bag page
   window.location.href = "bagPage.html";
 }
-
 
 // Function to load and display bag products
 function loadBagProducts() {
@@ -151,7 +196,6 @@ function removeFromBag(index) {
   loadBagProducts();
 }
 
-
 // Array to hold favorite products
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
@@ -173,15 +217,15 @@ function addToFavorites() {
   // Get the existing favorites from localStorage, or initialize an empty array
   let favoriteProducts = JSON.parse(localStorage.getItem("favorites")) || [];
 
-  // Check if the product with the same name and size already exists in the favorites
-  const isDuplicate = favoriteProducts.some(product => 
-    product.name === productDetails.name && product.size === productDetails.size
-  );
+  // // Check if the product with the same name and size already exists in the favorites
+  // const isDuplicate = favoriteProducts.some(product => 
+  //   product.name === productDetails.name && product.size === productDetails.size
+  // );
 
-  if (isDuplicate) {
-    alert("This product with the selected size is already in your favorites.");
-    return;
-  }
+  // if (isDuplicate) {
+  //   alert("This product with the selected size is already in your favorites.");
+  //   return;
+  // }
 
   // Add the new product to the array
   favoriteProducts.push(productDetails);
@@ -215,65 +259,29 @@ function loadFavorites() {
     productElement.querySelector(".product-name").textContent = product.name;
     productElement.querySelector(".product-description").textContent = product.description;
     productElement.querySelector(".product-size").textContent = `Size: ${product.size}`;
-    productElement.querySelector(".product-price").textContent = `Price: ${product.price}`;
+    productElement.querySelector(".product-price").textContent = `${product.price}`;
 
-    // Handle the remove functionality
+    // Add an event listener to the remove button
     productElement.querySelector(".remove-button").addEventListener("click", () => {
       removeFromFavorites(index);
     });
 
-    // Handle the move to bag functionality
-    productElement.querySelector(".move-to-bag-button").addEventListener("click", () => {
-      moveToBag(index);
-    });
-
-    // Append the populated template to the container
+    // Append the product element to the container
     favoriteContainer.appendChild(productElement);
   });
 }
 
-// Function to remove a product from the favorites list
+// Function to remove a product from favorites
 function removeFromFavorites(index) {
-  let favoriteList = JSON.parse(localStorage.getItem("favorites")) || [];
-  
-  // Remove the product at the given index
-  favoriteList.splice(index, 1);
-  
+  const favoriteList = JSON.parse(localStorage.getItem("favorites")) || [];
+  favoriteList.splice(index, 1); // Remove the product at the given index
+
   // Update the localStorage with the modified array
   localStorage.setItem("favorites", JSON.stringify(favoriteList));
-  
-  // Reload the favorites list to reflect changes
+
+  // Reload the page to update the displayed items
   loadFavorites();
 }
 
-// Function to move a product from favorites to the bag
-function moveToBag(index) {
-  // Get the favorites and bag products from localStorage
-  let favoriteProducts = JSON.parse(localStorage.getItem("favorites")) || [];
-  let bagProducts = JSON.parse(localStorage.getItem("bagProducts")) || [];
-
-  const productToMove = favoriteProducts[index];
-
-  // Check if the same shoe and size is already in the bag
-  const isDuplicate = bagProducts.some(product => 
-    product.name === productToMove.name && product.size === productToMove.size
-  );
-
-  if (isDuplicate) {
-    alert("This product with the selected size is already in your bag.");
-    return;
-  }
-
-  // Add the product to the bag
-  bagProducts.push(productToMove);
-  localStorage.setItem("bagProducts", JSON.stringify(bagProducts));
-
-  // Remove the product from favorites
-  favoriteProducts.splice(index, 1); // Remove the product at the given index
-  localStorage.setItem("favorites", JSON.stringify(favoriteProducts));
-
-  // Reload the favorites list to reflect changes
-  alert("Product moved to the bag.");
-  loadFavorites();
-}
-
+// Call fetchProductsDB when the page loads
+document.addEventListener("DOMContentLoaded", fetchProductsDB);

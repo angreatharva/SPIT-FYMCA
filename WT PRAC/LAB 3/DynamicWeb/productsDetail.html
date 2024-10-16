@@ -13,7 +13,7 @@
   <body>
     <header>
       <div class="logo-container">
-        <img src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\brand_logo.png" alt="Brand Logo" />
+        <img src="img/brand_logo.png" alt="Brand Logo" />
         <p id="jdi">JUST DO IT!</p>
       </div>
 
@@ -50,7 +50,7 @@
         </button>
         <button id="cartbtn">
           <a href="bagPage.html">
-          <img id="cart"src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shopping bag.png" ></img>
+          <img id="cart"src="img/shopping bag.png" ></img>
         </a>
         </button>
       </div>
@@ -86,18 +86,13 @@
      
     </div>
 
-    <div style="display: flex; justify-content: space-evenly;">
+<div style="display: flex; justify-content: space-evenly;">
     <!-- description -->
     <div id="shoeDescription">
-      Continuing our journey to push the needle of Nike innovation, the ISPA Link Axis is an exploration into circular design with 100% 
-      recycled materials: "Every part can be recycled", says the ISPA team. "It represents progress over perfection—creating a product 
-      with a second life in mind". Guided by the principles of modularity and waste reduction, the design uses interlocking components
-       of recycled Flyknit and plastic, as few materials as possible and zero glue. Experience the future of design in the present. And 
-       if or when you want to help extend the shoes' life, simply drop 'em off at a participating Nike store for recycling.
     </div>
     <!-- Shoe Size -->
-     <div id="sizeDiv">
-      <div id="sizeRow">
+  <div id="sizeDiv">
+  <div id="sizeRow">
     <div class="shoeSize" onclick="selectSize(this, 'UK 6')">
       <p>UK 6</p>
     </div>
@@ -144,8 +139,44 @@
       <p>UK 12</p>
     </div>
   </div>
+  </div>
 </div>
-    </div>
       <script src="script.js"></script>
+      <script>
+        // Fetch product details based on product ID
+        async function fetchProductDetails() {
+            const productId = localStorage.getItem("productId");
+            if (!productId) {
+                console.error("Product ID not found.");
+                return;
+            }
+            console.log(`ProductId getItem: ${productId}`);
+            const response = await fetch(`server.php?fetch_product_details&id=${productId}`);
+            const product = await response.json();
+            
+    
+            // Log the entire product object
+            console.log(product); 
+    
+            // Access the product properties with the correct case
+            console.log(`ProductId: ${product.Id}`);
+            console.log(`Name: ${product.name}`);
+            console.log(`Image: ${product.img}`);
+            console.log(`Description Small: ${product.smallDesc}`);
+            console.log(`Description Long: ${product.longDesc}`);
+            console.log(`Price: ${product.price}`);
+    
+            // Update the page with product details
+            document.getElementById("productName").innerText = product.name;
+            document.getElementById("productImage").src = product.img; // Adjust path if necessary
+            document.getElementById("productDescription").innerText = product.smallDesc;
+            document.getElementById("shoeDescription").innerText = product.longDesc;
+            document.getElementById("productPrice").innerText = `MRP: ₹ ${product.price}`;
+        }
+    
+        // Call on page load
+        window.onload = fetchProductDetails;
+    </script>
+
   </body>
 </html>

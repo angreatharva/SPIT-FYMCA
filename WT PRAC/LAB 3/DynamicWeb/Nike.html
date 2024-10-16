@@ -13,7 +13,7 @@
   <body>
     <header>
       <div class="logo-container">
-        <img src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\brand_logo.png" alt="Brand Logo" />
+        <img src="img/brand_logo.png" alt="Brand Logo" />
         <p id="jdi">JUST DO IT!</p>
       </div>
 
@@ -48,10 +48,17 @@
         </p>
       </nav>
 
-      <div class="auth-buttons">
-        <button id="reg">Register</button>
-        <button id="sig">Sign In</button>
+      <div id= "loginUser">
+        <i class="fa fa-user" style="color: black; font-size: 26px"></i>
+        <p id="username"></p>
       </div>
+     
+      <!-- <div class="auth-buttons">
+        <a href="form.html">
+        <button id="reg">Register</button>
+      </a>
+        <button id="sig">Sign In</button>
+      </div> -->
     </header>
 
     <!-- home -->
@@ -86,7 +93,7 @@
           >
             <img
               id="shoe"
-              src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\NIKE+REVOLUTION+7.jpeg"
+              src="img/NIKE+REVOLUTION+7.jpeg"
             />
           </div>
         </div>
@@ -105,20 +112,21 @@
             href="https://www.flipkart.com/mens-footwear/nike~brand/pr?sid=osp%2Ccil&p%5B%5D=facets.brand%255B%255D%3DNIKE"
             target="_blank"
           >
-            <img src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\flipkart.png" />
+            <img src="img/flipkart.png" />
           </a>
           
           <a
             href="https://www.flipkart.com/mens-footwear/nike~brand/pr?sid=osp%2Ccil&p%5B%5D=facets.brand%255B%255D%3DNIKE"
             target="_blank"
           >
-            <img id="amazon" src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\amazon.png" />
+            <img id="amazon" src="img/amazon.png" />
           </a>
           </div>
          
           
       </div>
     </section>
+    
 
     <!-- products -->
     <section id="products">
@@ -126,6 +134,7 @@
         <h1>Products</h1>
         <br />
         <div
+          id="productsContainer"
           style="
             display: flex;
             overflow-x: auto;
@@ -133,175 +142,7 @@
             max-height: 400px;
             padding: 10px;
           "
-        >
-          <div
-            class="shoeContainer"
-            style="display: inline-block; margin-right: 20px"
-            data-name="Nike Downshifter 13"
-            data-image="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe1.png"
-            data-description="Men's Road Running Shoes"
-            data-price="MRP : ₹ 4,295.00"
-            onclick="logShoeDetails(this)"
-          >
-            <div style="text-align: center; width: 100%">
-              <img
-                src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe1.png"
-                style="width: 280px"
-                alt="shoe1"
-              />
-              <h4>Nike Downshifter 13</h4>
-              <p>Men's Road Running Shoes</p>
-              <p>MRP : ₹ 4,295.00</p>
-            </div>
-          </div>
-
-          <div
-            class="shoeContainer"
-            style="display: inline-block; margin-right: 20px"
-            data-name="Nike Dunk Low Retro"
-            data-image="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe2.png"
-            data-description="Men's Shoes"
-            data-price="MRP : ₹ 8,295.00"
-            onclick="logShoeDetails(this)"
-          >
-            <div style="text-align: center; width: 100%">
-              <img
-                src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe2.png"
-                style="width: 280px"
-                alt="shoe2"
-              />
-              <h4>Nike Dunk Low Retro</h4>
-              <p>Men's Shoes</p>
-              <p>MRP : ₹ 8,295.00</p>
-            </div>
-          </div>
-
-          <div
-            class="shoeContainer"
-            style="display: inline-block; margin-right: 20px"
-            data-name="Nike Air Max Ishod"
-            data-image="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe3.png"
-            data-description="Men's Shoes"
-            data-price="MRP : ₹ 9,207.00"
-            onclick="logShoeDetails(this)"
-          >
-            <div style="text-align: center; width: 100%">
-              <img
-                src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe3.png"
-                style="width: 280px"
-                alt="shoe3"
-              />
-              <h4>Nike Air Max Ishod</h4>
-              <p>Men's Shoes</p>
-              <p>MRP : ₹ 9,207.00</p>
-            </div>
-          </div>
-
-          <div
-            class="shoeContainer"
-            style="display: inline-block; margin-right: 20px"
-            data-name="Nike Legend Essential 3 Next Nature"
-            data-image="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe4.png"
-            data-description="Men's Workout Shoes"
-            data-price="MRP : ₹ 4,995.00"
-            onclick="logShoeDetails(this)"
-          >
-            <div style="text-align: center; width: 100%">
-              <img
-                src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe4.png"
-                style="width: 280px"
-                alt="shoe4"
-              />
-              <h4>Nike Legend Essential 3 Next Nature</h4>
-              <p>Men's Workout Shoes</p>
-              <p>MRP : ₹ 4,995.00</p>
-            </div>
-          </div>
-
-          <div
-            class="shoeContainer"
-            style="display: inline-block; margin-right: 20px"
-            data-name="Nike Impact 4"
-            data-image="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe5.png"
-            data-description="Basketball Shoes"
-            data-price="MRP : ₹ 8,067.00"
-            onclick="logShoeDetails(this)"
-          >
-            <div style="text-align: center; width: 100%">
-              <img
-                src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe5.png"
-                style="width: 280px"
-                alt="shoe5"
-              />
-              <h4>Nike Impact 4</h4>
-              <p>Basketball Shoes</p>
-              <p>MRP : ₹ 8,067.00</p>
-            </div>
-          </div>
-
-          <div
-            class="shoeContainer"
-            style="display: inline-block; margin-right: 20px"
-            data-name="Nike Free RN NN"
-            data-image="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe6.png"
-            data-description="Men's Road Running Shoes"
-            data-price="MRP : ₹ 8,257.00"
-            onclick="logShoeDetails(this)"
-          >
-            <div style="text-align: center; width: 100%">
-              <img
-                src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe6.png"
-                style="width: 280px"
-                alt="shoe6"
-              />
-              <h4>Nike Free RN NN</h4>
-              <p>Men's Road Running Shoes</p>
-              <p>MRP : ₹ 8,257.00</p>
-            </div>
-          </div>
-
-          <div
-            class="shoeContainer"
-            style="display: inline-block; margin-right: 20px"
-            data-name="Nike Pegasus 41 Premium"
-            data-image="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe7.png"
-            data-description="Men's Road Running Shoes"
-            data-price="MRP : ₹ 12,795.00"
-            onclick="logShoeDetails(this)"
-          >
-            <div style="text-align: center; width: 100%">
-              <img
-                src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe7.png"
-                style="width: 280px"
-                alt="shoe7"
-              />
-              <h4>Nike Pegasus 41 Premium</h4>
-              <p>Men's Road Running Shoes</p>
-              <p>MRP : ₹ 12,795.00</p>
-            </div>
-          </div>
-
-          <div
-            class="shoeContainer"
-            style="display: inline-block; margin-right: 20px"
-            data-name="Nike ISPA Link Axis"
-            data-image="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe8.png"
-            data-description="Men's Shoes"
-            data-price="MRP : ₹ 25,457.00"
-            onclick="logShoeDetails(this)"
-          >
-            <div style="text-align: center; width: 100%">
-              <img
-                src="C:\Users\MOHANKUMAR\Downloads\SPIT\WT PRAC\LAB 3\DynamicWeb\shoe8.png"
-                style="width: 280px"
-                alt="shoe8"
-              />
-              <h4>Nike ISPA Link Axis</h4>
-              <p>Men's Shoes</p>
-              <p>MRP : ₹ 25,457.00</p>
-            </div>
-          </div>
-        </div>
+        ></div>
       </div>
     </section>
 
@@ -538,7 +379,78 @@
         </div>
       </div>
     </section>
+
+
     <script src="script.js"></script>
+    <script>
+      // Function to fetch products from the server
+      async function fetchProductsDB() {
+
+        console.log(`fetchProductsDB Nike.html`);
+
+        const response = await fetch('server.php?fetch_products');
+        const products = await response.json();
+    
+        const productsContainer = document.getElementById('productsContainer');
+        productsContainer.innerHTML = ''; // Clear existing content
+    
+        products.forEach(product => {
+
+          console.log(`Product: ${product}`);
+          
+          const shoeContainer = document.createElement('div');
+          shoeContainer.className = 'shoeContainer';
+          shoeContainer.style.display = 'inline-block';
+          shoeContainer.style.marginRight = '20px';
+          shoeContainer.setAttribute('data-id', product.Id);
+          shoeContainer.setAttribute('data-name', product.name);
+          shoeContainer.setAttribute('data-image', product.img);
+          shoeContainer.setAttribute('data-description', product.smallDesc);
+          shoeContainer.setAttribute('data-description-long', product.longDesc);
+          shoeContainer.setAttribute('data-price', `MRP : ₹ ${product.price}`);
+          shoeContainer.onclick = () => logShoeDetails(shoeContainer);
+    
+          shoeContainer.innerHTML = `
+            <div style="text-align: center; width: 100%">
+              <img src="${product.img}" style="width: 280px" alt="${product.name}" />
+              <h4>${product.name}</h4>
+              <p>${product.smallDesc}</p>
+              <p>MRP : ₹ ${product.price}</p>
+            </div>
+          `;
+    
+          productsContainer.appendChild(shoeContainer);
+        });
+      }
+    
+      // Call the function on page load
+      window.onload = fetchProductsDB;
+    </script>
+     <script>
+      let username = '';
+      let userId = 0;
+
+      document.addEventListener("DOMContentLoaded", function() {
+          // Fetch user session data via AJAX
+          fetch('server.php?fetch_user_data')
+          .then(response => response.json())
+          .then(data => {
+              if (data.username) {
+                  // Store values in variables
+                  username = data.username;
+                  userId = data.id;
+                  console.log(`username: ${username}`);
+                  console.log(`userId: ${userId}`);
+
+                  // Display the welcome message
+                  document.getElementById('username').innerText =  username;
+              } else {
+                  document.getElementById('welcome-message').innerText = data.error;
+              }
+          })
+          .catch(error => console.error('Error fetching user data:', error));
+      });
+  </script>
     
   </body>
 </html>
