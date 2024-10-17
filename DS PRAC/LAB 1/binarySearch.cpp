@@ -51,7 +51,9 @@ public:
 		low=0,high=n-1;
 		while(high>=low)
 		{
-			mid=(low+high)/2;
+			// mid=(low+high)/2;
+			mid = low+ (((double)(high - low) / (arr[high] - arr[low]))
+                 * (arr[high] - arr[low]));
 			if(key==arr[mid])
 			{
 				pos=mid;
