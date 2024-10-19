@@ -83,7 +83,6 @@ public:
 			// Ensure that value is restricted to last 'len' digits
 			value = value % max_value;
 		}
-		cout << "value" << value;
 		return value;
 	}
 
