@@ -4,6 +4,7 @@ using namespace std;
 #define max 100
 
 int n, m, arr[max], arrM[max], collision = 0;
+bool err = false;
 
 class Midsquare
 {
@@ -26,6 +27,12 @@ public:
         cout << "Enter Number of locations: ";
         cin >> n;
 
+        if (n < m)
+        {
+            cout << "Size of Hash Table must br greater than or equal to the no. of elements";
+            err = true;
+            return;
+        }
         arrM[n] = {0};
     }
     void placing()
@@ -87,11 +94,13 @@ public:
     void output()
     {
         cout << "No. of Collision: " << collision << endl;
+        cout << "Value | Index " << endl;
         for (int i = 0; i < n; i++)
         {
-             if(arrM[i] != 0){
-			cout << arrM[i] << " " << i <<endl;
-		    }
+            if (arrM[i] != 0)
+            {
+                cout << arrM[i] << " | " << i << endl;
+            }
         }
         cout << endl;
     }
@@ -100,7 +109,10 @@ int main()
 {
     Midsquare ms;
     ms.input();
-    ms.placing();
-    ms.output();
+    if (!err)
+    {
+        ms.placing();
+        ms.output();
+    }
     return 0;
 }

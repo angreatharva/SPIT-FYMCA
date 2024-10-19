@@ -4,7 +4,8 @@
 using namespace std;
 #define max 100
 
-int n, m, arr[max], arrM[max], num,digits[max], collision = 0;
+int n, m, arr[max], arrM[max], num, digits[max], collision = 0;
+bool err = false;
 
 class DigitExtraction
 {
@@ -27,12 +28,20 @@ public:
 		cout << "Enter Number of locations: ";
 		cin >> n;
 
+		if (n < m)
+		{
+			cout << "Size of Hash Table must br greater than or equal to the no. of elements";
+			err = true;
+			return;
+		}
+
 		arrM[n] = {0};
 
 		cout << "Enter Number of digits for extraction: ";
-		cin>>num;
+		cin >> num;
 
-		for(int i = 0; i < num; i++) {
+		for (int i = 0; i < num; i++)
+		{
 			cout << "Enter the data for " << i << " Index: ";
 			cin >> digits[i];
 		}
@@ -43,8 +52,6 @@ public:
 			cout << digits[i] << " ";
 		}
 		cout << endl;
-
-
 	}
 
 	void placing()
@@ -65,13 +72,14 @@ public:
 		int j = 0;
 		int count = 1;
 
-		for(int i = key.length() -1; i >= 0; i--) {
-			if(digits[j] == count) {
+		for (int i = key.length() - 1; i >= 0; i--)
+		{
+			if (digits[j] == count)
+			{
 				val.push_back(key.at(i));
 				j++;
 			}
 			count++;
-
 		}
 		reverse(val.begin(), val.end());
 		value = stoi(val);
@@ -104,11 +112,13 @@ public:
 	void output()
 	{
 		cout << "No. of Collision: " << collision << endl;
+		cout << "Value | Index " << endl;
 		for (int i = 0; i < n; i++)
 		{
-			 if(arrM[i] != 0){
-			cout << arrM[i] << " " << i <<endl;
-		    }
+			if (arrM[i] != 0)
+			{
+				cout << arrM[i] << " | " << i << endl;
+			}
 		}
 		cout << endl;
 	}
@@ -118,7 +128,10 @@ int main()
 {
 	DigitExtraction de;
 	de.input();
-	de.placing();
-	de.output();
+	if (!err)
+	{
+		de.placing();
+		de.output();
+	}
 	return 0;
 }

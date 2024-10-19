@@ -3,6 +3,7 @@ using namespace std;
 #define max 100
 
 int n, m, arr[max], arrM[max], collision = 0;
+bool err = false;
 
 class ModuloDivision
 {
@@ -24,6 +25,13 @@ public:
         cout << endl;
         cout << "Enter Number of locations: ";
         cin >> n;
+
+        if (n < m)
+        {
+            cout << "Size of Hash Table must br greater than or equal to the no. of elements";
+            err = true;
+            return;
+        }
 
         arrM[n] = {0};
     }
@@ -69,11 +77,13 @@ public:
     void output()
     {
         cout << "No. of Collision: " << collision << endl;
+        cout << "Value | Index " << endl;
         for (int i = 0; i < n; i++)
         {
-             if(arrM[i] != 0){
-			cout << arrM[i] << " " << i <<endl;
-		    }
+            if (arrM[i] != 0)
+            {
+                cout << arrM[i] << " | " << i << endl;
+            }
         }
         cout << endl;
     }
@@ -83,7 +93,10 @@ int main()
 {
     ModuloDivision md;
     md.input();
-    md.placing();
-    md.output();
+    if (!err)
+    {
+        md.placing();
+        md.output();
+    }
     return 0;
 }
