@@ -9,7 +9,7 @@ struct node
     struct node *next;
 }
     *list = NULL,
-    *p, *q, *r;
+    *p, *q, *r, *s, *temp;
 class LinkedList
 {
 public:
@@ -305,6 +305,23 @@ public:
 
     void reverse()
     {
+        if (list == NULL)
+        {
+            cout << "Linked List is Empty" << endl;
+        }
+
+        q = s = list;
+        temp = NULL;
+        r = q->next;
+        while (r != NULL)
+        {
+            temp = q;
+            q = r;
+            r = q->next;
+            q->next = temp;
+        }
+        list = q;
+        s->next = NULL;
     }
 
     void display()

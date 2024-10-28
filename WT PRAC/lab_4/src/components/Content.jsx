@@ -1,14 +1,14 @@
 import React from "react";
-import "./Navigation.css";
+import "./Content.css";
 
 const Content = () => {
   return (
-    <section>
-      <h1>Welcome to the content section</h1>
-      <p>This is some placeholder content for demonstration purposes.</p>
+    <section className="content-section">
+      <h1>Welcome to My Page, I'am Atharva Angre. </h1>
+      <p>Student at Sardar Patel Institution of Technology,</p>
       <p>
-        This is an additional paragraph that provides more information about the
-        app.
+        I'am also a sport person, I play Mallakahmab which is a India Authentic
+        Sport.
       </p>
     </section>
   );

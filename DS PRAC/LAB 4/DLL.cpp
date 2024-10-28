@@ -10,7 +10,7 @@ struct node
     struct node *next;
 }
     *list = NULL,
-    *p, *q, *r;
+    *p, *q, *r, *s, *temp;
 class LinkedList
 {
 public:
@@ -30,7 +30,7 @@ public:
             cout << "8) Sort the Linked List" << endl;
             cout << "9) Reverse the Linked List" << endl;
             cout << "10) Display" << endl;
-            cout << "11) Search a partivular " << endl;
+            cout << "11) Search a particular " << endl;
             cout << "15) Exit" << endl;
             cout << endl;
 
@@ -182,21 +182,25 @@ public:
         cout << "Enter the element after which you want to insert the new element: ";
         cin >> target;
 
-        r = list;
-
-        while (r != NULL && r->data != target)
+        q = list;
+        while (q != NULL && r->data != target)
         {
-            r = r->next;
+            r = q;
+            q = q->next;
         }
 
-        if (r != NULL)
+        if (q != NULL)
         {
             p = (struct node *)malloc(sizeof(node));
             cout << "Enter the element you want to insert: ";
             cin >> key;
+
+            p->prev = r;
             p->data = key;
-            p->next = r->next;
+            p->next = q;
+
             r->next = p;
+            q->prev = p;
         }
         else
         {
@@ -217,6 +221,7 @@ public:
             {
                 cout << "Deleted " << q->data << endl;
                 list = q->next;
+                list->prev = NULL;
             }
             else
             {
@@ -316,6 +321,23 @@ public:
 
     void reverse()
     {
+        if (list == NULL)
+        {
+            cout << "Linked List is Empty" << endl;
+        }
+
+        q = s = list;
+        temp = NULL;
+        r = q->next;
+        while (r != NULL)
+        {
+            temp = q;
+            q = r;
+            r = q->next;
+            q->next = temp;
+        }
+        list = q;
+        s->next = NULL;
     }
 
     void display()

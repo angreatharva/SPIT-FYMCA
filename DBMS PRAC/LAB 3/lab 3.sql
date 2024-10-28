@@ -1,15 +1,6 @@
-create database lab_4;
-use lab_4;
-
-CREATE TABLE deposit_01 (
-    actno VARCHAR(5) PRIMARY KEY,
-    cname VARCHAR(18),
-    bname VARCHAR(18),
-    amount DECIMAL(8,2),
-    adate DATE,
-	FOREIGN KEY (bname) REFERENCES branch_01(bname),
-    FOREIGN KEY (cname) REFERENCES customer_01(cname)
-);
+drop database lab_3;
+create database lab_3;
+use lab_3;
 
 CREATE TABLE branch_01 (
     bname VARCHAR(18) PRIMARY KEY,
@@ -21,6 +12,15 @@ CREATE TABLE customer_01(
     city VARCHAR(18)
 );
 
+CREATE TABLE deposit_01 (
+    actno VARCHAR(5) PRIMARY KEY,
+    cname VARCHAR(18),
+    bname VARCHAR(18),
+    amount DECIMAL(8,2),
+    adate DATE,
+	FOREIGN KEY (bname) REFERENCES branch_01(bname),
+    FOREIGN KEY (cname) REFERENCES customer_01(cname)
+);
 CREATE TABLE borrow_01(
     loan_no VARCHAR(5) PRIMARY KEY,
     cname VARCHAR(18),
@@ -108,18 +108,97 @@ select max(amount) as maximum_loan from borrow_01 where bname = 'vrce';
 
 set SQL_SAFE_UPDATES = 0;
 update deposit_01 set amount = amount * 1.10;
+select * from deposit_01;
 
 update deposit_01 set amount = amount * 1.10 where bname = 'vrce';
+select * from deposit_01;
 
 delete from deposit_01 where bname = 'virar' and cname = 'shivani';
+select * from deposit_01;
 
 delete from deposit_01 where cname in (select cname from customer_01 where city = 'mumbai');
 delete from borrow_01 where cname in (select cname from customer_01 where city = 'mumbai');
 delete from customer_01 where city = 'mumbai';
+select * from customer_01;
 
 delete from deposit_01 where amount < 5000;
+select * from deposit_01;
 
-select cname ;
+#1
+SELECT d1.cname as depositors
+FROM deposit_01 d1
+JOIN (SELECT bname FROM deposit_01 WHERE cname = 'sunil') d2 
+ON d1.bname = d2.bname;
+
+#2
+select b.loan_no, b.amount as loan_amount 
+from borrow_01 b
+join (select bname from deposit_01 where cname = 'sunil') d 
+on b.bname = d.bname;
+
+#3
+SELECT d.cname
+FROM deposit_01 d
+JOIN (SELECT cname FROM customer_01 WHERE city = 'Nagpur') c 
+ON d.cname = c.cname;
+
+#4
+SELECT d.cname
+FROM deposit_01 d
+JOIN (SELECT DISTINCT bname FROM deposit_01 WHERE cname = 'Sunil') s 
+ON d.bname = s.bname 
+group BY d.cname
+HAVING COUNT(DISTINCT d.bname) = (SELECT COUNT(DISTINCT bname) FROM deposit_01 WHERE cname = 'Sunil');
+
+#5
+SELECT d.cname
+FROM deposit_01 d
+JOIN (SELECT MAX(amount) AS max_amount FROM deposit_01) m 
+ON d.amount = m.max_amount;
+
+#6
+SELECT d.cname
+FROM deposit_01 d
+JOIN (SELECT MAX(d.amount) AS max_amount
+FROM deposit_01 d
+JOIN customer_01 c ON d.cname = c.cname
+WHERE c.city = 'Nagpur') m ON d.amount = m.max_amount;
+
+#7
+SELECT b.bname
+FROM deposit_01 b
+JOIN (SELECT bname, COUNT(cname) AS depositor_count
+FROM deposit_01
+GROUP BY bname
+ORDER BY depositor_count DESC
+LIMIT 1) d ON b.bname = d.bname;
+
+#8
+SELECT d.amount 
+FROM deposit_01 d
+JOIN (
+SELECT city FROM branch_01 WHERE bname = (SELECT bname FROM deposit_01 WHERE cname = 'Sunil')
+) m 
+ON d.amount = m.amount;
+
+#9
+SELECT d.cname 
+FROM deposit_01 d
+join(select bname, avg(amount) as avg_amount from deposit_01 group by bname) a
+ON d.bname = a.bname
+where d.amount > a.avg_amount
+;
+
+#10
+SELECT DISTINCT b.bname
+FROM branch_01 b
+LEFT JOIN deposit_01 d ON b.bname = d.bname
+WHERE b.bname NOT IN (
+    SELECT bname 
+    FROM deposit_01 
+    GROUP BY bname 
+    HAVING COUNT(cname) >= 2
+);
 
 select * from customer_01;
 select * from branch_01;
