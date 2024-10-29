@@ -11,7 +11,7 @@ struct node
 }
     *list = NULL,
     *p, *q, *r, *s, *temp;
-class LinkedList
+class DoublyLinkedList
 {
 public:
     void menu()
@@ -143,6 +143,7 @@ public:
                 p->data = key;
                 p->next = list;
                 p->prev = NULL;
+                list->prev = p;
                 list = p;
                 return;
             }
@@ -160,9 +161,13 @@ public:
                 cin >> key;
                 p->data = key;
                 p->next = q;
+                p->prev = q->prev;
+
+                if (q->prev != NULL)
+                {
+                    q->prev->next = p;
+                }
                 q->prev = p;
-                p->prev = r;
-                r->next = p;
             }
             else
             {
@@ -195,12 +200,14 @@ public:
             cout << "Enter the element you want to insert: ";
             cin >> key;
 
-            p->prev = r;
-            p->data = key;
-            p->next = q;
+            p->prev = q;
+            p->next = q->next;
 
-            r->next = p;
-            q->prev = p;
+            if (q->next != NULL)
+            {
+                q->next->prev = p;
+            }
+            q->next = p;
         }
         else
         {
@@ -271,22 +278,36 @@ public:
             cout << "Enter the Element which you want to Delete" << endl;
             cin >> target;
             q = list;
-            while (q->next != NULL && q->data != target)
+            if (q->data == target)
+            {
+                cout << "Deleted " << q->data << endl;
+                list = q->next;
+                if (list != NULL)
+                {
+                    list->prev = NULL;
+                }
+                free(q);
+                return;
+            }
+            while (q != NULL && q->data != target)
             {
                 r = q;
                 q = q->next;
             }
-            if (q->next != NULL)
+            if (q != NULL)
             {
                 cout << "Deleted " << q->data << endl;
                 r->next = q->next;
+                if (q->next != NULL)
+                {
+                    q->next->prev = r;
+                }
+                free(q);
             }
             else
             {
-                cout << "Deleted " << q->data << endl;
-                r->next = NULL;
+                cout << "Element not found!" << endl;
             }
-            free(q);
         }
     }
 
@@ -326,18 +347,19 @@ public:
             cout << "Linked List is Empty" << endl;
         }
 
-        q = s = list;
+        q = list;
         temp = NULL;
-        r = q->next;
-        while (r != NULL)
+        while (q != NULL)
         {
-            temp = q;
-            q = r;
-            r = q->next;
+            temp = q->prev;
+            q->prev = q->next;
             q->next = temp;
+            q = q->prev;
         }
-        list = q;
-        s->next = NULL;
+        if (temp != NULL)
+        {
+            list = temp->prev;
+        }
     }
 
     void display()
@@ -360,7 +382,7 @@ public:
 
 int main()
 {
-    LinkedList ll;
-    ll.menu();
+    DoublyLinkedList dll;
+    dll.menu();
     return 0;
 }
