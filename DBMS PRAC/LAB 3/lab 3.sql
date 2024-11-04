@@ -192,13 +192,38 @@ where d.amount > a.avg_amount
 #10
 SELECT DISTINCT b.bname
 FROM branch_01 b
-LEFT JOIN deposit_01 d ON b.bname = d.bname
+JOIN deposit_01 d ON b.bname = d.bname
 WHERE b.bname NOT IN (
     SELECT bname 
     FROM deposit_01 
     GROUP BY bname 
     HAVING COUNT(cname) >= 2
 );
+
+#11
+SELECT COUNT(*) AS customer_count
+FROM (
+    SELECT DISTINCT d.cname
+    FROM deposit_01 d
+    JOIN branch_01 b ON d.bname = b.bname
+    WHERE b.city = (SELECT city FROM customer_01 c WHERE c.cname = d.cname)
+) AS customer_in_same_city;
+
+#12//doubt
+update customer_01 set city = 'nagpur' where cname in (select cname from borrow_01 where bname = 'verce' );
+select * from customer_01;
+
+#13
+UPDATE deposit_01 AS d
+JOIN customer_01 AS c ON d.cname = c.cname
+SET d.amount = (
+    SELECT MAX(amount) 
+    FROM deposit_01 
+    WHERE cname IN (SELECT cname FROM customer_01 WHERE city = 'Nagpur')
+)
+WHERE d.cname = 'Anil' AND c.city = 'Nagpur';
+
+
 
 select * from customer_01;
 select * from branch_01;
