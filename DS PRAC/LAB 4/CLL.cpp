@@ -10,7 +10,7 @@ struct node
 }
     *list = NULL,
     *p, *q, *r, *s, *temp;
-class LinkedList
+class CircularLinkedList
 {
 public:
     void menu()
@@ -67,9 +67,6 @@ public:
             case 10:
                 display();
                 break;
-            case 11:
-                Search();
-                break;
 
             default:
                 cout << "Enter a proper Value";
@@ -87,13 +84,20 @@ public:
         p->data = key;
         if (list == NULL)
         {
-            p->next = NULL;
+            list = p;
+            p->next = list;
         }
         else
         {
+            q = list;
+            while (q->next != list)
+            {
+                q = temp->next;
+            }
             p->next = list;
+            q->next = p;
+            list = p;
         }
-        list = p;
     }
 
     void insertAtEnd()
@@ -102,20 +106,19 @@ public:
         cout << "Enter the element you want to Insert:" << endl;
         cin >> key;
         p->data = key;
-        p->next = NULL;
         if (list == NULL)
         {
-            cout << "List is Empty Inserting, so Inserting at the Start" << endl;
             list = p;
+            p->next = list;
         }
         else
         {
             q = list;
-            while (q->next != NULL)
+            while (q->next != list)
             {
-                cout << q->data << endl;
                 q = q->next;
             }
+            p->next = list;
             q->next = p;
         }
     }
@@ -137,6 +140,14 @@ public:
                 cin >> key;
                 p->data = key;
                 p->next = list;
+
+                q = list;
+                while (q->next != list)
+                {
+                    q = q->next;
+                }
+                q->next = p;
+
                 list = p;
                 return;
             }
@@ -147,6 +158,7 @@ public:
                 r = q;
                 q = q->next;
             }
+
             if (q != NULL && q->data == target)
             {
                 struct node *p = (struct node *)malloc(sizeof(node));
@@ -331,55 +343,23 @@ public:
     {
         if (list == NULL)
         {
-            cout << "Linked List is Empty" << endl;
+            cout << "The list is empty." << endl;
+            return;
         }
-        else
-        {
-            q = list;
-            while (q != NULL)
-            {
-                cout << q->data << "-->";
-                q = q->next;
-            }
-        }
-    }
 
-    void Search()
-    {
-        if (list == NULL)
+        q = list;
+        do
         {
-            cout << "List is Empty" << endl;
-        }
-        else
-        {
-            cout << "Enter the Element before which you want to Search" << endl;
-            cin >> target;
-            if (list->data == target)
-            {
-                cout << "Element Found at 0th Index ";
-                return;
-            }
-
-            q = list;
-            while (q != NULL && q->data != target)
-            {
-                q = q->next;
-            }
-            if (q != NULL && q->data == target)
-            {
-                cout << "Element Found at nth Index";
-            }
-            else
-            {
-                cout << "Element not found!" << endl;
-            }
-        }
+            cout << q->data << "-->";
+            q = q->next;
+        } while (q != list);
+        cout << endl;
     }
 };
 
 int main()
 {
-    LinkedList ll;
-    ll.menu();
+    CircularLinkedList cll;
+    cll.menu();
     return 0;
 }

@@ -214,15 +214,30 @@ update customer_01 set city = 'nagpur' where cname in (select cname from borrow_
 select * from customer_01;
 
 #13
-UPDATE deposit_01 AS d
-JOIN customer_01 AS c ON d.cname = c.cname
-SET d.amount = (
-    SELECT MAX(amount) 
-    FROM deposit_01 
-    WHERE cname IN (SELECT cname FROM customer_01 WHERE city = 'Nagpur')
-)
-WHERE d.cname = 'Anil' AND c.city = 'Nagpur';
+UPDATE deposit_01
+SET amount = (SELECT MAX(amount) FROM deposit_01 d JOIN customer_01 c ON d.cname = c.cname WHERE c.city = 'Nagpur')
+WHERE cname = 'Anil';
 
+UPDATE deposit_01
+SET amount = (
+    SELECT max_amount
+    FROM (SELECT MAX(amount) AS max_amount 
+          FROM deposit_01 d 
+          JOIN customer_01 c ON d.cname = c.cname 
+          WHERE c.city = 'Nagpur') AS derived_table
+)
+WHERE cname = 'Anil';
+
+#14
+update deposit_01 a 
+join deposit_01 s ON a.bname = s.bname
+set a.amount = a.amount - 100,s.amount = s.amount +100
+where a.cname = 'anil' and s.cname = 'sunil';
+
+#15
+UPDATE deposit_01 d
+JOIN (SELECT bname, MAX(amount) AS max_amount FROM deposit_01 GROUP BY bname) m ON d.bname = m.bname AND d.amount = m.max_amount
+SET d.amount = d.amount + 100;
 
 
 select * from customer_01;
