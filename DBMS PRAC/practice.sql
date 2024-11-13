@@ -1,5 +1,6 @@
 -- DDL
 create database emp;
+drop database emp;
 use emp;
 create table emp
 (

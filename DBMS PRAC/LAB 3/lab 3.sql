@@ -239,6 +239,25 @@ UPDATE deposit_01 d
 JOIN (SELECT bname, MAX(amount) AS max_amount FROM deposit_01 GROUP BY bname) m ON d.bname = m.bname AND d.amount = m.max_amount
 SET d.amount = d.amount + 100;
 
+#16
+DELETE FROM branch_01
+WHERE bname IN (SELECT bname FROM deposit_01 d JOIN customer_01 c ON d.cname = c.cname WHERE c.city = 'Nagpur');
+
+#17
+DELETE FROM deposit_01
+WHERE cname IN ('Anil', 'Sunil')
+AND (SELECT city FROM customer_01 WHERE cname = 'Anil') = (SELECT city FROM customer_01 WHERE cname = 'Sunil');
+
+#18
+DELETE FROM borrow_01
+WHERE bname IN (SELECT bname FROM deposit_01 GROUP BY bname HAVING COUNT(cname) = (SELECT MIN(depositor_count) FROM (SELECT COUNT(cname) AS depositor_count FROM deposit_01 GROUP BY bname) AS counts));
+
+#19
+SELECT DISTINCT d.cname
+FROM deposit_01 d
+JOIN borrow_01 b ON d.cname = b.cname;
+
+
 
 select * from customer_01;
 select * from branch_01;

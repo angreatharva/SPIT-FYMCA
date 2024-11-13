@@ -113,7 +113,6 @@ public:
             q = list;
             while (q->next != NULL)
             {
-                cout << q->data << endl;
                 q = q->next;
             }
             q->next = p;
@@ -323,7 +322,9 @@ public:
             r = q->next;
             q->next = temp;
         }
+
         list = q;
+
         s->next = NULL;
     }
 

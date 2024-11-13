@@ -74,7 +74,7 @@ public:
             linearProbing(hk, i);
         }
     }
-    void output()
+    8 void output()
     {
         cout << "No. of Collision: " << collision << endl;
         cout << "Value | Index " << endl;
