@@ -58,10 +58,10 @@ public:
                 deleteAParticularElement();
                 break;
             case 8:
-                sortLinkedList();
+                // sortLinkedList();
                 break;
             case 9:
-                reverse();
+                // reverse();
                 break;
 
             case 10:
@@ -78,31 +78,7 @@ public:
 
     void insertAtBeginning()
     {
-        p = (struct node *)malloc(sizeof(node));
-        cout << "Enter the element you want to Insert:" << endl;
-        cin >> key;
-        p->data = key;
-        if (list == NULL)
-        {
-            list = p;
-            p->next = list;
-        }
-        else
-        {
-            q = list;
-            while (q->next != list)
-            {
-                q = temp->next;
-            }
-            p->next = list;
-            q->next = p;
-            list = p;
-        }
-    }
-
-    void insertAtEnd()
-    {
-        p = (struct node *)malloc(sizeof(node));
+        p = new node();
         cout << "Enter the element you want to Insert:" << endl;
         cin >> key;
         p->data = key;
@@ -120,6 +96,30 @@ public:
             }
             p->next = list;
             q->next = p;
+            list = p;
+        }
+    }
+
+    void insertAtEnd()
+    {
+        p = new node();
+        cout << "Enter the element you want to Insert:" << endl;
+        cin >> key;
+        p->data = key;
+        if (list == NULL)
+        {
+            list = p;
+            p->next = list;
+        }
+        else
+        {
+            q = list;
+            while (q->next != list)
+            {
+                q = q->next;
+            }
+            q->next = p;
+            p->next = list;
         }
     }
 
@@ -135,33 +135,20 @@ public:
             cin >> target;
             if (list->data == target)
             {
-                p = (struct node *)malloc(sizeof(node));
-                cout << "Enter the element you want to insert: ";
-                cin >> key;
-                p->data = key;
-                p->next = list;
-
-                q = list;
-                while (q->next != list)
-                {
-                    q = q->next;
-                }
-                q->next = p;
-
-                list = p;
+                insertAtBeginning();
                 return;
             }
 
             q = list;
-            while (q != NULL && q->data != target)
+            do
             {
                 r = q;
                 q = q->next;
-            }
+            } while (q != list && q->data != target);
 
-            if (q != NULL && q->data == target)
+            if (q->data == target)
             {
-                struct node *p = (struct node *)malloc(sizeof(node));
+                p = new node();
                 cout << "Enter the element you want to insert: ";
                 cin >> key;
                 p->data = key;
@@ -187,25 +174,22 @@ public:
         cin >> target;
 
         r = list;
-
-        while (r != NULL && r->data != target)
+        do
         {
+            if (r->data == target)
+            {
+                p = new node();
+                cout << "Enter the element you want to insert: ";
+                cin >> key;
+                p->data = key;
+                p->next = r->next;
+                r->next = p;
+                return;
+            }
             r = r->next;
-        }
+        } while (r != list);
 
-        if (r != NULL)
-        {
-            p = (struct node *)malloc(sizeof(node));
-            cout << "Enter the element you want to insert: ";
-            cin >> key;
-            p->data = key;
-            p->next = r->next;
-            r->next = p;
-        }
-        else
-        {
-            cout << "Element not found!" << endl;
-        }
+        cout << "Element not found!" << endl;
     }
 
     void deleteAtBeginning()
@@ -213,21 +197,26 @@ public:
         if (list == NULL)
         {
             cout << "Linked List is Empty" << endl;
+            return;
+        }
+        q = list;
+        if (q->next == list)
+        {
+            cout << "Deleted " << q->data << endl;
+            delete q;
+            list = NULL;
         }
         else
         {
-            q = list;
-            if (q->next != NULL)
+            while (q->next != list)
             {
-                cout << "Deleted " << q->data << endl;
-                list = q->next;
+                q = q->next;
             }
-            else
-            {
-                cout << "Deleted " << q->data << endl;
-                list = NULL;
-            }
-            free(q);
+            p = list;
+            cout << "Deleted " << p->data << endl;
+            list = list->next;
+            q->next = list;
+            delete p;
         }
     }
 
@@ -236,26 +225,25 @@ public:
         if (list == NULL)
         {
             cout << "Linked List is Empty" << endl;
+            return;
+        }
+        q = list;
+        if (q->next == list)
+        {
+            cout << "Deleted " << q->data << endl;
+            delete q;
+            list = NULL;
         }
         else
         {
-            q = list;
-            if (q->next == NULL)
+            while (q->next->next != list)
             {
-                cout << "Deleted " << q->data << endl;
-                list = NULL;
+                q = q->next;
             }
-            else
-            {
-                while (q->next != NULL)
-                {
-                    r = q;
-                    q = q->next;
-                }
-                cout << "Deleted " << q->data << endl;
-                r->next = NULL;
-            }
-            free(q);
+            p = q->next;
+            cout << "Deleted " << p->data << endl;
+            q->next = list;
+            delete p;
         }
     }
 
@@ -264,79 +252,34 @@ public:
         if (list == NULL)
         {
             cout << "Linked List is Empty" << endl;
+            return;
+        }
+        cout << "Enter the Element which you want to Delete" << endl;
+        cin >> target;
+
+        if (list->data == target)
+        {
+            deleteAtBeginning();
+            return;
+        }
+
+        q = list;
+        do
+        {
+            r = q;
+            q = q->next;
+        } while (q != list && q->data != target);
+
+        if (q->data == target)
+        {
+            r->next = q->next;
+            cout << "Deleted " << q->data << endl;
+            delete q;
         }
         else
         {
-            cout << "Enter the Element which you want to Delete" << endl;
-            cin >> target;
-            q = list;
-            while (q->next != NULL && q->data != target)
-            {
-                r = q;
-                q = q->next;
-            }
-            if (q->next != NULL)
-            {
-                cout << "Deleted " << q->data << endl;
-                r->next = q->next;
-            }
-            else
-            {
-                cout << "Deleted " << q->data << endl;
-                r->next = NULL;
-            }
-            free(q);
+            cout << "Element not found!" << endl;
         }
-    }
-
-    void sortLinkedList()
-    {
-        if (list == NULL)
-        {
-            cout << "Linked List is Empty" << endl;
-        }
-        q = list;
-
-        while (q != NULL)
-        {
-            r = q->next;
-            while (r != NULL)
-            {
-                if (q->data > r->data)
-                {
-                    int temp = q->data;
-                    q->data = r->data;
-                    r->data = temp;
-                }
-
-                r = r->next;
-            }
-            q = q->next;
-        }
-
-        cout << "The Sorted Linked List is :" << endl;
-        display();
-    }
-
-    void reverse()
-    {
-        if (list == NULL)
-        {
-            cout << "Linked List is Empty" << endl;
-        }
-
-        q = s = list;
-        temp = NULL;
-        r = q->next;
-        while (r != NULL)
-        {
-            temp = q;
-            q = r;
-            r = q->next;
-            q->next = temp;
-        }
-        list = q;
-        s->next = NULL;
     }
 
     void display()

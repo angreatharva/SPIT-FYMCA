@@ -111,6 +111,8 @@ from employees;
  prof_name varchar(20),
  class varchar(20)
  );
+ 
+ truncate professor;
   
   insert into professor values 
   ('e1','harsh','fybsc'),
@@ -216,6 +218,7 @@ insert into pprice values
 ('x',1200);
 
 commit;
+select * from products;
 select * from pprice;
 
 select  product_id,pname, price from products inner join pprice using (product_id);
@@ -228,11 +231,12 @@ select product_id,pname,price from products left join pprice using (product_id)
 union
 select product_id,pname,price from products right join pprice using (product_id);
 
-select products.product_id,pname,price from products cross join pprice;
+
+select products.product_id,pname,price from products cross join pprice order by products.product_id ;
 
 select pp.product_id,p.pname,pp.price from products as p right join pprice as pp on (p.product_id=pp.product_id);
 
-select pname,price from products join pprice using (product_id) where pname like 'r%';
+select pname,price from products join pprice using (product_id) where pname like '%r%'; 
  
  
  #SP

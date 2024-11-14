@@ -250,12 +250,69 @@ AND (SELECT city FROM customer_01 WHERE cname = 'Anil') = (SELECT city FROM cust
 
 #18
 DELETE FROM borrow_01
-WHERE bname IN (SELECT bname FROM deposit_01 GROUP BY bname HAVING COUNT(cname) = (SELECT MIN(depositor_count) FROM (SELECT COUNT(cname) AS depositor_count FROM deposit_01 GROUP BY bname) AS counts));
+WHERE bname IN (
+SELECT bname FROM deposit_01 GROUP BY bname HAVING COUNT(cname) = (SELECT MIN(depositor_count)
+ FROM (SELECT COUNT(cname)
+ AS depositor_count 
+ FROM 
+ deposit_01 GROUP BY bname) 
+ AS counts)
+);
 
 #19
 SELECT DISTINCT d.cname
 FROM deposit_01 d
 JOIN borrow_01 b ON d.cname = b.cname;
+
+#20
+SELECT d.cname
+FROM deposit_01 d
+JOIN borrow_01 b ON d.cname = b.cname
+;
+
+#21
+select d.cname from deposit_01 d
+JOIN customer_01 c ON d.cname = c.cname
+JOIN branch_01 b ON d.bname = b.bname
+WHERE c.city = (SELECT city FROM customer_01 WHERE cname = 'Sunil')
+AND b.city = (SELECT city FROM branch_01 WHERE bname = (SELECT bname FROM deposit_01 WHERE cname = 'Anil'))
+;
+
+#22
+SELECT d.cname
+FROM deposit_01 d
+JOIN customer_01 c ON d.cname = c.cname
+WHERE d.amount < 5000 AND c.city = (SELECT city FROM customer_01 WHERE cname = 'Shivani');
+
+#23
+SELECT DISTINCT d.cname
+FROM deposit_01 d
+JOIN customer_01 c ON d.cname = c.cname
+JOIN branch_01 b ON d.bname = b.bname
+WHERE c.city = 'Mumbai' AND b.city = (SELECT city FROM branch_01 WHERE bname = (SELECT bname FROM deposit_01 WHERE cname = 'Sandip'));
+
+#24
+SELECT bname
+FROM deposit_01
+GROUP BY bname;
+
+#25
+UPDATE deposit_01 d
+JOIN (SELECT bname, AVG(amount) AS avg_amount FROM deposit_01 GROUP BY bname) a ON d.bname = a.bname
+SET d.amount = d.amount + 100
+WHERE d.amount > a.avg_amount;
+
+#26
+SELECT cname
+FROM deposit_01
+ORDER BY amount DESC
+LIMIT 1 OFFSET 2;
+
+#27
+SELECT *
+FROM deposit_01
+ORDER BY cname ASC;
+
 
 
 
