@@ -1,10 +1,9 @@
 .form-container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
+  max-width: 600px;
+  margin: 20 auto;
+  padding: 50px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   position: absolute;
   top: 50%;
@@ -38,7 +37,7 @@ button {
   padding: 10px 15px;
   margin-right: 10px;
   border: none;
-  background-color: #007bff;
+  background-color: rgb(61, 183, 61);
   color: #fff;
   cursor: pointer;
   border-radius: 4px;
@@ -54,7 +53,11 @@ button[type="button"] {
 }
 
 .success-message {
-  color: green;
+  background: rgb(61, 183, 61);
+  height: 30px;
+  border-radius: 5px;
+  text-align: center;
+  place-content: center;
   font-size: 1em;
   text-align: center;
   margin-bottom: 10px;

@@ -110,10 +110,12 @@ const Form = () => {
           {errors.password && <span className="error">{errors.password}</span>}
         </div>
 
-        <button type="submit">Submit</button>
-        <button type="button" onClick={handleReset}>
-          Reset
-        </button>
+        <div style={{ textAlign: "center" }}>
+          <button type="submit">Submit</button>
+          <button type="button" onClick={handleReset}>
+            Reset
+          </button>
+        </div>
       </form>
     </div>
   );

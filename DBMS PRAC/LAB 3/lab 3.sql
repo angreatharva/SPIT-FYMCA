@@ -145,10 +145,10 @@ ON d.cname = c.cname;
 #4
 SELECT d.cname
 FROM deposit_01 d
-JOIN (SELECT DISTINCT bname FROM deposit_01 WHERE cname = 'Sunil') s 
+JOIN (SELECT DISTINCT bname FROM deposit_01 WHERE cname = 'sunil') s 
 ON d.bname = s.bname 
 group BY d.cname
-HAVING COUNT(DISTINCT d.bname) = (SELECT COUNT(DISTINCT bname) FROM deposit_01 WHERE cname = 'Sunil');
+HAVING COUNT(DISTINCT d.bname) = (SELECT COUNT(DISTINCT bname) FROM deposit_01 WHERE cname = 'sunil');
 
 #5
 SELECT d.cname
