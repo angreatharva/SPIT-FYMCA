@@ -64,9 +64,11 @@ public:
             case 9:
                 reverse();
                 break;
-
             case 10:
                 display();
+                break;
+            case 11:
+                Search();
                 break;
 
             default:
@@ -188,17 +190,19 @@ public:
         cin >> target;
 
         q = list;
-        while (q != NULL && r->data != target)
+        while (q != NULL && q->data != target)
         {
-            r = q;
             q = q->next;
         }
 
         if (q != NULL)
         {
-            p = (struct node *)malloc(sizeof(node));
+
+            p = new node;
             cout << "Enter the element you want to insert: ";
             cin >> key;
+
+            p->data = key;
 
             p->prev = q;
             p->next = q->next;
@@ -359,6 +363,36 @@ public:
         if (temp != NULL)
         {
             list = temp->prev;
+        }
+    }
+
+    void Search()
+    {
+        if (list == NULL) // Check if the list is empty
+        {
+            cout << "List is Empty" << endl;
+        }
+        else
+        {
+            cout << "Enter the Element you want to Search" << endl;
+            cin >> target;
+
+            // Traverse the list from head to tail
+            q = list;
+            int i = 0;
+            while (q != NULL) // Traverse until the node is NULL
+            {
+                if (q->data == target)
+                {
+                    cout << "Element Found at " << i << "th Index" << endl;
+                    return;
+                }
+                q = q->next;
+                i++;
+            }
+
+            // If element is not found
+            cout << "Element not found!" << endl;
         }
     }
 

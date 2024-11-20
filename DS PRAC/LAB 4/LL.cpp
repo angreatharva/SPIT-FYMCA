@@ -353,7 +353,7 @@ public:
         }
         else
         {
-            cout << "Enter the Element before which you want to Search" << endl;
+            cout << "Enter the Element you want to Search" << endl;
             cin >> target;
             if (list->data == target)
             {
@@ -362,13 +362,15 @@ public:
             }
 
             q = list;
+            int i = 0;
             while (q != NULL && q->data != target)
             {
                 q = q->next;
+                i++;
             }
             if (q != NULL && q->data == target)
             {
-                cout << "Element Found at nth Index";
+                cout << "Element Found at " << i << "th Index";
             }
             else
             {

@@ -58,14 +58,16 @@ public:
                 deleteAParticularElement();
                 break;
             case 8:
-                // sortLinkedList();
+                sortLinkedList();
                 break;
             case 9:
-                // reverse();
+                reverse();
                 break;
-
             case 10:
                 display();
+                break;
+            case 11:
+                Search();
                 break;
 
             default:
@@ -278,6 +280,91 @@ public:
         }
         else
         {
+            cout << "Element not found!" << endl;
+        }
+    }
+
+    void sortLinkedList()
+    {
+        if (list == NULL)
+        {
+            cout << "Linked List is Empty" << endl;
+            return;
+        }
+
+        q = list;
+        do
+        {
+            r = q->next;
+            while (r != list)
+            {
+                if (q->data > r->data)
+                {
+                    int temp = q->data;
+                    q->data = r->data;
+                    r->data = temp;
+                }
+                r = r->next;
+            }
+            q = q->next;
+        } while (q != list);
+
+        cout << "The Sorted Linked List is :" << endl;
+        display();
+    }
+
+    void reverse()
+    {
+        if (list == NULL)
+        {
+            cout << "Linked List is Empty" << endl;
+            return;
+        }
+
+        q = list;
+        p = NULL;
+        r = NULL;
+
+        do
+        {
+            r = q->next;
+            q->next = p;
+            p = q;
+            q = r;
+        } while (q != list);
+
+        list->next = p;
+
+        list = p;
+        cout << "The Reversed Linked List is :" << endl;
+        display();
+    }
+
+    void Search()
+    {
+        if (list == NULL)
+        {
+            cout << "List is Empty" << endl;
+        }
+        else
+        {
+            cout << "Enter the Element you want to Search: ";
+            cin >> target;
+
+            q = list;
+            int i = 0;
+
+            do
+            {
+                if (q->data == target)
+                {
+                    cout << "Element Found at " << i << "th Index" << endl;
+                    return;
+                }
+                q = q->next;
+                i++;
+            } while (q != list);
+
             cout << "Element not found!" << endl;
         }
     }
