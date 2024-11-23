@@ -40,7 +40,7 @@ public class Maze {
                     g.setColor(Color.BLUE); // Wall color
                     g.fillRect(col * 20, row * 20, 20, 20); // Scale by 20 for visualization
                 } else {
-                    g.setColor(Color.BLACK); // Path color
+                    g.setColor(Color.BLACK); // Empty space
                     g.fillRect(col * 20, row * 20, 20, 20);
                 }
             }
@@ -48,9 +48,9 @@ public class Maze {
     }
 
     public boolean isWall(int x, int y) {
-        // Check bounds and if position is a wall
-        if (x < 0 || y < 0 || x >= layout[0].length || y >= layout.length) {
-            return true; // Treat out-of-bounds as wall
+        // Bounds checking to prevent array out-of-bounds errors
+        if (y < 0 || y >= layout.length || x < 0 || x >= layout[0].length) {
+            return true;
         }
         return layout[y][x] == 1;
     }

@@ -209,8 +209,15 @@ from (
 ) as customer_in_same_city;
 
 #12
-update customer_01 set city = 'nagpur' where cname in (select cname from borrow_01 where bname = 'verce' );
-select * from customer_01;
+update customer_01
+set city = 'nagpur'
+where cname in (
+    select b.cname
+    from borrow_01 b
+    join branch_01 br on b.bname = br.bname
+    where br.bname = 'vrce'
+); 
+
 
 #13
 update deposit_01
@@ -230,6 +237,24 @@ join deposit_01 s on a.bname = s.bname
 set a.amount = a.amount - 100,s.amount = s.amount +100
 where a.cname = 'anil' and s.cname = 'sunil';
 
+update deposit_01
+set amount = 
+    case 
+        when cname = 'anil' then amount - 100
+        when cname = 'sunil' then amount + 100
+    end
+where cname in ('anil', 'sunil')
+and bname = (
+    select bname 
+    from (select bname from deposit_01 where cname = 'anil') as temp_anil
+)
+and bname = (
+    select bname 
+    from (select bname from deposit_01 where cname = 'sunil') as temp_sunil
+);
+
+
+
 #15
 update deposit_01 d
 join (select bname, max(amount) as max_amount from deposit_01 group by bname) m on d.bname = m.bname and d.amount = m.max_amount
@@ -245,31 +270,56 @@ where c.city = 'nagpur'
 );
 
 #17
-	delete from deposit_01
-	where cname in ('anil', 'sunil')
-	and (select city from customer_01 where cname = 'anil') = (select city from customer_01 where cname = 'sunil');
+delete d
+from deposit_01 d
+join customer_01 c1 on d.cname = c1.cname
+where d.cname in ('anil', 'sunil')
+and (
+    select count(distinct c2.city)
+    from customer_01 c2
+    where c2.cname in ('anil', 'sunil')
+) = 1;
+
+
 
 #18
-delete from borrow_01
-where bname in (
-select bname from deposit_01 group by bname having count(cname) = (select min(depositor_count)
- from (select count(cname)
- as depositor_count 
- from 
- deposit_01 group by bname) 
- as counts)
-);
+delete b
+from borrow_01 b
+join (
+    select d.bname
+    from deposit_01 d
+    group by d.bname
+    having count(d.cname) = (
+        select min(depositor_count)
+        from (
+            select count(cname) as depositor_count
+            from deposit_01
+            group by bname
+        ) as counts
+    )
+) as branches_with_min on b.bname = branches_with_min.bname;
+
 
 #19
 select distinct d.cname
 from deposit_01 d
-join borrow_01 b on d.cname = b.cname;
+join borrow_01 b on d.cname = b.cname
+where d.cname in (
+    select cname
+    from borrow_01
+);
+
+
 
 #20
 select d.cname
 from deposit_01 d
-join borrow_01 b on d.cname = b.cname
-;
+left join borrow_01 b on d.cname = b.cname
+where b.cname is null
+and d.cname not in (
+    select cname
+    from borrow_01
+);
 
 #21
 select d.cname from deposit_01 d
@@ -293,9 +343,15 @@ join branch_01 b on d.bname = b.bname
 where c.city = 'mumbai' and b.city = (select city from branch_01 where bname = (select bname from deposit_01 where cname = 'sandip'));
 
 #24
-select bname
-from deposit_01
-group by bname;
+select br.bname, 
+       (select sum(d.amount) 
+        from deposit_01 d 
+        where d.bname = br.bname) as total_deposit
+from branch_01 br
+join deposit_01 d on br.bname = d.bname
+group by br.bname;
+
+
 
 #25
 update deposit_01 d
@@ -304,21 +360,45 @@ set d.amount = d.amount + 100
 where d.amount > a.avg_amount;
 
 #26
-select cname
-from deposit_01
-order by amount desc
-limit 1 offset 2;
+
+select distinct d1.cname, d1.amount 
+from deposit_01 d1 
+join deposit_01 d2 
+on (d1.amount < d2.amount) or 
+   (d1.amount = d2.amount and d1.cname < d2.cname)
+group by d1.cname, d1.amount
+having count(*) = 2
+order by d1.amount desc;
+
+#sq
+SELECT cname
+FROM deposit_01 d1
+WHERE (
+    SELECT COUNT(*)
+    FROM deposit_01 d2
+    WHERE d2.amount > d1.amount 
+    OR (d2.amount = d1.amount AND d2.cname > d1.cname)
+) = 2;
+
+
 
 #27
-select *
-from deposit_01
-order by cname asc;
+
+select d.*
+from deposit_01 d
+join (
+    select cname 
+    from customer_01 
+    order by cname asc
+) as sorted_customers on d.cname = sorted_customers.cname;
+
+
 
 
 
 
 select * from customer_01;
 select * from branch_01;
-select * from deposit_01;
+select * from deposit_01 order by amount desc;
 select * from borrow_01;
 
