@@ -82,7 +82,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
             // Move all ghosts
             for (Ghost ghost : ghosts) {
-                ghost.move(maze);
+                ghost.move(maze, pacman); // Pass pacman instance
             }
 
             // Check for pellet collection

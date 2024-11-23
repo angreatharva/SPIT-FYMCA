@@ -13,7 +13,7 @@ const Form = () => {
 
   // Validate email format
   const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     return emailRegex.test(email);
   };
 
@@ -91,7 +91,7 @@ const Form = () => {
         <div className="form-field">
           <label>Email</label>
           <input
-            type="email"
+            type="text"
             name="email"
             value={formData.email}
             onChange={handleChange}
