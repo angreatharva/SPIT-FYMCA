@@ -20,7 +20,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public GamePanel() {
         maze = new Maze();
-        pacman = new Pacman(1, 1); // Starting position for Pacman
+        pacman = new Pacman(1, 1);
 
         // Initialize ghosts with different colors and positions
         ghosts = new ArrayList<>();
@@ -35,7 +35,11 @@ public class GamePanel extends JPanel implements ActionListener {
         gameOver = false;
         collisionOccurred = false;
 
-        timer = new Timer(100, this);
+        // Get timer interval based on ghost speed setting
+        int ghostSpeed = (int) GameSettings.getSetting("ghostSpeed");
+        int timerDelay = 100 - (ghostSpeed - 1) * 15; // Adjust timer based on speed (85ms to 25ms)
+
+        timer = new Timer(timerDelay, this);
         timer.start();
 
         addKeyListener(new KeyAdapter() {

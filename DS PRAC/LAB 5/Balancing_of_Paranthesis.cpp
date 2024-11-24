@@ -1,20 +1,40 @@
 #include <iostream>
 #include <stack>
-#define max 100
+#include <iomanip>
 using namespace std;
 
-string exp;
-class BalancingParanthesis
+class BalancingParenthesis
 {
+private:
+    string exp;
+    int step = 1;
+
+    string getStackContents(stack<char> st)
+    {
+        string contents;
+        while (!st.empty())
+        {
+            contents = st.top() + contents;
+            st.pop();
+        }
+        return contents;
+    }
+
 public:
     void input()
     {
         cout << "Enter the Expression: ";
         cin >> exp;
     }
+
     void calculation()
     {
         stack<char> st;
+
+        cout << setw(10) << "Symbol"
+             << setw(25) << "Stack Contents"
+             << endl;
+        cout << string(40, '-') << endl;
 
         for (char ch : exp)
         {
@@ -24,29 +44,36 @@ public:
             }
             else if (ch == ')')
             {
-                st.push(ch);
-                if (!st.empty())
+                if (!st.empty() && st.top() == '(')
                 {
                     st.pop();
-                    st.pop();
+                }
+                else
+                {
+                    st.push(ch);
                 }
             }
+
+            cout << setw(10) << ch
+                 << setw(25) << getStackContents(st)
+                 << endl;
         }
 
+        cout << string(40, '-') << endl;
         if (st.empty())
         {
-            cout << "Expression has balanced Parenthesis";
+            cout << "Expression has balanced parentheses.\n";
         }
         else
         {
-            cout << "Expression does not has balanced Parenthesis";
+            cout << "Expression does not have balanced parentheses.\n";
         }
     }
 };
 
 int main()
 {
-    BalancingParanthesis bp;
+    BalancingParenthesis bp;
     bp.input();
     bp.calculation();
     return 0;
