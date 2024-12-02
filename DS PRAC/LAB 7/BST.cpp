@@ -11,7 +11,7 @@ struct node
     struct node *next;
 }
     *list = NULL,
-    *p, *q, *r, *s, *temp, *root = NULL, *current, *parent;
+    *p, *q, *r, *s, *temp, *root = NULL, *current, *parent, *stack[max];
 
 class BST
 {
@@ -56,7 +56,6 @@ public:
             return;
         }
 
-        struct node *stack[max];
         int top = -1;
         current = root;
 

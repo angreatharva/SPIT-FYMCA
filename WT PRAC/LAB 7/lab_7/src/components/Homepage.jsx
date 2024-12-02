@@ -202,7 +202,7 @@ const HomePage = () => {
                 descSmall: "Men's Road Running Shoes",
               },
               {
-                // id: 9,
+                id: 9,
                 name: "Nike Pegasus 41 Premium",
                 price: 12795,
                 img: shoe7,
