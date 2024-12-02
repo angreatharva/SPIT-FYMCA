@@ -1,8 +1,8 @@
 #include <iostream>
-#define max 100
+#define MAX 100
 using namespace std;
 
-int i = 0, n, ch, queue[max], key, front = -1, rear = -1;
+int front = -1, rear = -1, n, queue[MAX];
 
 class CircularQueue
 {
@@ -11,11 +11,11 @@ public:
     {
         cout << "Enter the size of the Queue: ";
         cin >> n;
-        queue[n];
     }
 
     void menu()
     {
+        int ch;
         do
         {
             cout << endl
@@ -43,7 +43,7 @@ public:
             case 4:
                 break;
             default:
-                cout << "Enter proper Option." << endl;
+                cout << "Enter a proper option." << endl;
                 break;
             }
         } while (ch != 4);
@@ -51,62 +51,66 @@ public:
 
     void enqueue()
     {
-
-        if ((front == 0 && rear == n - 1) || (front == rear + 1))
+        if ((rear + 1) % n == front)
         {
-            cout << "Queue Overflow.!!" << endl;
+            cout << "Queue Overflow!" << endl;
+            return;
         }
-        else
-        {
-            cout << "Enter the Element you want to store in Queue: ";
-            cin >> key;
 
-            if (front == -1)
-                front = 0;
+        int key;
+        cout << "Enter the element you want to store in the queue: ";
+        cin >> key;
 
-            if (rear == n - 1)
-            {
-                rear == (rear + 1) % n;
-                if (front != 0)
-                {
-                    queue[rear] = key;
-                    rear++;
-                }
-            }
-            else
-            {
-                rear++;
-                queue[rear] = key;
-            }
-        }
+        if (front == -1)
+            front = 0; // Initialize front when inserting the first element.
+
+        rear = (rear + 1) % n; // Circular increment.
+        queue[rear] = key;
+
         display();
     }
 
     void dequeue()
     {
-        if (front > rear)
+        if (front == -1)
         {
-            cout << "Queue Underflow.!!" << endl;
+            cout << "Queue Underflow!" << endl;
+            return;
+        }
+
+        cout << "Dequeued element: " << queue[front] << endl;
+
+        if (front == rear)
+        {
+            // Queue becomes empty.
+            front = rear = -1;
         }
         else
         {
-            front += 1;
+            front = (front + 1) % n; // Circular increment.
         }
+
         display();
     }
 
     void display()
     {
-        if (rear == -1 && front == 0)
+        if (front == -1)
         {
             cout << "Queue is empty." << endl;
             return;
         }
-        cout << endl
-             << "Displaying Queue" << endl;
-        for (int i = front; i < n; i++)
+
+        cout << "Queue elements: ";
+        int i = front;
+        while (true)
         {
             cout << queue[i] << " ";
+            if (i == rear)
+                break;
+            i = (i + 1) % n; // Circular increment.
+
+            cout << endl;
         }
     }
 };

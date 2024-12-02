@@ -76,20 +76,25 @@ public:
         else
         {
             front += 1;
+            if (front > rear)
+            {
+                front = 0;
+                rear = -1;
+            }
         }
         display();
     }
 
     void display()
     {
-        if (rear == -1 && front == 0)
+        if (front > rear)
         {
             cout << "Queue is empty." << endl;
             return;
         }
         cout << endl
              << "Displaying Queue" << endl;
-        for (int i = front; i < n; i++)
+        for (int i = front; i <= rear; i++)
         {
             cout << queue[i] << " ";
         }
