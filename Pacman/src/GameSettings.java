@@ -8,7 +8,7 @@ public class GameSettings {
     }
 
     public static void initialize() {
-        settings.put("difficulty", "medium");
+        settings.put("difficulty", "easy");
         settings.put("ghostSpeed", 1);
         settings.put("pelletPoints", 10);
         settings.put("usePathfinding", true);

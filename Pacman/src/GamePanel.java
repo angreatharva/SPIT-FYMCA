@@ -119,10 +119,43 @@ public class GamePanel extends JPanel implements ActionListener {
     private void gameOver() {
         timer.stop();
         gameOver = true;
-        JOptionPane.showMessageDialog(this,
-                "Game Over!\nFinal Score: " + score,
+
+        // Create custom dialog with Restart option
+        int option = JOptionPane.showOptionDialog(
+                this,
+                "Game Over!\nFinal Score: " + score + "\nWould you like to restart?",
                 "Game Over",
-                JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                new Object[]{"Restart", "Exit"}, // Custom button labels
+                "Restart" // Default selection
+        );
+
+        if (option == JOptionPane.YES_OPTION) {
+            restartGame();
+        } else {
+            System.exit(0); // Exit the application if "Exit" is chosen
+        }
+    }
+
+    private void restartGame() {
+        // Reset game state
+        score = 0;
+        pacman = new Pacman(1, 1);
+        ghosts.clear();
+        ghosts.add(new Ghost(13, 11, Color.RED));
+        ghosts.add(new Ghost(14, 11, Color.PINK));
+        ghosts.add(new Ghost(13, 14, Color.CYAN));
+        ghosts.add(new Ghost(14, 14, Color.ORANGE));
+        pellets.clear();
+        initializePellets();
+        gameOver = false;
+        collisionOccurred = false;
+
+        // Restart the timer
+        timer.start();
+        repaint();
     }
 
     @Override
