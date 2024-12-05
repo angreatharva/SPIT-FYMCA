@@ -11,7 +11,7 @@ struct node
     struct node *next;
 }
     *list = NULL,
-    *p, *q, *r, *s, *temp, *root = NULL, *current, *parent, *stack[max];
+    *p, *q, *r, *s, *temp, *root = NULL, *current, *parent, *lastVisited, *peekNode, *stack[max];
 
 class BST
 {
@@ -26,6 +26,7 @@ public:
             cout << "1) InOrder" << endl;
             cout << "2) PreOrder" << endl;
             cout << "3) PostOrder" << endl;
+            cout << "4) Exit" << endl;
 
             cin >> ch;
 
@@ -74,14 +75,67 @@ public:
         cout << endl;
     }
 
-    void
-    PreOrder()
+    void PreOrder()
     {
+        if (root == NULL)
+        {
+            cout << "Tree is empty!" << endl;
+            return;
+        }
+
+        int top = -1;
+        stack[++top] = root;
+
+        while (top != -1)
+        {
+            current = stack[top--];
+            cout << current->data << " ";
+
+            if (current->next != NULL)
+                stack[++top] = current->next;
+            if (current->prev != NULL)
+                stack[++top] = current->prev;
+        }
+        cout << endl;
     }
 
-    void
-    PostOrder()
+    void PostOrder()
     {
+        if (root == NULL)
+        {
+            cout << "Tree is empty!" << endl;
+            return;
+        }
+
+        int top = -1;
+        lastVisited = NULL;
+        current = root;
+
+        while (current != NULL || top != -1)
+        {
+            if (current != NULL)
+            {
+                stack[++top] = current;  // Push the current node
+                current = current->prev; // Move to the left child
+            }
+            else
+            {
+                peekNode = stack[top]; // Peek the top node of the stack
+
+                // If the right child exists and has not been visited yet
+                if (peekNode->next != NULL && lastVisited != peekNode->next)
+                {
+                    current = peekNode->next; // Move to the right child
+                }
+                else
+                {
+                    // Visit the node
+                    cout << peekNode->data << " ";
+                    lastVisited = stack[top--]; // Pop the stack
+                }
+            }
+        }
+        cout << endl;
     }
 
     void input()

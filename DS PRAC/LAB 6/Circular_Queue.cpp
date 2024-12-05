@@ -101,7 +101,7 @@ public:
             return;
         }
 
-        cout << "Queue elements: ";
+        cout << "Queue elements: " << endl;
         int i = front;
         while (true)
         {

@@ -75,7 +75,7 @@ public:
         }
         else
         {
-            front += 1;
+            front++;
             if (front > rear)
             {
                 front = 0;
