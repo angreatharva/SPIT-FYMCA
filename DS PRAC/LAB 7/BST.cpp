@@ -41,6 +41,8 @@ public:
             case 3:
                 PostOrder();
                 break;
+            case 4:
+                break;
 
             default:
                 cout << "Enter proper value." << endl;

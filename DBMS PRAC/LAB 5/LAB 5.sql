@@ -13,13 +13,14 @@ insert into emp value
 
 select * from emp;
 
+create table emp_audit(Name varchar(50),audit_description varchar(500));
+
 insert into emp value
 ('Adam','Tester','2020-10-15',-20);
 
 
 
 
-create table emp_audit(Name varchar(50),audit_description varchar(500));
 
 insert into emp value
 ('Om','Manager','2020-08-15',15);
@@ -40,11 +41,13 @@ set SQL_SAFE_UPDATES = 0;
 delete from emp where Name = 'Adam';
 select * from  Emp_archeives;
 
-
+drop table Total_working_hours_table;
 create table Total_working_hours_table (Total int);
 
-insert into Total_working_hours_table values (0);
+insert into Total_working_hours_table values (43);
+select * from Total_working_hours_table;
 
+delete from emp where Name = 'Harsh';
 
 
 
