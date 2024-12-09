@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Sign In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gruppo&display=swap" rel="stylesheet">
+    <!-- CSS Styles -->
+    <style>
+        /* Global styles */
+        * {
+            color: #fff; 
+           }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, navy, #b24eff); /* Gradient background */
+            height: 100vh; /* Full height of the viewport */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Container for the sign-in form */
+        .signin-container {
+            background-color: transparent;
+            border: 1px solid #fff;
+            padding: 20px;
+            text-align: center;
+            width: 300px; /* Reduced width for portrait style */
+        }
+
+        .signin-container h2 {
+            text-align: center;
+            background-color: transparent;
+            color: #fff;
+            margin-bottom: 20px; /* Increased margin-bottom for spacing */
+        }
+
+        /* Input group styles */
+        .input-group {
+            margin-bottom: 15px;
+            display: flex; /* Flexbox layout for input elements */
+            align-items: center; /* Align items vertically */
+            flex-direction: column; /* Arrange items in a column */
+        }
+
+        /* Input and select styles */
+        .input-group input[type="email"],
+        .input-group input[type="password"] {
+            width: 100%; /* Make inputs full width */
+            padding: 10px;
+            background-color: transparent; /* Transparent background */
+            border: 1px solid #fff; /* White border */
+            color: #fff; /* Text color white */
+            margin-bottom: 10px; /* Add margin-bottom for spacing */
+        }
+
+        .input-group input::placeholder {
+            color: #fff; /* White placeholder text */
+        }
+
+        /* Submit button styles */
+        .btn {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #fff;
+            background-color: transparent;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color:  #b24eff;
+        }
+
+        /* Link styles */
+        .signin-container p {
+            color: #fff; /* White text color */
+            margin-top: 15px; /* Increased margin-top for spacing */
+        }
+
+        .signin-container a {
+            color: #fff; /* White text color */
+            text-decoration: none; /* Remove underline */
+            font-weight: bold; /* Make the text bold */
+        }
+    </style>
+</head>
+<body>
+<!-- Sign-in form container -->
+<div class="signin-container">
+    <!-- Sign-in form header -->
+    <h2>Patient Sign In</h2>
+    <!-- Sign-in form -->
+    <form action="/patientlogin" method="POST">
+        <!-- Input group for email -->
+        <div class="input-group">
+            <input type="email" name="email" placeholder="Email" required>
+        </div>
+        <!-- Input group for password -->
+        <div class="input-group">
+            <input type="password" name="password" placeholder="Password" required>
+        </div>
+        <!-- Submit button -->
+        <button type="submit" class="btn">Sign In</button>
+        <!-- Already have an account? Sign in -->
+        <p>Don't have an account? <a href="/patientregister">Sign up</a></p>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin</title>
+  <style>
+  /* Reset default browser styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+    body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .dashboard {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+  }
+  .info {width: 100%}
+  .sidebar {
+    width: 200px;
+    height: auto;
+    background-color: #2b87ff;
+    color: #fff;
+  }
+  
+  .sidebar ul li  {
+    height: 50px;
+    border-bottom: 1px solid #fffdfd; /* Add border to separate navigation items */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .sidebar ul li a {
+    text-decoration: none;
+    color: #fff;
+  }
+  
+  .content {
+    flex: 1;
+    padding: 50px;
+  }
+ ul{
+    padding: 20px;
+ }
+  
+  h2 {
+    color: #333;
+  }
+  
+      </style>
+</head>
+<body>
+    
+  <div class="dashboard">
+    <nav class="sidebar">
+      <ul >
+        <li><h3>Admin</h3></li>
+        <li><a href="/adamarjumand">Registered Users</a></li>
+        <li><a href="/doctor">Registered Doctors</a></li>
+        <li><a href="/deletedoctor">Doctor Requests</a></li>
+      </ul>
+    </nav>
+  <ul class="info">
+    <% doctors.forEach(doctor => { %>
+      <ui>
+        <strong>Name:</strong> <%= doctor.name %> <br>
+        <strong>Email:</strong> <%= doctor.email %> <br>
+        <strong>Phone:</strong> <%= doctor.phone %> <br>
+        <strong>Degree Name:</strong> <%= doctor.degreeName %> <br>
+        <strong>Age:</strong> <%= doctor.age %> <br>
+        <strong>Gender:</strong> <%= doctor.gender %> <br>
+        <strong>Experience (Years):</strong> <%= doctor.experienceInYears %> <br>
+        <strong>Degree:</strong> <%= doctor.degree %> <br>
+        <strong>Status:</strong> <%= doctor.status %> <br>
+        <hr>
+      </ui>
+    <% }); %>
+   
+  </ul>
+</body>
+</html>

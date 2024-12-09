@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+  <title>Appointment</title>
+  <meta content="" name="description" />
+  <meta content="" name="keywords" />
+
+  <!-- Favicons -->
+  <link href=" /home/assets/img/favicon.png" rel="icon" />
+  <link href=" /home/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Vendor CSS Files -->
+  <link href=" /home/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href=" /home/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href=" /home/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link href=" /home/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href=" /home/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href=" /home/assets/vendor/aos/aos.css" rel="stylesheet" />
+
+  <!-- Template Main CSS Files -->
+  <link href=" /home/assets/css/variables.css" rel="stylesheet" />
+  <link href=" /home/assets/css/blogstyle.css" rel="stylesheet" />
+  <link href=" /home/assets/css/style.css" rel="stylesheet" />
+
+
+</head>
+
+<body>
+  <!-- ======= Top Bar ======= -->
+  <div id="topbar" class="d-flex align-items-center fixed-top">
+    <div class="container d-flex justify-content-between">
+      <div class="contact-info d-flex align-items-center">
+        <i class="bi bi-envelope"></i> <a href="mailto:contact@example.com">MindSensei@gamil.com</a>
+        <i class="bi bi-phone"></i> 002 9909 777
+      </div>
+      <div class="d-none d-lg-flex social-links align-items-center">
+        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo me-auto"><a href="index ">MindSensei</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index " class="logo me-auto"><img src=" /home/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a class="nav-link scrollto active" href="index ">Home</a></li>
+          <li><a class="nav-link scrollto" href="about ">About</a></li>
+          <li><a class="nav-link scrollto" href="Servies ">Services</a></li>
+
+          <li><a class="nav-link scrollto" href="#doctors">Doctors</a></li>
+          <li><a class="nav-link scrollto" href="indexblog ">Blogs</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+      <div>
+        <a href="#registration" class="registration-btn scrollto">Registration</a>
+        <a href="#login" class="login-btn scrollto">Login</a>
+      </div>
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+    <section id="appointment" class="appointment section-bg">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Make an Appointment</h2>
+          <p>Invest in your mental well-being and reclaim your inner strength. Secure your appointment and embrace the transformative power of therapy.</p>
+        </div>
+
+        <form action="forms/appointment.php" method="post" role="form" class="php-email-form">
+          <div class="row">
+            <div class="col-md-4 form-group">
+              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+              <div class="validate"></div>
+            </div>
+            <div class="col-md-4 form-group mt-3 mt-md-0">
+              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+              <div class="validate"></div>
+            </div>
+            <div class="col-md-4 form-group mt-3 mt-md-0">
+              <input type="tel" class="form-control" name="phone" id="phone" placeholder="Your Phone" required>
+              <div class="validate"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 form-group mt-3">
+              <input type="date" name="date" class="form-control" id="date" placeholder="Appointment Date" required>
+              <div class="validate"></div>
+            </div>
+            <div class="col-md-4 form-group mt-3">
+              <input type="time" name="time" class="form-control" id="time" placeholder="Appointment Time" required>
+              <div class="validate"></div>
+            </div>
+            <div class="col-md-4 form-group mt-3">
+              <input type="number" name="age" class="form-control" id="age" placeholder="Your Age" required>
+              <div class="validate"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 form-group mt-3">
+              <select name="gender" id="gender" class="form-select" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+              <div class="validate"></div>
+            </div>
+            <div class="col-md-4 form-group mt-3">
+              <select name="therapy" id="therapy" class="form-select" required>
+                <option value="">Select Therapy</option>
+                <option value="Child, Teen, Family Therapy">Child, Teen, Family Therapy</option>
+                <option value="Couples Therapy">Couples Therapy</option>
+                <option value="Stress Therapy">Stress Therapy</option>
+                <option value="Anxiety & Depression Therapy">Anxiety & Depression Therapy</option>
+                <option value="Fear & Phobias Therapy">Fear & Phobias Therapy</option>
+                <option value="Psychedelic-Assisted Therapy">Psychedelic-Assisted Therapy</option>
+                <option value="EMDR Therapy">EMDR Therapy</option>
+                <option value="Personal Growth Therapy">Personal Growth Therapy</option>
+              </select>
+              <!-- Add more therapy options here -->
+              <div class="validate"></div>
+            </div>
+            <div class="col-md-4 form-group mt-3">
+              <select name="doctor" id="doctor" class="form-select" required>
+                <option value="">Select Doctor</option>
+                <option value="Dr. Evelyn Morgan">Dr. Evelyn Morgan</option>
+                <option value="Dr. Maya Patel">Dr. Maya Patel</option>
+                <option value="Dr. Jonathan Hayes">Dr. Jonathan Hayes</option>
+                <option value="Dr. Emily Chang">Dr. Emily Chang</option>
+                <!-- Add more doctor options here -->
+              </select>
+              <div class="validate"></div>
+            </div>
+          </div>
+          <div class="form-group mt-3">
+            <textarea class="form-control" name="message" rows="5" placeholder="Message (Optional)"></textarea>
+            <div class="validate"></div>
+          </div>
+          <div class="mb-3">
+            <div class="loading">Loading</div>
+            <div class="error-message"></div>
+            <div class="sent-message">Your appointment request has been sent successfully. Thank you!</div>
+          </div>
+          <div class="text-center"><button type="submit">Make an Appointment</button></div>
+
+    </section><!-- End Appointment Section -->
+  </main>
+  <!-- End #main -->
+
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6 footer-contact">
+            <h3>MindSensei</h3>
+            <p>
+              A108 Adam Street <br>
+              New York, NY 535022<br>
+              United States <br><br>
+              <strong>Phone:</strong> +1 5589 55488 55<br>
+              <strong>Email:</strong> info@example.com<br>
+            </p>
+          </div>
+
+          <div class="col-lg-2 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Blogs</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Appointment</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>Our Services</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Online Child Therapy</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Online Couple Therapy</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Online Therapy For Stress</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Online Therapy For Depression</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Personal Growth Therapy</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>For Doctors</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">For Regestration</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">For Log in </a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container d-md-flex py-4">
+
+      <div class="me-md-auto text-center text-md-start">
+        <div class="copyright">
+          &copy; Copyright <strong><span>MindSensei</span></strong>. All Rights Reserved
+        </div>
+
+      </div>
+      <div class="social-links text-center text-md-right pt-3 pt-md-0">
+        <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+        <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+        <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+        <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src=" /home/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src=" /home/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src=" /home/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src=" /home/assets/vendor/aos/aos.js"></script>
+  <script src=" /home/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src=" /home/assets/js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Registration Form</title>
+    <!-- CSS Styles -->
+    <style>
+        /* Global styles */
+        * {
+            color: #fff; 
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+           /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif ;/* Set text color to white for all elements */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, navy, #b24eff); /* Gradient background */
+            height: 100vh; /* Full height of the viewport */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Container for the signup form */
+        .signup-container {
+            background-color: transparent;
+            border: 1px solid #fff;
+            padding: 10px;
+            text-align: center;
+            width: 600px;
+        }
+
+        /* Header style */
+        .signup-container h2 {
+            text-align: center;
+            background-color: transparent;
+            color: #fff;
+        }
+
+
+        #age{width: 110px;
+
+        }
+
+        /* Input group styles */
+        .input-group {
+            margin-bottom: 15px;
+            display: flex; /* Flexbox layout for input elements */
+        }
+
+        /* Input and select styles */
+        .input-group input,
+        .input-group select {
+            flex-grow: 1; /* Allow elements to grow and take up equal space */
+            padding: 10px;
+            background-color: transparent; /* Transparent background */
+            border: 1px solid #fff; /* White border */
+            color: #fff; /* Text color white */
+            margin-right: 10px; /* Add margin between elements */
+        }
+
+        /* Label styles */
+        .input-group label {
+            color: #fff; /* White text color */
+            margin-right: 10px; /* Add margin to the right */
+        }
+
+        /* Placeholder styles */
+        .input-group ::placeholder {
+            color: #fff; /* White placeholder text */
+        }       
+
+        #degree_name, #experience,
+        #upload_degree{width: 230px;}
+        #age{width: 100px;}
+        #profile_pic{width: 265px}
+   
+
+
+        /* Checkbox group styles */
+        .checkbox-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        /* Checkbox label styles */
+        .checkbox-group label {
+            color: #fff; /* White text color */
+            margin-right: 10px; /* Add margin to the right */
+        }
+
+        /* Checkbox input styles */
+        .checkbox-group input[type="checkbox"] {
+            display: inline-block;
+            margin-right: 5px; /* Add margin to the right */
+        }
+ /* Button styles */.btn {
+            width: 50%;
+            padding: 10px;
+            border: 1px solid #fff;
+            margin: 0 auto;
+            background-color: transparent;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* Button hover effect */
+        .btn:hover {
+            background-color: #b24eff;
+        }
+     
+
+        /* Responsive layout for smaller screens */
+        @media only screen and (max-width: 600px) {
+            .input-group input,
+            .input-group select {
+                width: 100%; /* Set width to 100% for smaller screens */
+                margin-right: 0; /* Remove margin-right for smaller screens */
+                margin-bottom: 10px; /* Reduce margin-bottom for smaller screens */
+            }
+        }
+        /* Set text color of options to black */
+select option {
+    color: black;
+}
+
+    </style>
+</head>
+<body>
+<!-- Signup form container -->
+<div class="signup-container">
+    <!-- Signup form header -->
+    <h2>Doctor Registration</h2>
+    <!-- Signup form -->
+    <form action="/doctorregister" method="post">
+        <!-- Input group for name and email -->
+        <div class="input-group">
+            <input type="text" name="name" placeholder="First Name" required>
+            <input type="text" name="last_name" placeholder="Last Name" required>
+        </div>
+        <div class="input-group">
+            <input type="number" name="phone" placeholder="Phone" required>
+            <input type="email" name="email" placeholder="Email" required>
+        </div>
+        <!-- Input group for password and confirm password -->
+        <div class="input-group">
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
+        </div>
+        <!-- Input group for age and gender -->
+        <div class="input-group">
+            <input type="number" id="age" name="age" placeholder="Age" required>
+            <select id="gender" name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+       <!-- Input group for degree name and upload degree -->
+<div class="input-group">
+    <input type="text" id="degree_name" name="degreeName" placeholder="Degree Name" required>
+        <input type="number" id="experience" name="experienceInYears" placeholder="Experience (in years)" required>
+   
+</div>
+<!-- Input group for upload degree and profile picture -->
+<div class="input-group" >
+    <label for="pfp">Profile Pic</label>
+    <input type="file" id="profilePic" name="profile_pic" accept="image/*" required>
+    <label for="pfp">Upload Degree</label>
+<input type="file" id="upload_degree" name="degree" accept=".pdf,.doc,.docx" required >
+</div>
+
+<div class="input-group">
+    <label for="pfp"> Your Charges</label>
+    <input type="number" name="fees" placeholder="Fees" required>
+    <label for="pfp">Available Timing</label>
+    <input type="text" name="time" placeholder="Available Timing" required>
+</div>
+
+  <!-- Already have an account? Sign in -->
+  <p>Already have an account? <a href="/doctorsign">Sign in</a></p>
+        <!-- Submit button -->
+        <button type="submit" class="btn">Register</button>
+    </form>
+</div>
+</body>
+</html>

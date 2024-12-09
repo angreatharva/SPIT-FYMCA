@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment</title>
+    <!-- Google Fonts -->
+  <link
+  href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+  rel="stylesheet">
+
+<!-- Vendor CSS Files -->
+<link href="/home/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link href="/home/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+<link href="/home/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/home/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+<link href="/home/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+<link href="/home/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+<link href="/home/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+<link href="/home/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/home/assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <section id="appointment" class="appointment section-bg">
+        <div class="container">
+  
+          <div class="section-title">
+            <h2>Make an Appointment</h2>
+            <p>Invest in your mental well-being and reclaim your inner strength. Secure your appointment and embrace the transformative power of therapy.</p>
+          </div>
+  
+          <form action="/appointment" method="post" role="form" class="php-email-form">
+            <div class="row">
+              <div class="col-md-4 form-group">
+                <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                <div class="validate"></div>
+              </div>
+              <div class="col-md-4 form-group mt-3 mt-md-0">
+                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                <div class="validate"></div>
+              </div>
+              <div class="col-md-4 form-group mt-3 mt-md-0">
+                <input type="tel" class="form-control" name="phone" id="phone" placeholder="Your Phone" required>
+                <div class="validate"></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 form-group mt-3">
+                <input type="date" name="date" class="form-control" id="date" placeholder="Appointment Date" required>
+                <div class="validate"></div>
+              </div>
+              <div class="col-md-4 form-group mt-3">
+                <input type="time" name="time" class="form-control" id="time" placeholder="Appointment Time" required>
+                <div class="validate"></div>
+              </div>
+              <div class="col-md-4 form-group mt-3">
+                <input type="number" name="age" class="form-control" id="age" placeholder="Your Age" required>
+                <div class="validate"></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 form-group mt-3">
+                <select name="gender" id="gender" class="form-select" required>
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+                <div class="validate"></div>
+              </div>
+              <div class="col-md-4 form-group mt-3">
+                <select name="therapy" id="therapy" class="form-select" required>
+                  <option value="">Select Therapy</option>
+                  <option value="Child, Teen, Family Therapy">Child, Teen, Family Therapy</option>
+                  <option value="Couples Therapy">Couples Therapy</option>
+                  <option value="Stress Therapy">Stress Therapy</option>
+                  <option value="Anxiety & Depression Therapy">Anxiety & Depression Therapy</option>
+                  <option value="Fear & Phobias Therapy">Fear & Phobias Therapy</option>
+                  <option value="Psychedelic-Assisted Therapy">Psychedelic-Assisted Therapy</option>
+                  <option value="EMDR Therapy">EMDR Therapy</option>
+                  <option value="Personal Growth Therapy">Personal Growth Therapy</option>
+                </select>
+                <!-- Add more therapy options here -->
+                <div class="validate"></div>
+              </div>
+              <div class="col-md-4 form-group mt-3">
+                <select name="doctor" id="doctor" class="form-select" required>
+                  <option value="">Select Doctor</option>
+                  <option value="Dr. Evelyn Morgan">Dr. Evelyn Morgan</option>
+                  <option value="Dr. Maya Patel">Dr. Maya Patel</option>
+                  <option value="Dr. Jonathan Hayes">Dr. Jonathan Hayes</option>
+                  <option value="Dr. Emily Chang">Dr. Emily Chang</option>
+                  <!-- Add more doctor options here -->
+                </select>
+                <div class="validate"></div>
+              </div>
+            </div>
+            <div class="form-group mt-3">
+              <textarea class="form-control" name="message" rows="5" placeholder="Message (Optional)"></textarea>
+              <div class="validate"></div>
+            </div>
+            <div class="mb-3">
+              <div class="loading">Loading</div>
+              <div class="error-message"></div>
+              <div class="sent-message">Your appointment request has been sent successfully. Thank you!</div>
+            </div>
+            <div class="text-center"><button type="submit">Make an Appointment</button></div>
+  
+      </section><!-- End Appointment Section -->
+  
+</body>
+</html>
