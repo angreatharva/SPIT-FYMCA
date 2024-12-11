@@ -13,8 +13,10 @@ app.use(
   })
 );
 
+app.use(express.static(path.join(__dirname)));
+
 app.get("/", (req, res) => {
-  res.sendFile("D:/SPIT-FYMCA/WT PRAC/LAB 8/API/home.html");
+  res.sendFile(path.join(__dirname, "home.html"));
 });
 
 service.attachService(app);

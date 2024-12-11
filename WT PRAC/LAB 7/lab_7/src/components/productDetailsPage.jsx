@@ -102,7 +102,7 @@ const ProductsDetailsPage = () => {
     },
   ];
 
-  // Find the shoe based on productId
+  // Find the shoe
   const shoe = shoes.find((shoe) => shoe.id.toString() === productId);
 
   console.log("Details");
@@ -111,12 +111,10 @@ const ProductsDetailsPage = () => {
 
   const [selectedSize, setSelectedSize] = useState(null);
 
-  // Function to handle size selection
   const selectSize = (size) => {
     setSelectedSize(size);
   };
 
-  // Function to handle add to bag
   const addToCart = () => {
     if (!selectedSize) {
       alert("Please select a size before adding to the cart!");
@@ -136,11 +134,6 @@ const ProductsDetailsPage = () => {
     localStorage.setItem("cart", JSON.stringify(cart));
     alert(`${shoe.name} (Size: ${selectedSize}) has been added to your cart!`);
   };
-
-  // Function to handle adding to favorites
-  // const addToFavorites = () => {
-  //   alert(`Added ${shoe.name} to favorites!`);
-  // };
 
   if (productId == undefined) {
     navigate("/error");
