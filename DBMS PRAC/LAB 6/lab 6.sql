@@ -2,7 +2,7 @@ create database College;
 use College;
  
 create table student (rollno int, name varchar(50));
-
+select * from student;
 insert into student values
 (1,'Atharva'),
 (2,'Adam'),
@@ -15,6 +15,7 @@ call exceptionHandling2();
 create database Flipkart;
 use Flipkart;
 
+drop table SupplierProducts;
 create table SupplierProducts (supplierId int , productId int, primary key(supplierId,productId));
 select * from SupplierProducts;
 

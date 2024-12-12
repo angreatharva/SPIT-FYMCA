@@ -7929,3 +7929,7 @@ LIMIT 1;
 
 select highest_credit_customer();
 
+call Get_Orders_Status('Shipped');
+call Get_Orders_Status('Cancelled');
+call Get_Orders_Status('On Hold');
+

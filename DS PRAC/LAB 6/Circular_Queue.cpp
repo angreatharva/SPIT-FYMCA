@@ -62,9 +62,9 @@ public:
         cin >> key;
 
         if (front == -1)
-            front = 0; // Initialize front when inserting the first element.
+            front = 0;
 
-        rear = (rear + 1) % n; // Circular increment.
+        rear = (rear + 1) % n;
         queue[rear] = key;
 
         display();
