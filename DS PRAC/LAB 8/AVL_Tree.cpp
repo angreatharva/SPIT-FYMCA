@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 #define max_d 100
 
@@ -8,10 +9,11 @@ struct node
 {
     struct node *prev;
     int data;
+    int balanceFactor;
     struct node *next;
-}
-    *list = NULL,
-    *p, *q, *r, *s, *temp, *root = NULL, *current, *parent, *lastVisited, *peekNode, *stack[max_d];
+};
+
+struct node *list = NULL, *p, *q, *r, *s, *temp, *root = NULL, *current, *parent, *lastVisited, *peekNode, *stack[max_d];
 
 class AVL
 {
@@ -21,7 +23,6 @@ public:
         cout << "Enter the size of data:" << endl;
         cin >> n;
 
-        treeData[n];
         for (int i = 0; i < n; i++)
         {
             cout << "Enter the data for " << i << " Index: ";
@@ -32,6 +33,7 @@ public:
         {
             createTree(treeData[i]);
         }
+        cout << endl;
     }
 
     void createTree(int key)
@@ -41,10 +43,12 @@ public:
         p->data = key;
         p->prev = NULL;
         p->next = NULL;
+        p->balanceFactor = 0;
 
         if (root == NULL)
         {
             root = p;
+            cout << "Node " << key << " inserted. Balance Factor: 0" << endl;
             return;
         }
 
@@ -72,53 +76,61 @@ public:
         {
             parent->next = p;
         }
+
+        cout << "Node " << key << " inserted." << endl;
+        updateBalanceFactorsUpToRoot(p); // Update balance factors up to the root
     }
 
-    void balanceFactor(node *node)
+    void updateBalanceFactorsUpToRoot(node *node)
     {
-        int left = height_of_leftSubTree(node);
-        int right = height_of_rightSubTree(node);
-        int BF = left - right;
+        while (node != NULL)
+        {
+            node->balanceFactor = balanceFactor(node);
+            cout << "Node " << node->data << " updated Balance Factor: " << node->balanceFactor << endl;
+            node = findParent(node);
+        }
+
+        cout << "--------------------------------------------" << endl;
     }
 
-    int height_of_leftSubTree(node *node)
+    int balanceFactor(node *node)
     {
-        int res = 0;
-        int left = 0;
-        int right = 0;
-
-        if (root->prev != NULL && root->next != NULL)
-        {
-            left++;
-            right++;
-        }
-        else if (root->prev != NULL)
-        {
-            left++;
-        }
-        else if (root->next != NULL)
-        {
-            right++;
-        }
-        res = max(left, right);
-
-        return res;
+        int leftHeight = height(node->prev);
+        int rightHeight = height(node->next);
+        return leftHeight - rightHeight;
     }
-    int height_of_rightSubTree(node *node)
+
+    int height(node *node)
     {
-        int res = 0;
+        if (node == NULL)
+            return 0;
 
-        int left = 0;
-        int right = 0;
+        int leftHeight = height(node->prev);
+        int rightHeight = height(node->next);
 
-        if (root->prev != NULL && root->next != NULL)
+        return 1 + max(leftHeight, rightHeight);
+    }
+
+    node *findParent(node *child)
+    {
+        node *current = root;
+        node *parent = NULL;
+        while (current != NULL && current != child)
         {
-            left = right = 1;
+            parent = current;
+            if (child->data < current->data)
+            {
+                current = current->prev;
+            }
+            else
+            {
+                current = current->next;
+            }
         }
-
-        return res;
+        return parent;
     }
 };
+
 int main()
 {
     AVL avl;

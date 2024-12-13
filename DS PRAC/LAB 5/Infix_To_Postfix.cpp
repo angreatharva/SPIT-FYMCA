@@ -24,12 +24,16 @@ public:
 
     int precedence(char op)
     {
-        if (op == '+' || op == '-')
+        if (op == '-')
             return 1;
-        if (op == '*' || op == '/')
+        if (op == '+')
             return 2;
-        if (op == '^')
+        if (op == '*')
             return 3;
+        if (op == '/')
+            return 4;
+        if (op == '^')
+            return 5;
         return 0;
     }
 
