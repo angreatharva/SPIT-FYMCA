@@ -7922,10 +7922,6 @@ over (partition by productLine) as highestMSRP
 from
 products;
 
-SELECT customerName
-FROM customers
-ORDER BY CreditLimit DESC
-LIMIT 1;
 
 select highest_credit_customer();
 
