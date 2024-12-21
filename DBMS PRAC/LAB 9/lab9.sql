@@ -1,29 +1,8 @@
 CREATE database lab_9;
-
+drop database lab_9;
 USE lab_9;
 -- 1)
 CREATE TABLE salesrange_atharva (
-    salesman_id INT(5),
-    salesman_name VARCHAR(20),
-    sales_amount DECIMAL(10, 2),
-    sales_date DATE
-)
-PARTITION BY RANGE (YEAR(sales_date)) (
-    PARTITION sales_jan2000 VALUES LESS THAN (2000),
-    PARTITION sales_feb2000 VALUES LESS THAN (2001),
-    PARTITION sales_mar2000 VALUES LESS THAN (2002),
-    PARTITION sales_apr2000 VALUES LESS THAN (2003),
-    PARTITION sales_may2000 VALUES LESS THAN (2004)
-);
-
-INSERT INTO salesrange_atharva VALUES
-(1, 'Atharva Angre', 20000, '2000-01-10'),
-(2, 'Adam Ansari', 40000, '2000-02-10'),
-(3, 'Abhijeet Jadhav', 80000, '2000-03-10'),
-(4, 'Abhishek Jha', 60000, '2000-04-10'),
-(5, 'Vineet Shinde', 50000, '2000-05-10');
-
-CREATE TABLE salesrange_rohit (
     salesman_id INT,
     salesman_name VARCHAR(20),
     sales_amount INT,
@@ -38,11 +17,11 @@ PARTITION BY RANGE (TO_DAYS(sales_date)) (
     PARTITION sales_jun2000 VALUES LESS THAN (TO_DAYS('2000-06-01'))
 );
 
-INSERT INTO salesrange_rohit VALUES(1, 'Atharva Angre', 20000, '2000-01-10');
-INSERT INTO salesrange_rohit VALUES(2, 'Adam Ansari', 40000, '2000-02-10');
-INSERT INTO salesrange_rohit VALUES(3, 'Abhijeet Jadhav', 80000, '2000-03-10');
-INSERT INTO salesrange_rohit VALUES(4, 'Suyash', 60000, '2000-04-10');
-INSERT INTO salesrange_rohit VALUES(5, 'Ritesh', 50000, '2000-05-10');
+INSERT INTO salesrange_atharva VALUES(1, 'Atharva Angre', 20000, '2000-01-10');
+INSERT INTO salesrange_atharva VALUES(2, 'Adam Ansari', 40000, '2000-02-10');
+INSERT INTO salesrange_atharva VALUES(3, 'Abhijeet Jadhav', 80000, '2000-03-10');
+INSERT INTO salesrange_atharva VALUES(4, 'Abhishek Jha', 60000, '2000-04-10');
+INSERT INTO salesrange_atharva VALUES(5, 'Vineet Shinde', 50000, '2000-05-10');
 
 
 SELECT * FROM salesrange_atharva;
