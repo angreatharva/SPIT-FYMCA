@@ -1,26 +1,19 @@
 #include <iostream>
 #include <stack>
-#include <iomanip>
 using namespace std;
 
 class BalancingParenthesis
 {
-private:
+public:
     string exp;
-    int step = 1;
 
-    string getStackContents(stack<char> st)
+    bool bracketsMatch(char open, char close)
     {
-        string contents;
-        while (!st.empty())
-        {
-            contents = st.top() + contents;
-            st.pop();
-        }
-        return contents;
+        return (open == '(' && close == ')') ||
+               (open == '{' && close == '}') ||
+               (open == '[' && close == ']');
     }
 
-public:
     void input()
     {
         cout << "Enter the Expression: ";
@@ -31,20 +24,15 @@ public:
     {
         stack<char> st;
 
-        cout << setw(10) << "Symbol"
-             << setw(25) << "Stack Contents"
-             << endl;
-        cout << string(40, '-') << endl;
-
         for (char ch : exp)
         {
-            if (ch == '(')
+            if (ch == '(' || ch == '{' || ch == '[')
             {
                 st.push(ch);
             }
-            else if (ch == ')')
+            else if (ch == ')' || ch == '}' || ch == ']')
             {
-                if (!st.empty() && st.top() == '(')
+                if (!st.empty() && bracketsMatch(st.top(), ch))
                 {
                     st.pop();
                 }
@@ -53,20 +41,15 @@ public:
                     st.push(ch);
                 }
             }
-
-            cout << setw(10) << ch
-                 << setw(25) << getStackContents(st)
-                 << endl;
         }
 
-        cout << string(40, '-') << endl;
         if (st.empty())
         {
-            cout << "Expression has balanced parentheses.\n";
+            cout << "Expression has balanced brackets.\n";
         }
         else
         {
-            cout << "Expression does not have balanced parentheses.\n";
+            cout << "Expression does not have balanced brackets.\n";
         }
     }
 };

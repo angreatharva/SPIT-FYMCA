@@ -36,7 +36,7 @@ public:
         }
         for (int i = 0; i < n; i++)
         {
-            arrM[i] = 0; // Initialize the hash table
+            arrM[i] = 0;
         }
     }
 
@@ -66,26 +66,25 @@ public:
             int max_value = 1;
             for (int j = 0; j < len; j++)
             {
-                max_value *= 10; // Multiply by 10 'len' times to get 10^len
+                max_value *= 10;
             }
-            // Ensure that value is restricted to last 'len' digits
             value = value % max_value;
         }
-        return value % n; // Final hash value within bounds
+        return value % n;
     }
 
     void quadraticProbing(int hk, int i)
     {
         int original_hk = hk;
-        int j = 1; // Quadratic probing starts with offset of 1
+        int j = 1;
 
         while (arrM[hk] != 0)
         {
-            hk = (original_hk + j * j) % n; // Quadratic probing formula: (h(k) + j^2) % n
+            hk = (original_hk + j * j) % n;
             collision++;
             j++;
         }
-        arrM[hk] = arr[i]; // Place the element in the hash table
+        arrM[hk] = arr[i];
     }
 
     void output()

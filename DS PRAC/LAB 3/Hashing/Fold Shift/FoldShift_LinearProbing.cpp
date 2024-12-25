@@ -64,9 +64,8 @@ public:
 			int max_value = 1;
 			for (int j = 0; j < len; j++)
 			{
-				max_value *= 10; // Multiply by 10 'len' times to get 10^len
+				max_value *= 10;
 			}
-			// Ensure that value is restricted to last 'len' digits
 			value = value % max_value;
 		}
 		// cout << "value" << value;

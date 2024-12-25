@@ -142,7 +142,7 @@ public:
 
     void input()
     {
-        cout << "Enter the size of data:" << endl;
+        cout << "Enter the size of data: ";
         cin >> n;
 
         treeData[n];

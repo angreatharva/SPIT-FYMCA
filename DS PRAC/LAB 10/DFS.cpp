@@ -23,8 +23,7 @@ public:
                 cout << (char)('A' + current) << " ";
                 visited[current] = true;
             }
-
-            for (int i = nodes - 1; i >= 0; i--)
+            for (int i = 0; i < nodes; i++)
             {
                 if (arr[current][i] == 1 && !visited[i])
                 {
@@ -69,4 +68,5 @@ int main()
 
     return 0;
 }
+
 // 0 1 1 1 0 0 1 0 0 0 1 0 1 0 0 0 1 0 1 0 0 0 0 1 0 1 1 0 0 1 0 0 0 1 1 0
