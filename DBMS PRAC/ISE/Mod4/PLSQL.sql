@@ -7,7 +7,7 @@ CREATE TABLE producer (
     p_first_name VARCHAR(50),
     p_last_name VARCHAR(50),
     p_dob DATE,
-    p_age INT,              -- Remove the GENERATED clause
+    p_age INT,              
     p_phno JSON,
     p_email JSON
 );
