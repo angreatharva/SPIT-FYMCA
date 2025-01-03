@@ -1,0 +1,160 @@
+
+/*--------------------------------------------------------------
+# Services
+--------------------------------------------------------------*/
+.wrapper {
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .wrapper h1 {
+    font-size: 3em;
+    color: #030303;
+    margin: 25px;
+  }
+  .content-box {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 1200px;
+    margin-top: -72px;
+}
+  
+  .card {
+    min-height: 220px;
+    width: 320px;
+    padding: 30px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #fff;
+    margin: 10px 4px;
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card i {
+    margin: 20px;
+    color: navy;
+  }
+  
+  .card h2 {
+    margin-bottom: 12px;
+    font-weight: 400;
+    text-align: center;
+  }
+  
+  .card p {
+    color: #6c757d;
+    text-align: center;
+  }
+  
+  .card:hover i,
+  .card:hover p {
+    color: #fff;
+  }
+  
+  .card:hover h2 {
+    font-weight: 600;
+  }
+  
+  .card:nth-child(1):hover {
+    background: linear-gradient(
+        45deg,
+        rgba(27, 68, 248, 0.7) 0%,
+        rgba(60, 63, 80, 0.7) 100%
+      ),
+      url("../images/lonly.jpeg");
+    background-size: cover;
+  }
+  
+  .card:nth-child(2):hover {
+    background: linear-gradient(
+        45deg,
+        rgba(27, 68, 248, 0.7) 0%,
+        rgba(60, 63, 80, 0.7) 100%
+      ),
+      url("couple11.jpg");
+    background-size: cover;
+  }
+  
+  .card:nth-child(3):hover {
+    background: linear-gradient(
+        45deg,
+        rgba(27, 68, 248, 0.7) 0%,
+        rgba(60, 63, 80, 0.7) 100%
+      ),
+      url("stress.jpg");
+    background-size: cover;
+  }
+  
+  .card:nth-child(4):hover {
+    background: linear-gradient(
+        45deg,
+        rgba(27, 68, 248, 0.7) 0%,
+        rgba(60, 63, 80, 0.7) 100%
+      ),
+      url("DEP1.jpeg");
+    background-size: cover;
+  }
+  
+  .card:nth-child(5):hover {
+    background: linear-gradient(
+        45deg,
+        rgba(27, 68, 248, 0.7) 0%,
+        rgba(60, 63, 80, 0.7) 100%
+      ),
+      url("phobia1.jpeg");
+    background-size: cover;
+  }
+  
+  .card:nth-child(6):hover {
+    background: linear-gradient(
+        45deg,
+        rgba(27, 68, 248, 0.7) 0%,
+        rgba(60, 63, 80, 0.7) 100%
+      ),
+      url("personal.jpg");
+    background-size: cover;
+  }
+  
+  @media (max-width: 991px) {
+    .wrapper {
+      padding: 25px;
+    }
+  
+    .wrapper h1 {
+      font-size: 2.5em;
+      font-weight: 600;
+    }
+  
+    .content-box {
+      flex-direction: column;
+      width: 100%;
+    }
+  
+    .card {
+      min-width: 300px;
+      margin: 10px auto;
+    }
+  }
+  .buttons {
+    background-color: navy;
+    border: none;
+    color: #faf7f7; /* Updated color */
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block; /* Changed display to inline-block */
+    margin: 15px auto; /* Center align horizontally */
+    cursor: pointer;
+    border-radius: 40px;
+  }
+  
+  .buttons:hover {
+    background-color: white; /* Darker navy on hover */
+  }

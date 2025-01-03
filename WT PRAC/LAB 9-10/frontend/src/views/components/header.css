@@ -1,0 +1,127 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+#root {
+  height: 100%;
+}
+
+/* Topbar  */
+.topbar {
+  background-color: white;
+  color: #333;
+  padding: 10px 0;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000; /* Keep top bar on top */
+  text-decoration: none;
+}
+
+.topbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.contact-info {
+  display: flex;
+  align-items: center;
+}
+
+.contact-info i {
+  margin-right: 5px;
+}
+
+.contact-info .email {
+  margin-right: 15px;
+  text-decoration: none; /* Add spacing after email */
+}
+
+.social-links {
+  display: flex;
+}
+
+.social-links a {
+  margin-left: 10px;
+  color: #333; /* Set icon color */
+  text-decoration: none;
+}
+
+.social-links a:hover {
+  color: navy; /* Hover effect for social icons */
+}
+
+.social-links i {
+  font-size: 18px;
+}
+
+/* Header styles */
+.header {
+  background-color: white;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+/* Logo styling */
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.logo a {
+  text-decoration: none;
+  color: #333;
+}
+
+/* Navbar styling */
+.navbar {
+  display: flex;
+}
+
+.navbar ul {
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar li {
+  margin-left: 20px;
+}
+
+.navbar li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+}
+
+.navbar li a:hover {
+  color: navy; /* Hover effect for nav links */
+}
+
+/* Styling for Login and Register buttons */
+.button {
+  padding: 10px 20px;
+  background-color: navy; /* Blue background */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none; /* Remove underline */
+}

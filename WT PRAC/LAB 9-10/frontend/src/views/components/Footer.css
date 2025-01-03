@@ -1,0 +1,122 @@
+footer {
+    color: #444444;
+    font-size: 14px;
+    background: #f1f7fd;
+    text-decoration: none;
+  }
+  
+  #footer .footer-top {
+    padding: 60px 0 30px 0;
+    background: #fff;
+    box-shadow: 0px 2px 15px rgba(25, 119, 204, 0.1);
+  }
+  
+  #footer .footer-top .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  #footer .footer-top .row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  #footer .footer-top .footer-section {
+    flex: 1 1 23%; /* Set each section to take up 23% of the width */
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+  
+  #footer .footer-top .footer-contact h3,
+  #footer .footer-top .footer-links h4,
+  #footer .footer-top .footer-services h4,
+  #footer .footer-top .footer-for-doctors h4 {
+    font-size: 22px;
+    font-weight: 700;
+  }
+  
+  #footer .footer-top .footer-contact p,
+  #footer .footer-top .footer-links ul,
+  #footer .footer-top .footer-services ul,
+  #footer .footer-top .footer-for-doctors ul {
+    font-size: 14px;
+  }
+  
+  #footer .footer-top .footer-links ul,
+  #footer .footer-top .footer-services ul,
+  #footer .footer-top .footer-for-doctors ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #footer .footer-top .footer-links ul li,
+  #footer .footer-top .footer-services ul li,
+  #footer .footer-top .footer-for-doctors ul li {
+    padding: 10px 0;
+  }
+  
+  #footer .footer-top .footer-links ul a,
+  #footer .footer-top .footer-services ul a,
+  #footer .footer-top .footer-for-doctors ul a {
+    color: #777777;
+    transition: 0.3s;
+  }
+  
+  #footer .footer-top .footer-links ul a:hover,
+  #footer .footer-top .footer-services ul a:hover,
+  #footer .footer-top .footer-for-doctors ul a:hover {
+    color: navy;
+  }
+  
+  /* Footer bottom section */
+  #footer .container.d-md-flex {
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #footer .copyright {
+    font-size: 13px;
+  }
+  
+  #footer .social-links {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+  
+  #footer .social-links a {
+    font-size: 18px;
+    display: inline-block;
+    background: navy;
+    color: #fff;
+    padding: 8px;
+    border-radius: 50%;
+    transition: 0.3s;
+    width: 36px;
+    height: 36px;
+    text-align: center;
+  }
+  
+  #footer .social-links a:hover {
+    background: black;
+    color: #fff;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    #footer .footer-top .footer-section {
+      flex: 1 1 48%; /* Stack two sections in a row */
+    }
+  
+    #footer .container.d-md-flex {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    #footer .social-links {
+      justify-content: center;
+    }
+  }
+  
