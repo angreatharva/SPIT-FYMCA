@@ -75,7 +75,7 @@ public class Main {
         // Result result = new Result();
         // result.calculateResult(sc);
 
-        
+
 
 
         hourlyBasis hourlyBasisEmployee = new hourlyBasis();
