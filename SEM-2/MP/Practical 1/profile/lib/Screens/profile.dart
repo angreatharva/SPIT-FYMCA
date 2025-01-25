@@ -45,10 +45,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final List<Map<String, String>> imageItems = [
     {'imagePath': 'assets/images/1.jpeg', 'title': 'Acrobatic Dynamic'},
     {'imagePath': 'assets/images/2.jpeg', 'title': 'MoonKnight'},
-    {'imagePath': 'assets/images/3.jpeg', 'title': 'CommonWealth Game 2018'},
-    {'imagePath': 'assets/images/4.jpeg', 'title': 'CommonWealth Game 2018'},
-    {'imagePath': 'assets/images/5.jpeg', 'title': 'CommonWealth Game 2018'},
-    {'imagePath': 'assets/images/6.jpg', 'title': 'Kelo India 2023'},
+    {'imagePath': 'assets/images/3.jpeg', 'title': 'CWG 2018'},
+    {'imagePath': 'assets/images/4.jpeg', 'title': 'CWG 2018'},
+    {'imagePath': 'assets/images/5.jpeg', 'title': 'CWG 2018'},
+    {'imagePath': 'assets/images/6.jpg', 'title': 'Khelo India 2023'},
   ];
   final CarouselController controller = CarouselController(initialItem: 1);
 
@@ -56,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 100,
+          // toolbarHeight: 100,
           centerTitle: true,
           title: Text("Profile"),
         ),
@@ -80,15 +80,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       if (safeProgress > 0.5)
-                        Container(
-                          // padding:  EdgeInsets.only(top: Get.height * 0.045),
-                          child: Text(
-                            "Atharva Vasant Angre",
-                            style: TextStyle(
-                              fontSize: 32,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        Text(
+                          "Atharva Vasant Angre",
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                     ],
@@ -130,6 +127,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   GestureDetector(
                     onTap: () => _launchURL('https://github.com/angreatharva'),
                     child: Container(
+                      height: Get.height * 0.08,
+                      width: Get.width * 0.2,
                       padding: EdgeInsets.symmetric(horizontal: Get.width * 0.025,vertical: Get.height * 0.005),
                       decoration: BoxDecoration(
                         color: Color(0xffffd146),
@@ -148,13 +147,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () => _launchURL(
                         'mailto:angreatharva08@gmail.com?subject=Greetings&body=Hello'),
                     child: Container(
+                      height: Get.height * 0.08,
+                      width: Get.width * 0.2,
+                      padding: EdgeInsets.symmetric(horizontal: Get.width * 0.025,vertical: Get.height * 0.005),
                       decoration: BoxDecoration(
                         color: Color(0xffffd146),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                         border: Border.all(color: Colors.black, width: 2.5),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: Get.width * 0.025,vertical: Get.height * 0.005),
-                      child: Icon(Icons.mail_outline_rounded, size: 50),
+                      child: Icon(Icons.mail_outline_rounded, size: 60),
                     ),
                   ),
 
@@ -163,12 +164,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () => _launchURL(
                         'https://www.linkedin.com/in/atharva-angre-3146aa269/'),
                     child: Container(
+                      height: Get.height * 0.08,
+                      width: Get.width * 0.2,
+                      padding: EdgeInsets.symmetric(horizontal: Get.width * 0.025,vertical: Get.height * 0.005),
                       decoration: BoxDecoration(
                         color: Color(0xffffd146),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                         border: Border.all(color: Colors.black, width: 2.5),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: Get.width * 0.025,vertical: Get.height * 0.005),
                       child: Image.asset(
                         'assets/images/linkedIn.png',
                         height: Get.height * 0.05,
@@ -180,12 +183,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   GestureDetector(
                     onTap: () => _launchURL('tel:+919167449720'),
                     child: Container(
+                      height: Get.height * 0.08,
+                      width: Get.width * 0.2,
+                      padding: EdgeInsets.symmetric(horizontal: Get.width * 0.025,vertical: Get.height * 0.005),
                       decoration: BoxDecoration(
                         color: Color(0xffffd146),
                         borderRadius: BorderRadius.all(Radius.circular(8)),
                         border: Border.all(color: Colors.black, width: 2.5),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: Get.width * 0.025,vertical: Get.height * 0.005),
                       child: Icon(Icons.phone_android_rounded, size: 50),
                     ),
                   ),
@@ -224,7 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 10,
+                          spacing: Get.height * 0.015,
                           children: [
                             Text(
                               "Project",
@@ -237,7 +242,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Text(
                                   "ReConnect",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w900,
                                       fontSize: 20),
                                 ),
                                 Text(
@@ -254,7 +259,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Text(
                                   "WMS",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w900,
                                       fontSize: 18),
                                 ),
                                 Text(
@@ -271,7 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Text(
                                   "Smart Attendance System",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w900,
                                       fontSize: 18),
                                 ),
                                 Text(
@@ -296,26 +301,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       border: Border.all(color: Colors.black, width: 2.5),
                       color: Color(0xffbed5ea),
                     ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Achievements",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 25),
-                          ),
-                          Text(
-                            ach1,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 18),
-                          ),
-                          Text(
-                            ach2,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 18),
-                          ),
-                        ],
+                    child: Scrollbar(
+                      thumbVisibility: true,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Achievements",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 25),
+                            ),
+                            Text(
+                              ach1,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 18),
+                            ),
+                            Text(
+                              ach2,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 18),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
