@@ -28,19 +28,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   String about =
-      "I am currently pursuing a Master of Computer Applications (MCA) from Sardar Patel Institution of Technology with a strong foundation in software development. I have hands-on experience in Flutter development, building efficient and user-friendly mobile applications for iOS and Android. My interests lie in full-stack development and backend development, where I aim to deepen my expertise in creating robust, scalable systems. I’m always eager to learn new technologies and contribute to innovative projects.";
+      "MCA student at Sardar Patel Institute of Technology with expertise in Flutter, full-stack, and backend development, focusing on scalable systems and new technologies.";
 
   String CIM =
-      "The CRM mobile app for Colliers enables users to manage properties, listings, transactions, companies, contacts, and bookmarks with real-time search and filtering. Key features include a dashboard with widgets for buildings, supply, transactions, and options; recent activity tracking; bookmarking across all modules; detailed building pages with stacking plans and transaction history; supply, listing, company, and contact management; and an option module for bundling properties and generating reports. The app supports multi-lingual functionality and works on iOS and Android platforms.";
-  String WMS =
-      "The Warehouse Management System includes key modules such as Putaway, Picking, Packing, PDV, Bin Movement, and Cycle Count. In the Putaway module, boxes or packages are scanned and stored in designated bin locations. The Picking module involves retrieving boxes or packages from bin locations for dispatch. The Packing module allows for breaking larger quantities into single pieces if necessary. PDV, Bin Movement, and Cycle Count manage other essential warehouse operations, ensuring organized storage, efficient retrieval, and accurate inventory tracking. The system streamlines warehouse processes, improving efficiency and accuracy in managing inventory flow.";
-  String SAS =
-      "The automatic attendance system leverages RFID technology to streamline attendance tracking. Each student is assigned an RFID card, which records attendance data upon scanning. This data is first stored in Google Sheets, where real-time updates and data manipulation occur. Once processed, the information is pushed to Firebase Database for secure storage and access. The application provides distinct logins for both admins and students. Admins can register students, manage records, and monitor attendance. Students can access their subject-wise and overall attendance and check the defaulters list. This system automates attendance management, improving efficiency and accuracy through seamless data integration.";
+      "The Colliers CRM app simplifies property management with real-time search, dashboards, detailed pages, and multilingual support for iOS and Android.";
 
-  String ach1 =
-      "Ranked 3 in Khelo India University Games in the sport Mallakhamb - 2023. National Player in Mallakhamb, played and got ranked in various State Level and National Level Competition.";
-  String ach2 =
-      "I have had the privilege of performing Mallakhamb as a stage artist on international platforms across various countries, including Australia, Budapest, Mexico, and Bahrain. These performances showcased the traditional Indian sport to a global audience, allowing me to share my passion for this unique art form on an international stage.";
+  String WMS =
+      "The Warehouse Management System optimizes inventory with modules for Putaway, Picking, Packing, and more, ensuring efficient tracking and storage.";
+
+  String SAS =
+      "The RFID-based attendance system automates tracking with Google Sheets and Firebase, offering admin tools and student access to attendance details.";
+
+  String ach1 = "Ranked 3rd in Khelo India University Games 2023 for Mallakhamb. National player with accolades in state and national competitions.";
+  String ach2 = "Performed Mallakhamb internationally in Australia, Budapest, Mexico, and Bahrain, promoting this traditional Indian sport globally.";
 
   final List<Map<String, String>> imageItems = [
     {'imagePath': 'assets/images/1.jpeg', 'title': 'Acrobatic Dynamic'},
@@ -145,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   // Email
                   GestureDetector(
                     onTap: () => _launchURL(
-                        'mailto:angreatharva08@gmail.com?subject=Greetings&body=Hello'),
+                        'mailto:angreatharva08@gmail.com?subject=Greetings&body=Hello Atharva,'),
                     child: Container(
                       height: Get.height * 0.08,
                       width: Get.width * 0.2,
@@ -202,7 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Container(
                     width: Get.width * 0.95,
-                    height: Get.height * 0.35,
+                    // height: Get.height * 0.35,
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -227,6 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Scrollbar(
                       thumbVisibility: true,
                       child: SingleChildScrollView(
+                        // physics: ,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           spacing: Get.height * 0.015,
@@ -294,7 +295,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Container(
                     width: Get.width * 0.95,
-                    height: Get.height * 0.38,
+                    // height: Get.height * 0.38,
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -313,12 +314,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   fontWeight: FontWeight.w700, fontSize: 25),
                             ),
                             Text(
-                              ach1,
+                              "\u2022 "+ach1,
                               style: TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 18),
                             ),
                             Text(
-                              ach2,
+                              "\u2022 "+ach2,
                               style: TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 18),
                             ),
