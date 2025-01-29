@@ -37,23 +37,50 @@ class _MainScreenState extends State<MainScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Name"),
-                      TextFormField(
-                        controller: TextEditingController(text: formController.name.value),
-                        onChanged: (value) {
-                          formController.name.value = value;
-                          formController.validateName(value);
+                      Focus(
+                        onFocusChange: (hasFocus) {
+                          if (!hasFocus) {
+                            formController.validateName(formController.name.value);
+                          }
                         },
-                        decoration: InputDecoration(
-                          labelText: 'Please Enter your Name',
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: 2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: 2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          errorText: formController.nameError.value.isNotEmpty ? formController.nameError.value : null,
+                        child: Obx(()=>
+                            TextFormField(
+                              controller: TextEditingController(text: formController.name.value),
+                              onChanged: (value) {
+                                formController.name.value = value;
+                                formController.validateName(value);
+                              },
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                labelText: 'Please Enter your Name',
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: formController.nameError.value.isEmpty ? Colors.black : Colors.red,
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: formController.nameError.value.isEmpty ? Colors.black : Colors.red,
+                                    width: 1.5,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.red, width: 1.5),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.red, width: 1.5),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                errorText: formController.nameError.value.isEmpty ? null : formController.nameError.value,
+                                errorStyle: TextStyle(color: Colors.red),
+                                filled: true,
+                                fillColor: Colors.white,
+                              ),
+                            ),
                         ),
                       ),
                     ],
@@ -66,23 +93,50 @@ class _MainScreenState extends State<MainScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Surname"),
-                      TextFormField(
-                        controller: TextEditingController(text: formController.surname.value),
-                        onChanged: (value) {
-                          formController.surname.value = value;
-                          formController.validateSurname(value);
+                      Focus(
+                        onFocusChange: (hasFocus) {
+                          if (!hasFocus) {
+                            formController.validateSurname(formController.surname.value);
+                          }
                         },
-                        decoration: InputDecoration(
-                          labelText: 'Please Enter your Surname',
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: 2),
-                            borderRadius: BorderRadius.circular(10),
+                        child: Obx(()=>
+                           TextFormField(
+                            controller: TextEditingController(text: formController.surname.value),
+                            onChanged: (value) {
+                              formController.surname.value = value;
+                              formController.validateSurname(value);
+                            },
+                             decoration: InputDecoration(
+                               contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                               labelText: 'Please Enter your Surname',
+                               enabledBorder: OutlineInputBorder(
+                                 borderSide: BorderSide(
+                                   color: formController.surnameError.value.isEmpty ? Colors.black : Colors.red,
+                                   width: 2,
+                                 ),
+                                 borderRadius: BorderRadius.circular(8),
+                               ),
+                               focusedBorder: OutlineInputBorder(
+                                 borderSide: BorderSide(
+                                   color: formController.surnameError.value.isEmpty ? Colors.black : Colors.red,
+                                   width: 1.5,
+                                 ),
+                                 borderRadius: BorderRadius.circular(8),
+                               ),
+                               errorBorder: OutlineInputBorder(
+                                 borderSide: BorderSide(color: Colors.red, width: 1.5),
+                                 borderRadius: BorderRadius.circular(8),
+                               ),
+                               focusedErrorBorder: OutlineInputBorder(
+                                 borderSide: BorderSide(color: Colors.red, width: 1.5),
+                                 borderRadius: BorderRadius.circular(8),
+                               ),
+                               errorText: formController.surnameError.value.isEmpty ? null : formController.surnameError.value,
+                               errorStyle: TextStyle(color: Colors.red),
+                               filled: true,
+                               fillColor: Colors.white,
+                             ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: 2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          errorText: formController.surnameError.value.isNotEmpty ? formController.surnameError.value : null,
                         ),
                       ),
                     ],
@@ -100,23 +154,50 @@ class _MainScreenState extends State<MainScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Email Id"),
-                      TextFormField(
-                        controller: TextEditingController(text: formController.emailId.value),
-                        onChanged: (value) {
-                          formController.emailId.value = value;
-                          formController.validateEmail(value);
+                      Focus(
+                        onFocusChange: (hasFocus) {
+                          if (!hasFocus) {
+                            formController.validateEmail(formController.emailId.value);
+                          }
                         },
-                        decoration: InputDecoration(
-                          labelText: 'Please Enter your Email Id',
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: 2),
-                            borderRadius: BorderRadius.circular(10),
+                        child: Obx(()=>
+                           TextFormField(
+                            controller: TextEditingController(text: formController.emailId.value),
+                            onChanged: (value) {
+                              formController.emailId.value = value;
+                              formController.validateEmail(value);
+                            },
+                             decoration: InputDecoration(
+                               contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                               labelText: 'Please Enter your Email Id',
+                               enabledBorder: OutlineInputBorder(
+                                 borderSide: BorderSide(
+                                   color: formController.emailIdError.value.isEmpty ? Colors.black : Colors.red,
+                                   width: 2,
+                                 ),
+                                 borderRadius: BorderRadius.circular(8),
+                               ),
+                               focusedBorder: OutlineInputBorder(
+                                 borderSide: BorderSide(
+                                   color: formController.emailIdError.value.isEmpty ? Colors.black : Colors.red,
+                                   width: 1.5,
+                                 ),
+                                 borderRadius: BorderRadius.circular(8),
+                               ),
+                               errorBorder: OutlineInputBorder(
+                                 borderSide: BorderSide(color: Colors.red, width: 1.5),
+                                 borderRadius: BorderRadius.circular(8),
+                               ),
+                               focusedErrorBorder: OutlineInputBorder(
+                                 borderSide: BorderSide(color: Colors.red, width: 1.5),
+                                 borderRadius: BorderRadius.circular(8),
+                               ),
+                               errorText: formController.emailIdError.value.isEmpty ? null : formController.emailIdError.value,
+                               errorStyle: TextStyle(color: Colors.red),
+                               filled: true,
+                               fillColor: Colors.white,
+                             ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: 2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          errorText: formController.emailIdError.value.isNotEmpty ? formController.emailIdError.value : null,
                         ),
                       ),
                     ],
@@ -129,25 +210,52 @@ class _MainScreenState extends State<MainScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Phone Number"),
-                      TextFormField(
-                        controller: TextEditingController(text: formController.phoneNumber.value),
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        onChanged: (value) {
-                          formController.phoneNumber.value = value;
-                          formController.validatePhoneNumber(value);
+                      Focus(
+                        onFocusChange: (hasFocus) {
+                          if (!hasFocus) {
+                            formController.validatePhoneNumber(formController.phoneNumber.value);
+                          }
                         },
-                        decoration: InputDecoration(
-                          labelText: 'Please Enter your Phone Number',
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: 2),
-                            borderRadius: BorderRadius.circular(10),
+                        child: Obx(()=>
+                           TextFormField(
+                            controller: TextEditingController(text: formController.phoneNumber.value),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                            onChanged: (value) {
+                              formController.phoneNumber.value = value;
+                              formController.validatePhoneNumber(value);
+                            },
+                             decoration: InputDecoration(
+                               contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                               labelText: 'Please Enter your Phone Number',
+                               enabledBorder: OutlineInputBorder(
+                                 borderSide: BorderSide(
+                                   color: formController.phoneNumberError.value.isEmpty ? Colors.black : Colors.red,
+                                   width: 2,
+                                 ),
+                                 borderRadius: BorderRadius.circular(8),
+                               ),
+                               focusedBorder: OutlineInputBorder(
+                                 borderSide: BorderSide(
+                                   color: formController.phoneNumberError.value.isEmpty ? Colors.black : Colors.red,
+                                   width: 1.5,
+                                 ),
+                                 borderRadius: BorderRadius.circular(8),
+                               ),
+                               errorBorder: OutlineInputBorder(
+                                 borderSide: BorderSide(color: Colors.red, width: 1.5),
+                                 borderRadius: BorderRadius.circular(8),
+                               ),
+                               focusedErrorBorder: OutlineInputBorder(
+                                 borderSide: BorderSide(color: Colors.red, width: 1.5),
+                                 borderRadius: BorderRadius.circular(8),
+                               ),
+                               errorText: formController.phoneNumberError.value.isEmpty ? null : formController.phoneNumberError.value,
+                               errorStyle: TextStyle(color: Colors.red),
+                               filled: true,
+                               fillColor: Colors.white,
+                             ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: 2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          errorText: formController.phoneNumberError.value.isNotEmpty ? formController.phoneNumberError.value : null,
                         ),
                       ),
                     ],
@@ -165,31 +273,52 @@ class _MainScreenState extends State<MainScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Date of Birth"),
-                      TextFormField(
-                        controller: TextEditingController(text: formController.dob.value),
-                        readOnly: true,
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime.now(),
-                          );
+                      Obx(()=>
+                         TextFormField(
+                          controller: TextEditingController(text: formController.dob.value),
+                          readOnly: true,
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime.now(),
+                            );
 
-                          if (pickedDate != null) {
-                            formController.dob.value = "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year}";
-                          }
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Select your Date of Birth',
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: 2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: 2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                            if (pickedDate != null) {
+                              formController.dob.value = "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year}";
+                            }
+                          },
+                           decoration: InputDecoration(
+                             contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                             labelText: 'Please Enter your Date of Birth',
+                             enabledBorder: OutlineInputBorder(
+                               borderSide: BorderSide(
+                                 color: formController.dobError.value.isEmpty ? Colors.black : Colors.red,
+                                 width: 2,
+                               ),
+                               borderRadius: BorderRadius.circular(8),
+                             ),
+                             focusedBorder: OutlineInputBorder(
+                               borderSide: BorderSide(
+                                 color: formController.dobError.value.isEmpty ? Colors.black : Colors.red,
+                                 width: 1.5,
+                               ),
+                               borderRadius: BorderRadius.circular(8),
+                             ),
+                             errorBorder: OutlineInputBorder(
+                               borderSide: BorderSide(color: Colors.red, width: 1.5),
+                               borderRadius: BorderRadius.circular(8),
+                             ),
+                             focusedErrorBorder: OutlineInputBorder(
+                               borderSide: BorderSide(color: Colors.red, width: 1.5),
+                               borderRadius: BorderRadius.circular(8),
+                             ),
+                             errorText: formController.dobError.value.isEmpty ? null : formController.dobError.value,
+                             errorStyle: TextStyle(color: Colors.red),
+                             filled: true,
+                             fillColor: Colors.white,
+                           ),
                         ),
                       ),
                     ],
@@ -209,7 +338,7 @@ class _MainScreenState extends State<MainScreen> {
                             border: Border.all(color: Colors.black, width: 2),
                             borderRadius: BorderRadius.circular(10)),
                         child: Obx(
-                          ()=> Row(
+                              ()=> Row(
                             spacing: Get.height * 0.050,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -256,24 +385,51 @@ class _MainScreenState extends State<MainScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Address"),
-                      TextFormField(
-                        maxLines: 3,
-                        controller: TextEditingController(text: formController.address.value),
-                        onChanged: (value) {
-                          formController.address.value = value;
-                          formController.validateAddress(value);
+                      Focus(
+                        onFocusChange: (hasFocus) {
+                          if (!hasFocus) {
+                            formController.validateAddress(formController.address.value);
+                          }
                         },
-                        decoration: InputDecoration(
-                          labelText: 'Please Enter your Address',
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: 2),
-                            borderRadius: BorderRadius.circular(10),
+                        child: Obx(()=>
+                          TextFormField(
+                            maxLines: 3,
+                            controller: TextEditingController(text: formController.address.value),
+                            onChanged: (value) {
+                              formController.address.value = value;
+                              formController.validateAddress(value);
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                              labelText: 'Please Enter your Name',
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: formController.addressError.value.isEmpty ? Colors.black : Colors.red,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: formController.addressError.value.isEmpty ? Colors.black : Colors.red,
+                                  width: 1.5,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red, width: 1.5),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red, width: 1.5),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              errorText: formController.addressError.value.isEmpty ? null : formController.addressError.value,
+                              errorStyle: TextStyle(color: Colors.red),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: 2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          errorText: formController.addressError.value.isNotEmpty ? formController.addressError.value : null,
                         ),
                       ),
                     ],
@@ -286,24 +442,51 @@ class _MainScreenState extends State<MainScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Review"),
-                      TextFormField(
-                        maxLines: 3,
-                        controller: TextEditingController(text: formController.review.value),
-                        onChanged: (value) {
-                          formController.review.value = value;
-                          formController.validateReview(value);
+                      Focus(
+                        onFocusChange: (hasFocus) {
+                          if (!hasFocus) {
+                            formController.validateReview(formController.review.value);
+                          }
                         },
-                        decoration: InputDecoration(
-                          labelText: 'Please Enter your Review',
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: 2),
-                            borderRadius: BorderRadius.circular(10),
+                        child: Obx(()=>
+                          TextFormField(
+                            maxLines: 3,
+                            controller: TextEditingController(text: formController.review.value),
+                            onChanged: (value) {
+                              formController.review.value = value;
+                              formController.validateReview(value);
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                              labelText: 'Please Enter your Name',
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: formController.reviewError.value.isEmpty ? Colors.black : Colors.red,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: formController.reviewError.value.isEmpty ? Colors.black : Colors.red,
+                                  width: 1.5,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red, width: 1.5),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red, width: 1.5),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              errorText: formController.reviewError.value.isEmpty ? null : formController.reviewError.value,
+                              errorStyle: TextStyle(color: Colors.red),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(width: 2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          errorText: formController.reviewError.value.isNotEmpty ? formController.reviewError.value : null,
                         ),
                       ),
                     ],
@@ -336,19 +519,15 @@ class _MainScreenState extends State<MainScreen> {
                     }
                   },
                   onRatingUpdate: (rating) {
-                    formController.rating.value =rating;
+                    formController.rating.value = rating;
                   },
                 ),
               ],
             ),
             ElevatedButton(
               onPressed: () {
-                if (formController.nameError.value.isEmpty &&
-                    formController.surnameError.value.isEmpty &&
-                    formController.emailIdError.value.isEmpty &&
-                    formController.phoneNumberError.value.isEmpty &&
-                    formController.addressError.value.isEmpty &&
-                    formController.reviewError.value.isEmpty) {
+                formController.validateAllFields();
+                if (formController.isFormValid()) {
                   print("name: "+formController.name.value);
                   print("surname: " +formController.surname.value);
                   print("emailId: "+formController.emailId.value);
@@ -359,6 +538,14 @@ class _MainScreenState extends State<MainScreen> {
                   print("review: "+formController.review.value);
                   print("Rating : "+formController.rating.value.toString());
                   print("Form submitted!");
+                } else {
+                  Get.snackbar(
+                    'Error',
+                    'Please fill all fields correctly',
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white,
+                  );
                 }
               },
               child: Text("Submit"),
