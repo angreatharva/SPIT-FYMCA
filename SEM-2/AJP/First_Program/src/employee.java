@@ -1,4 +1,4 @@
-class employee {
+class employee1 {
     private int employeeNumber;
     private String employeeName;
     protected int salary;
@@ -15,7 +15,7 @@ class employee {
     }
 }
 
-class hourlyBasis extends employee {
+class hourlyBasis1 extends employee {
     private int hours;
     private int rate;
 
@@ -29,7 +29,7 @@ class hourlyBasis extends employee {
     }
 }
 
-class monthlyBasis extends employee {
+class monthlyBasis1 extends employee {
     private int basic;
     private int hra;
     private int da;

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
+import '../Controllers/formController.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -11,17 +12,9 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-TextEditingController name = TextEditingController();
-TextEditingController surname = TextEditingController();
-TextEditingController dob = TextEditingController();
-TextEditingController address = TextEditingController();
-TextEditingController emailId = TextEditingController();
-TextEditingController phoneNumber = TextEditingController();
-var selectedGender = 'Male';
-TextEditingController review = TextEditingController();
-TextEditingController ratings = TextEditingController();
-
 class _MainScreenState extends State<MainScreen> {
+  final FormController formController = Get.put(FormController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,17 +38,24 @@ class _MainScreenState extends State<MainScreen> {
                     children: [
                       Text("Name"),
                       TextFormField(
-                          controller: name,
-                          decoration: InputDecoration(
-                              labelText: 'Please Enter your Surname',
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(width: 2),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(width: 2),
-                                borderRadius: BorderRadius.circular(10),
-                              )))
+                        controller: TextEditingController(text: formController.name.value),
+                        onChanged: (value) {
+                          formController.name.value = value;
+                          formController.validateName(value);
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Please Enter your Name',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          errorText: formController.nameError.value.isNotEmpty ? formController.nameError.value : null,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -67,17 +67,24 @@ class _MainScreenState extends State<MainScreen> {
                     children: [
                       Text("Surname"),
                       TextFormField(
-                          controller: surname,
-                          decoration: InputDecoration(
-                              labelText: 'Please Enter your Surname',
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(width: 2),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(width: 2),
-                                borderRadius: BorderRadius.circular(10),
-                              )))
+                        controller: TextEditingController(text: formController.surname.value),
+                        onChanged: (value) {
+                          formController.surname.value = value;
+                          formController.validateSurname(value);
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Please Enter your Surname',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          errorText: formController.surnameError.value.isNotEmpty ? formController.surnameError.value : null,
+                        ),
+                      ),
                     ],
                   ),
                 )
@@ -94,17 +101,24 @@ class _MainScreenState extends State<MainScreen> {
                     children: [
                       Text("Email Id"),
                       TextFormField(
-                          controller: emailId,
-                          decoration: InputDecoration(
-                              labelText: 'Please Enter your Email Id',
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(width: 2),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(width: 2),
-                                borderRadius: BorderRadius.circular(10),
-                              )))
+                        controller: TextEditingController(text: formController.emailId.value),
+                        onChanged: (value) {
+                          formController.emailId.value = value;
+                          formController.validateEmail(value);
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Please Enter your Email Id',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          errorText: formController.emailIdError.value.isNotEmpty ? formController.emailIdError.value : null,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -116,21 +130,26 @@ class _MainScreenState extends State<MainScreen> {
                     children: [
                       Text("Phone Number"),
                       TextFormField(
-                          controller: phoneNumber,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          decoration: InputDecoration(
-                              labelText: 'Please Enter your Phone Number',
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(width: 2),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(width: 2),
-                                borderRadius: BorderRadius.circular(10),
-                              )))
+                        controller: TextEditingController(text: formController.phoneNumber.value),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        onChanged: (value) {
+                          formController.phoneNumber.value = value;
+                          formController.validatePhoneNumber(value);
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Please Enter your Phone Number',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          errorText: formController.phoneNumberError.value.isNotEmpty ? formController.phoneNumberError.value : null,
+                        ),
+                      ),
                     ],
                   ),
                 )
@@ -147,33 +166,31 @@ class _MainScreenState extends State<MainScreen> {
                     children: [
                       Text("Date of Birth"),
                       TextFormField(
-                        controller: dob,
-                        readOnly: true, // Make the field non-editable
-                        decoration: InputDecoration(
-                            labelText: 'Select your Date of Birth',
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(width: 2),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(width: 2),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            suffixIcon: Icon(Icons.date_range_rounded)),
+                        controller: TextEditingController(text: formController.dob.value),
+                        readOnly: true,
                         onTap: () async {
                           DateTime? pickedDate = await showDatePicker(
                             context: context,
-                            initialDate: DateTime.now(), // Default date
-                            firstDate: DateTime(1900), // Earliest date
-                            lastDate: DateTime.now(), // Latest date
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime.now(),
                           );
 
                           if (pickedDate != null) {
-                            // Format the selected date and update the controller
-                            dob.text =
-                                "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year}";
+                            formController.dob.value = "${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year}";
                           }
                         },
+                        decoration: InputDecoration(
+                          labelText: 'Select your Date of Birth',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -191,39 +208,37 @@ class _MainScreenState extends State<MainScreen> {
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.black, width: 2),
                             borderRadius: BorderRadius.circular(10)),
-                        child: Row(
-                          spacing: Get.height * 0.050,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Radio(
-                                  value: 'Male',
-                                  groupValue: selectedGender,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedGender = value!;
-                                    });
-                                  },
-                                ),
-                                Text('Male'),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Radio(
-                                  value: 'Female',
-                                  groupValue: selectedGender,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedGender = value!;
-                                    });
-                                  },
-                                ),
-                                Text('Female'),
-                              ],
-                            ),
-                          ],
+                        child: Obx(
+                          ()=> Row(
+                            spacing: Get.height * 0.050,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Radio(
+                                    value: 'Male',
+                                    groupValue: formController.selectedGender.value,
+                                    onChanged: (value) {
+                                      formController.selectedGender.value = value!;
+                                    },
+                                  ),
+                                  Text('Male'),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Radio(
+                                    value: 'Female',
+                                    groupValue: formController.selectedGender.value,
+                                    onChanged: (value) {
+                                      formController.selectedGender.value = value!;
+                                    },
+                                  ),
+                                  Text('Female'),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -242,18 +257,25 @@ class _MainScreenState extends State<MainScreen> {
                     children: [
                       Text("Address"),
                       TextFormField(
-                          maxLines: 3,
-                          controller: address,
-                          decoration: InputDecoration(
-                              labelText: 'Please Enter your Address',
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(width: 2),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(width: 2),
-                                borderRadius: BorderRadius.circular(10),
-                              )))
+                        maxLines: 3,
+                        controller: TextEditingController(text: formController.address.value),
+                        onChanged: (value) {
+                          formController.address.value = value;
+                          formController.validateAddress(value);
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Please Enter your Address',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          errorText: formController.addressError.value.isNotEmpty ? formController.addressError.value : null,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -265,21 +287,28 @@ class _MainScreenState extends State<MainScreen> {
                     children: [
                       Text("Review"),
                       TextFormField(
-                          maxLines: 3,
-                          controller: review,
-                          decoration: InputDecoration(
-                              labelText: 'Please Enter your Review',
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(width: 2),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(width: 2),
-                                borderRadius: BorderRadius.circular(10),
-                              )))
+                        maxLines: 3,
+                        controller: TextEditingController(text: formController.review.value),
+                        onChanged: (value) {
+                          formController.review.value = value;
+                          formController.validateReview(value);
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Please Enter your Review',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          errorText: formController.reviewError.value.isNotEmpty ? formController.reviewError.value : null,
+                        ),
+                      ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
             Column(
@@ -293,41 +322,47 @@ class _MainScreenState extends State<MainScreen> {
                   itemBuilder: (context, index) {
                     switch (index) {
                       case 0:
-                        return Icon(
-                          Icons.sentiment_very_dissatisfied,
-                          color: Colors.red,
-                        );
+                        return Icon(Icons.sentiment_very_dissatisfied, color: Colors.red);
                       case 1:
-                        return Icon(
-                          Icons.sentiment_dissatisfied,
-                          color: Colors.redAccent,
-                        );
+                        return Icon(Icons.sentiment_dissatisfied, color: Colors.redAccent);
                       case 2:
-                        return Icon(
-                          Icons.sentiment_neutral,
-                          color: Colors.amber,
-                        );
+                        return Icon(Icons.sentiment_neutral, color: Colors.amber);
                       case 3:
-                        return Icon(
-                          Icons.sentiment_satisfied,
-                          color: Colors.lightGreen,
-                        );
+                        return Icon(Icons.sentiment_satisfied, color: Colors.lightGreen);
                       case 4:
-                        return Icon(
-                          Icons.sentiment_very_satisfied,
-                          color: Colors.green,
-                        );
+                        return Icon(Icons.sentiment_very_satisfied, color: Colors.green);
                       default:
                         return SizedBox.shrink();
                     }
                   },
                   onRatingUpdate: (rating) {
-                    print(rating);
+                    formController.rating.value =rating;
                   },
                 ),
               ],
             ),
-            ElevatedButton(onPressed: (){}, child: Text("Submit"))
+            ElevatedButton(
+              onPressed: () {
+                if (formController.nameError.value.isEmpty &&
+                    formController.surnameError.value.isEmpty &&
+                    formController.emailIdError.value.isEmpty &&
+                    formController.phoneNumberError.value.isEmpty &&
+                    formController.addressError.value.isEmpty &&
+                    formController.reviewError.value.isEmpty) {
+                  print("name: "+formController.name.value);
+                  print("surname: " +formController.surname.value);
+                  print("emailId: "+formController.emailId.value);
+                  print("phoneNumber: "+formController.phoneNumber.value);
+                  print("dob: "+formController.dob.value);
+                  print("selectedGender: "+formController.selectedGender.value);
+                  print("address: "+formController.address.value);
+                  print("review: "+formController.review.value);
+                  print("Rating : "+formController.rating.value.toString());
+                  print("Form submitted!");
+                }
+              },
+              child: Text("Submit"),
+            ),
           ],
         ),
       ),

@@ -56,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          // toolbarHeight: 100,
+          toolbarHeight: 80,
           centerTitle: true,
           title: Text("Profile"),
         ),

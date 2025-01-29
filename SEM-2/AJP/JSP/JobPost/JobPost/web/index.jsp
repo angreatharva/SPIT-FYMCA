@@ -9,23 +9,28 @@
     String phoneError = "";
     String jobError = "";
     boolean hasErrors = false;
-    if (name == null || name.trim().isEmpty()) {
-        hasErrors = true;
-        nameError = "Name is required.";
+    
+    // Only check for errors if the form has been submitted
+    if (request.getMethod().equals("POST")) {
+        if (name == null || name.trim().isEmpty()) {
+            hasErrors = true;
+            nameError = "Name is required.";
+        }
+        if (email == null || !email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            hasErrors = true;
+            emailError = "Valid email is required.";
+        }
+        if (phone == null || !phone.matches("^\\d{10}$")) {
+            hasErrors = true;
+            phoneError = "Valid 10-digit phone number is required.";
+        }
+        if (job == null || job.trim().isEmpty()) {
+            hasErrors = true;
+            jobError = "Job role is required.";
+        }
     }
-    if (email == null || !email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
-        hasErrors = true;
-        emailError = "Valid email is required.";
-    }
-    if (phone == null || !phone.matches("^\\d{10}$")) {
-        hasErrors = true;
-        phoneError = "Valid 10-digit phone number is required.";
-    }
-    if (job == null || job.trim().isEmpty()) {
-        hasErrors = true;
-        jobError = "Job role is required.";
-    }
-    if (!hasErrors) {
+    
+    if (!hasErrors && request.getMethod().equals("POST")) {
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -108,7 +113,7 @@
         form {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.5rem;
         }
 
         label {
@@ -125,6 +130,7 @@
             border-radius: 4px;
             font-size: 1rem;
             transition: border-color 0.2s ease;
+            margin-bottom: 0.25rem;
         }
 
         input:focus {
@@ -136,8 +142,8 @@
         .error {
             color: #e53e3e;
             font-size: 0.875rem;
-            margin-top: 0.25rem;
-            min-height: 1.25rem;
+            margin-top: 0;
+            min-height: 1rem;
         }
 
         button {
@@ -150,7 +156,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.2s ease;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
 
         button:hover {
