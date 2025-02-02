@@ -1,20 +1,32 @@
-// formController.dart
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get_storage/get_storage.dart';
 
 class FormController extends GetxController {
-  // Rx variables for each field
-  var name = ''.obs;
-  var surname = ''.obs;
-  var dob = ''.obs;
-  var emailId = ''.obs;
-  var phoneNumber = ''.obs;
-  var address = ''.obs;
-  var review = ''.obs;
+
+  final box = GetStorage();
+
+  // var name = ''.obs;
+  // var surname = ''.obs;
+  // var dob = ''.obs;
+  // var emailId = ''.obs;
+  // var phoneNumber = ''.obs;
+  // var address = ''.obs;
+  // var review = ''.obs;
+  Rx<TextEditingController> name = TextEditingController().obs;
+  Rx<TextEditingController> surname = TextEditingController().obs;
+  Rx<TextEditingController> dob = TextEditingController().obs;
+  Rx<TextEditingController> emailId = TextEditingController().obs;
+  Rx<TextEditingController> phoneNumber = TextEditingController().obs;
+  Rx<TextEditingController> address = TextEditingController().obs;
+  Rx<TextEditingController> review = TextEditingController().obs;
+  Rx<TextEditingController> movieName = TextEditingController().obs;
+
   var rating = 0.0.obs;
+  var ratingError = ''.obs;
   var selectedGender = 'Male'.obs;
 
-  // Validation states
   var nameError = ''.obs;
   var surnameError = ''.obs;
   var emailIdError = ''.obs;
@@ -22,8 +34,8 @@ class FormController extends GetxController {
   var dobError = ''.obs;
   var addressError = ''.obs;
   var reviewError = ''.obs;
+  var movieNameError = ''.obs;
 
-  // Validation logic
   void validateName(String value) {
     if (value.isEmpty) {
       nameError.value = 'Name is required';
@@ -91,62 +103,81 @@ class FormController extends GetxController {
   void validateReview(String value) {
     if (value.isEmpty) {
       reviewError.value = 'Review is required';
-    } else if (value.length < 10) {
-      reviewError.value = 'Review must be at least 10 characters';
-    } else {
+    }  else {
       reviewError.value = '';
     }
   }
 
-  // Validate all fields at once (useful for form submission)
-  void validateAllFields() {
-    validateName(name.value);
-    validateSurname(surname.value);
-    validateEmail(emailId.value);
-    validatePhoneNumber(phoneNumber.value);
-    validateDob(dob.value);
-    validateAddress(address.value);
-    validateReview(review.value);
+  void validateMovieName(String value) {
+    if (value.isEmpty) {
+      movieNameError.value = 'Movie Name is required';
+    }
+    else{
+      movieNameError.value = '';
+    }
   }
 
-  // Check if the entire form is valid
+  void validateRating(double rating) {
+    if (rating == 0) {
+      ratingError.value = 'Rating is required';
+    } else {
+      ratingError.value = '';
+    }
+  }
+
+
+  void validateAllFields() {
+    validateName(name.value.text);
+    validateSurname(surname.value.text);
+    validateEmail(emailId.value.text);
+    validatePhoneNumber(phoneNumber.value.text);
+    validateDob(dob.value.text);
+    validateMovieName(movieName.value.text);
+    validateAddress(address.value.text);
+    validateReview(review.value.text);
+    validateRating(rating.value);
+  }
+
   bool isFormValid() {
     return nameError.value.isEmpty &&
         surnameError.value.isEmpty &&
         emailIdError.value.isEmpty &&
         phoneNumberError.value.isEmpty &&
         dobError.value.isEmpty &&
+        movieNameError.value.isEmpty &&
         addressError.value.isEmpty &&
         reviewError.value.isEmpty &&
-        name.value.isNotEmpty &&
-        surname.value.isNotEmpty &&
-        emailId.value.isNotEmpty &&
-        phoneNumber.value.isNotEmpty &&
-        dob.value.isNotEmpty &&
-        address.value.isNotEmpty &&
-        review.value.isNotEmpty &&
-        rating.value > 0;
+        name.value.text.isNotEmpty &&
+        surname.value.text.isNotEmpty &&
+        emailId.value.text.isNotEmpty &&
+        phoneNumber.value.text.isNotEmpty &&
+        dob.value.text.isNotEmpty &&
+        address.value.text.isNotEmpty &&
+        review.value.text.isNotEmpty &&
+        rating.value > 0 &&
+        ratingError.value.isEmpty;
   }
 
-  // Reset all form fields
   void resetForm() {
-    name.value = '';
-    surname.value = '';
-    dob.value = '';
-    emailId.value = '';
-    phoneNumber.value = '';
-    address.value = '';
-    review.value = '';
+    name.value.text = '';
+    surname.value.text = '';
+    dob.value.text = '';
+    emailId.value.text = '';
+    phoneNumber.value.text = '';
+    address.value.text = '';
+    movieName.value.text = '';
+    review.value.text = '';
     rating.value = 0.0;
     selectedGender.value = 'Male';
 
-    // Reset all error messages
     nameError.value = '';
     surnameError.value = '';
     emailIdError.value = '';
     phoneNumberError.value = '';
     dobError.value = '';
+    movieNameError.value = '';
     addressError.value = '';
     reviewError.value = '';
+    ratingError.value = '';
   }
 }

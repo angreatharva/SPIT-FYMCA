@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:movie_rating/Screens/thankYouPage.dart';
 
 import 'Screens/mainScreen.dart';
 
