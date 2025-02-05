@@ -308,6 +308,7 @@ class _MainScreenState extends State<MainScreen> {
                               }
                             },
                             decoration: InputDecoration(
+                                suffixIcon:Icon(Icons.calendar_month_rounded),
                               contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                               labelText: 'Please Enter your Date of Birth',
                               enabledBorder: OutlineInputBorder(

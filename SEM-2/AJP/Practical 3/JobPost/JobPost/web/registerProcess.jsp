@@ -12,6 +12,7 @@
     }
 
     // Store user session
-    session.setAttribute("username", username);
+    session.setAttribute("currentUser", username);
+    session.setMaxInactiveInterval(3 * 60); 
     response.sendRedirect("homePage.jsp");
 %>

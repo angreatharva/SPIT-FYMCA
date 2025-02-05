@@ -1,5 +1,4 @@
 
-<!--jobApplication.jsp-->
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
     // Check if user is logged in
@@ -39,6 +38,7 @@
     }
     
     if (!hasErrors && request.getMethod().equals("POST")) {
+    
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -70,8 +70,9 @@
 </head>
 <body>
     <div class="container">
-        <h2>Application Submitted Successfully!</h2>
-        <p>Thank you, <%= name %>. We will contact you at <%= email %> soon.</p>
+         <h2>Application Submitted Successfully!</h2>
+        <p>Thank you, <%= name %>. We will contact you at <%= email %> regarding your application for the <%= job %> position.</p>
+        <a href="homePage.jsp" class="btn">Back to Home</a>
     </div>
 </body>
 </html>
