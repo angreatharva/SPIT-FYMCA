@@ -29,7 +29,6 @@ public class mergerSort {
             mergeSort(arr,mid + 1, high);
             merge(arr,low, mid, high);
         }
-
     }
     static void merge(int[] arr,int low, int mid, int high) {
         int l1 = mid - low + 1;

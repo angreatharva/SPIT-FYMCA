@@ -20,7 +20,8 @@ public class matrixMultiplication {
         c2 = sc.nextInt();
 
         if (c1 != r2) {
-            System.out.println("Matrix multiplication is not possible. Number of columns in Matrix1 must equal the number of rows in Matrix2.");
+            System.out.println("Matrix multiplication is not possible. Number of " +
+                    "columns in Matrix1 must equal the number of rows in Matrix2.");
             return;
         }
 

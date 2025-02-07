@@ -31,15 +31,13 @@ public class quickSort {
             quickSort(arr, pivotIndex + 1, high);
         }
     }
-    static int partition(int[] arr, int low, int high)
-    {
+    static int partition(int[] arr, int low, int high) {
         int pivot = low;
         int i = low + 1;
         int j = high;
 
         while (i <= j)
         {
-
             while (i <= j && arr[pivot] > arr[i])
             {
                 i++;
@@ -60,9 +58,6 @@ public class quickSort {
         int temp = arr[j];
         arr[j] = arr[pivot];
         arr[pivot] = temp;
-
         return j;
     }
-
-
 }
