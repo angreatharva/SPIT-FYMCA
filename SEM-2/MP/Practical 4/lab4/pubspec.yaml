@@ -36,6 +36,9 @@ dependencies:
   cupertino_icons: ^1.0.8
   get: ^4.6.6
   get_storage: ^2.1.1
+  file_picker: ^8.3.3
+  flutter_pdfview: ^1.4.0
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:

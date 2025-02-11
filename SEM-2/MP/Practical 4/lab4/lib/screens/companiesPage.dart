@@ -12,7 +12,9 @@ class _CompaniesPageState extends State<CompaniesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Companies"),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text("Companies",style: TextStyle(color: Colors.white),),
+        backgroundColor: Color(0xff1976D2),
       ),
     );
   }

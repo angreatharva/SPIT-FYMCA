@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lab4/screens/companiesPage.dart';
 import 'package:lab4/screens/profilePage.dart';
@@ -50,9 +51,9 @@ class CommonDrawer extends StatelessWidget {
           Divider(),
           ListTile(
             leading: Icon(Icons.logout),
-            title: Text("Logout"),
+            title: Text("Exit App"),
             onTap: () {
-              Get.back();
+              SystemNavigator.pop();
             },
           ),
         ],

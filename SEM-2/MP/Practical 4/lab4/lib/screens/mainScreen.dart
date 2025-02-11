@@ -17,6 +17,13 @@ class _MainScreenState extends State<MainScreen> {
         title: Text("TPO",style: TextStyle(color: Colors.white),),
         backgroundColor: Color(0xff1976D2),
       ),
+      body: Center(
+        child: Text(
+          "Welcome To Training and Placement Office",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 32),
+        ),
+      ),
       drawer: CommonDrawer(),
     );
   }
