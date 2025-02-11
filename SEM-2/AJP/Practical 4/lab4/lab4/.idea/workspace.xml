@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d54e857c-1b1f-4bdf-b6fd-817552563ded" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../../Practical 3/JobPost/.idea/JobPost.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/homePage.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/jobApplication.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/login.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/loginProcess.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/logout.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/register.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/registerProcess.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../demo/demo/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../demo/demo/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../demo/demo/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../demo/demo/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../demo/demo/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../demo/demo/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../demo/demo/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../demo/demo/src/main/webapp/index.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../DAA/.idea/DAA.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/lib/Screens/productDetailsScreen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/commonWidgets/commonDrawer.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/controllers/registrationController.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/screens/companiesPage.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/screens/mainScreen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/screens/profilePage.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/screens/registerPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../SEM-1/WT PRAC/LAB 8/REST API/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../SEM-1/WT PRAC/LAB 8/REST API/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 2/JobPost/JobPost/web/applicationSuccess.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/NIKE_Main.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe1.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe2.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe3.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe4.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe5.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe6.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe7.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe7.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe8.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/assets/images/shoe8.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/lib/Controllers/productScreenController.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/lib/Controllers/productScreenController.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/lib/Screens/cartScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/lib/Screens/cartScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/lib/Screens/homeScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/lib/Screens/homeScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/lib/Screens/productScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/lib/Screens/productScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 3/lab3/pubspec.yaml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../.." />
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="2sqN3Hzp9u8hRCF3JpmiGGaDsGm" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Smart Tomcat.Unnamed.executor": "Run",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/SPIT-FYMCA/SEM-2/AJP/Practical 4/lab4/lab4/src/main/webapp",
+    "settings.editor.selected.configurable": "com.poratu.idea.plugins.tomcat.setting.TomcatServersConfigurable"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\SPIT-FYMCA\SEM-2\AJP\Practical 4\lab4\lab4\src\main\webapp" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="com.poratu.idea.plugins.tomcat" nameIsGenerated="true">
+      <predefined_log_file enabled="true" id="Tomcat Localhost Log" />
+      <predefined_log_file enabled="true" id="Tomcat Access Log" />
+      <predefined_log_file id="Tomcat Catalina Log" />
+      <predefined_log_file id="Tomcat Manager Log" />
+      <predefined_log_file id="Tomcat Host Manager Log" />
+      <option name="catalinaBase" value="C:\Users\angre\.SmartTomcat\lab4\lab4" />
+      <option name="contextPath" value="/lab4" />
+      <option name="docBase" value="$PROJECT_DIR$/src/main/webapp" />
+      <option name="envOptions">
+        <map />
+      </option>
+      <option name="extraClassPath" value="" />
+      <option name="tomcatInfo">
+        <TomcatInfo>
+          <option name="name" value="Apache Tomcat/9.0.98" />
+          <option name="path" value="$PROJECT_DIR$/../../../../../../src/apache-tomcat-9.0.98" />
+          <option name="version" value="9.0.98.0" />
+        </TomcatInfo>
+      </option>
+      <option name="vmOptions" value="" />
+      <module name="lab4" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d54e857c-1b1f-4bdf-b6fd-817552563ded" name="Changes" comment="" />
+      <created>1739178949873</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1739178949873</updated>
+    </task>
+    <servers />
+  </component>
+</project>

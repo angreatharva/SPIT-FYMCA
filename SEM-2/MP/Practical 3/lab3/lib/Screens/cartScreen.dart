@@ -75,10 +75,19 @@ class _CartScreenState extends State<CartScreen> {
                       children: [
                         Column(
                           children: [
-                            Image.asset(
-                              "assets/images/shoe8.png",
-                              height: Get.height * 0.25,
+                            Container(
+                              child: Image.asset(
+                                "assets/images/shoe8.png",
+                                height: Get.height * 0.15,
+                              ),
                             ),
+
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
                             Text("Nike Free RN NN",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w900, fontSize: 20),
@@ -87,14 +96,15 @@ class _CartScreenState extends State<CartScreen> {
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500, fontSize: 20),
                                 textAlign: TextAlign.center),
+                            Text("MRP : ₹ 8,257.00",
+                                style: TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 15),
+                                textAlign: TextAlign.center),
                           ],
-                        ),
-                        Text("MRP : ₹ 8,257.00",
-                            style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15),
-                            textAlign: TextAlign.center),
+                        )
+
                       ],
                     ),
                   ),
@@ -112,30 +122,40 @@ class _CartScreenState extends State<CartScreen> {
                       children: [
                         Column(
                           children: [
-                            Image.asset(
-                              "assets/images/NIKE_Main.jpeg",
-                              height: Get.height * 0.25,
-                              width: Get.width * 0.55,
+                            Container(
+                              child: Image.asset(
+                                "assets/images/shoe7.png",
+                                height: Get.height * 0.15,
+                              ),
                             ),
-                            Text("Nike Revolution RN ",
+
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text("Nike Free RN NN",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w900, fontSize: 20),
                                 textAlign: TextAlign.center),
-                            Text("Men's Running Shoes",
+                            Text("Men's Road Running Shoes",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500, fontSize: 20),
                                 textAlign: TextAlign.center),
+                            Text("MRP : ₹ 8,257.00",
+                                style: TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 15),
+                                textAlign: TextAlign.center),
                           ],
-                        ),
-                        Text("MRP : ₹ 4,499.00",
-                            style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15),
-                            textAlign: TextAlign.center),
+                        )
+
                       ],
                     ),
                   ),
+
                 ],
               )),
               Column(
@@ -323,10 +343,10 @@ class _CartScreenState extends State<CartScreen> {
                 height: Get.height * 0.04,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: Colors.red,
+                  color: Color(0xffEB595F),
                   borderRadius: BorderRadius.circular(8)
                 ),
-                child: Text("Place Order"),
+                child: Text("Place Order",style: TextStyle(color: Colors.white),),
               )
             ],
           ),

@@ -35,7 +35,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                 ),
               ),
               Image.asset(
-                "assets/images/NIKE_Main.jpeg",
+                "assets/images/NIKE_Main.png",
                 height: Get.height * 0.2,
               ),
               Container(
