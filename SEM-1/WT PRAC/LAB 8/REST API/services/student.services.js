@@ -1,4 +1,4 @@
-const StudentModel = require("../model/student.Model");
+const StudentModel = require("../model/student.model");
 
 class StudentService {
   static async registerStudent(data) {
@@ -21,6 +21,38 @@ class StudentService {
   static async getStudentById(studentId) {
     try {
       return await StudentModel.findOne({ studentId: studentId });
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async updateStudent(studentId, updateData) {
+    try {
+      return await StudentModel.findOneAndUpdate(
+        { studentId: studentId },
+        updateData,
+        { new: true }
+      );
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async patchStudent(studentId, patchData) {
+    try {
+      return await StudentModel.findOneAndUpdate(
+        { studentId: studentId },
+        { $set: patchData },
+        { new: true }
+      );
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async deleteStudent(studentId) {
+    try {
+      return await StudentModel.findOneAndDelete({ studentId: studentId });
     } catch (e) {
       throw e;
     }
