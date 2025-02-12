@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:get/get.dart';
+import 'package:lab4/screens/mainScreen.dart';
 
 import '../controllers/registrationController.dart';
 
@@ -901,7 +902,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             Focus(
                               onFocusChange: (hasFocus) {
                                 if (!hasFocus) {
-                                  formController.validateSem5(
+                                  formController.validateSem6(
                                       formController.sem6.value.text);
                                 }
                               },
@@ -995,54 +996,26 @@ class _RegisterPageState extends State<RegisterPage> {
                                   FilteringTextInputFormatter.allow(
                                       RegExp(r'^\d*\.?\d*')),
                                 ],
-                                onChanged: (value) {
-                                  formController.phoneNumber.value.value =
-                                      TextEditingValue(
-                                    text: value,
-                                    selection: TextSelection.collapsed(
-                                        offset: value.length),
-                                  );
-                                  formController.validatePhoneNumber(value);
-                                },
+
                                 decoration: InputDecoration(
+                                  hintText: 'Your CGPA',
                                   contentPadding: EdgeInsets.symmetric(
                                       horizontal: 16, vertical: 12),
-                                  labelText: 'Please Enter your Percentage',
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: formController
-                                              .phoneNumberError.value.isEmpty
-                                          ? Colors.black
-                                          : Colors.red,
+                                      color:  Colors.black,
                                       width: 2,
                                     ),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: formController
-                                              .phoneNumberError.value.isEmpty
-                                          ? Colors.black
-                                          : Colors.red,
-                                      width: 1.5,
+                                      color:Colors.black,
+                                      width: 2,
                                     ),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1.5),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1.5),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  errorText: formController
-                                          .phoneNumberError.value.isEmpty
-                                      ? null
-                                      : formController.phoneNumberError.value,
-                                  errorStyle: TextStyle(color: Colors.red),
+
                                   filled: true,
                                   fillColor: Colors.white,
                                 ),
@@ -1069,54 +1042,26 @@ class _RegisterPageState extends State<RegisterPage> {
                                   FilteringTextInputFormatter.allow(
                                       RegExp(r'^\d*\.?\d*')),
                                 ],
-                                onChanged: (value) {
-                                  formController.phoneNumber.value.value =
-                                      TextEditingValue(
-                                    text: value,
-                                    selection: TextSelection.collapsed(
-                                        offset: value.length),
-                                  );
-                                  formController.validatePhoneNumber(value);
-                                },
+
                                 decoration: InputDecoration(
+                                  hintText: 'Your Percentage',
                                   contentPadding: EdgeInsets.symmetric(
                                       horizontal: 16, vertical: 12),
-                                  labelText: 'Please Enter your Percentage',
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: formController
-                                              .phoneNumberError.value.isEmpty
-                                          ? Colors.black
-                                          : Colors.red,
+                                      color: Colors.black,
                                       width: 2,
                                     ),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: formController
-                                              .phoneNumberError.value.isEmpty
-                                          ? Colors.black
-                                          : Colors.red,
-                                      width: 1.5,
+                                      color: Colors.black,
+                                      width: 2,
                                     ),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1.5),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1.5),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  errorText: formController
-                                          .phoneNumberError.value.isEmpty
-                                      ? null
-                                      : formController.phoneNumberError.value,
-                                  errorStyle: TextStyle(color: Colors.red),
+
                                   filled: true,
                                   fillColor: Colors.white,
                                 ),
@@ -1976,7 +1921,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 ],
               ),
             ),
-
             Divider(),
             Container(
               child: Column(
@@ -1997,7 +1941,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       )),
                   SizedBox(height: Get.height * 0.02),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       formController.pickProfileImage();
                     },
                     child: Container(
@@ -2018,8 +1962,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   Obx(() {
                     if (formController.profileImagePath.value != null) {
                       return CircleAvatar(
-                        radius:100,
-                        backgroundImage: FileImage(File(formController.profileImagePath.value)),
+                        radius: 100,
+                        backgroundImage: FileImage(
+                            File(formController.profileImagePath.value)),
                       );
                     } else {
                       return Text("No profile image selected.");
@@ -2028,7 +1973,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 ],
               ),
             ),
-
             Divider(),
             Container(
               child: Column(
@@ -2049,7 +1993,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       )),
                   SizedBox(height: Get.height * 0.02),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       formController.pickFile();
                     },
                     child: Container(
@@ -2087,15 +2031,19 @@ class _RegisterPageState extends State<RegisterPage> {
                 ],
               ),
             ),
-
-
-
             GestureDetector(
               onTap: () {
                 if (formController.isFormValid()) {
                   print('Valid');
                   formController.storeFormValues();
                   formController.resetForm();
+                  Get.snackbar(
+                    "Registered",
+                    "You are Registered Successfully",
+                    snackPosition: SnackPosition.TOP,
+                    backgroundColor: Colors.green,
+                  );
+                  Get.off(MainScreen());
                 } else {
                   print('InValid');
                   Get.snackbar(

@@ -10,12 +10,14 @@ class FormController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    profileImagePath.value = box.read("profileImage") ?? '';
+    selectedFilePath.value = box.read("resume") ?? '';
     requestPermissions();
   }
-  RxString selectedFilePath = RxString('');
-  RxString profileImagePath = RxString('');
-  RxBool isPdf = false.obs;
-  RxBool isImage = false.obs;
+  var selectedFilePath = "".obs;
+  var profileImagePath = "".obs;
+  var isPdf = false.obs;
+  var isImage = false.obs;
 
   Future<void> requestPermissions() async {
     await Permission.storage.request();
@@ -154,13 +156,13 @@ class FormController extends GetxController {
 
   void validateCollegeNameGraduation(String value) {
     if (value.isEmpty) {
-      collegeNameErrorSSC.value = 'College Name is required';
+      collegeNameErrorGraduation.value = 'College Name is required';
     } else if (value.length < 2) {
-      collegeNameErrorSSC.value = 'College Name must be at least 2 characters';
+      collegeNameErrorGraduation.value = 'College Name must be at least 2 characters';
     } else if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
-      collegeNameErrorSSC.value = 'College Name can only contain letters';
+      collegeNameErrorGraduation.value = 'College Name can only contain letters';
     } else {
-      collegeNameErrorSSC.value = '';
+      collegeNameErrorGraduation.value = '';
     }
   }
 
@@ -225,7 +227,7 @@ class FormController extends GetxController {
       collegeNameErrorSSC.value = 'College Name is required';
     } else if (value.length < 2) {
       collegeNameErrorSSC.value = 'College Name must be at least 2 characters';
-    } else if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+    } else if (!RegExp(r"^[a-zA-Z\s.']+$").hasMatch(value)) {
       collegeNameErrorSSC.value = 'College Name can only contain letters';
     } else {
       collegeNameErrorSSC.value = '';
@@ -272,7 +274,7 @@ class FormController extends GetxController {
       collegeNameErrorHSC.value = 'College Name is required';
     } else if (value.length < 2) {
       collegeNameErrorHSC.value = 'College Name must be at least 2 characters';
-    } else if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+    } else if (!RegExp(r"^[a-zA-Z\s.']+$").hasMatch(value)) {
       collegeNameErrorHSC.value = 'College Name can only contain letters';
     } else {
       collegeNameErrorHSC.value = '';
@@ -281,7 +283,7 @@ class FormController extends GetxController {
 
   void validateYearOfPassingHSC(String value) {
     if (value.isEmpty) {
-      yearOfPassingErrorHSC.value = 'YEar of Passing is required';
+      yearOfPassingErrorHSC.value = 'Year of Passing is required';
     } else {
       yearOfPassingErrorHSC.value = '';
     }
@@ -414,6 +416,10 @@ class FormController extends GetxController {
       box.write('marksObtainedHSC', marksObtainedHSC.value.text);
       box.write('totalMarksHSC', totalMarksHSC.value.text);
       box.write('percentageHSC', percentageHSC.value.text);
+      box.write('profileImage', profileImagePath.value);
+      box.write('resume', selectedFilePath.value);
+      box.write('isPdf', isPdf.value);
+
 
       print('Form data stored successfully!');
   }
