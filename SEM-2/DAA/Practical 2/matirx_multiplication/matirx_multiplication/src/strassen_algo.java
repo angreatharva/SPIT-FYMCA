@@ -48,7 +48,7 @@ public class strassen_algo {
         System.out.println("Matrix 1: "+ Arrays.deepToString(mat1));
         System.out.println("Matrix 2: "+Arrays.deepToString(mat2));
 
-        res = strassen(mat1,mat1);
+        res = strassen(mat1,mat2);
 
         System.out.println("Resultant Matrix: "+Arrays.deepToString(res));
     }
