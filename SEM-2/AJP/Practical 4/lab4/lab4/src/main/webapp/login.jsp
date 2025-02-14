@@ -7,73 +7,123 @@
     <title>Login - Job Portal</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
-            padding: 2rem;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
-        .form-container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 2rem;
+
+        .login-container {
+            background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 400px;
+            max-width: 90%; /* Responsive width */
         }
+
+        .login-form {
+            padding: 30px;
+        }
+
         h2 {
-            color: #2c5282;
             text-align: center;
+            color: #333;
+            margin-bottom: 20px;
         }
-        .error {
-            color: #e53e3e;
-            margin-bottom: 1rem;
-            text-align: center;
+
+        .form-group {
+            margin-bottom: 20px;
         }
+
         label {
             display: block;
-            margin-top: 1rem;
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 8px;
         }
-        input {
+
+        .form-control {
             width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border: 1px solid #e2e8f0;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
             border-radius: 4px;
+            box-sizing: border-box; /* Prevents padding from affecting width */
         }
-        button {
-            width: 100%;
-            padding: 0.75rem;
-            background-color: #2c5282;
-            color: white;
+
+        .form-control:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .btn-primary {
+            background-color: #343a40;
+            color: #fff;
+            padding: 12px 20px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s;
         }
-        button:hover {
-            background-color: #2b6cb0;
+
+        .btn-primary:hover {
+            background-color: #494E53;
         }
+
         .register-link {
             text-align: center;
-            margin-top: 1rem;
+            margin-top: 20px;
+        }
+
+        .register-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h2>Login to Job Portal</h2>
-        <% if (request.getParameter("error") != null) { %>
-            <div class="error">Invalid username or password</div>
-        <% } %>
-        <form action="loginProcess.jsp" method="POST">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            
-            <button type="submit">Login</button>
-        </form>
-        <div class="register-link">
-            Don't have an account? <a href="register.jsp">Register here</a>
+    <div class="login-container">
+        <div class="login-form">
+            <h2>Login to Job Portal</h2>
+            <% if (request.getParameter("error") != null) { %>
+                <div class="error">Invalid username or password</div>
+            <% } %>
+            <form action="loginProcess.jsp" method="POST">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <div class="register-link">
+                Don't have an account? <a href="register.jsp">Register here</a>
+            </div>
         </div>
     </div>
 </body>

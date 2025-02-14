@@ -6,9 +6,19 @@
   <component name="ChangeListManager">
     <list default="true" id="d54e857c-1b1f-4bdf-b6fd-817552563ded" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/android/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/homePage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/homePage.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/jobApplication.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/jobApplication.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/login.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/loginProcess.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/loginProcess.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/logout.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/logout.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/register.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/register.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/registerProcess.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/registerProcess.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/commonWidgets/commonDrawer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/commonWidgets/commonDrawer.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/controllers/registrationController.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/controllers/registrationController.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/screens/registerPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/screens/registerPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/screens/companiesPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/screens/companiesPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/screens/profilePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/lib/screens/profilePage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 4/lab4/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

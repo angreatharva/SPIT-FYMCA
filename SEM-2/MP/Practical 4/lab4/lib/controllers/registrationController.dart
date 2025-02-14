@@ -18,6 +18,7 @@ class FormController extends GetxController {
   var profileImagePath = "".obs;
   var isPdf = false.obs;
   var isImage = false.obs;
+  var isProfileComplete = false.obs;
 
   Future<void> requestPermissions() async {
     await Permission.storage.request();
@@ -38,10 +39,11 @@ class FormController extends GetxController {
       isImage.value = ['jpg', 'jpeg', 'png'].contains(fileExtension);
     }
   }
+
   Future<void> pickProfileImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowCompression: true,
-      type: FileType.image, // Only allow image selection for profile
+      type: FileType.image,
     );
 
     if (result != null && result.files.single.path != null) {
@@ -419,6 +421,7 @@ class FormController extends GetxController {
       box.write('profileImage', profileImagePath.value);
       box.write('resume', selectedFilePath.value);
       box.write('isPdf', isPdf.value);
+      box.write('isProfileComplete', isProfileComplete.value);
 
 
       print('Form data stored successfully!');

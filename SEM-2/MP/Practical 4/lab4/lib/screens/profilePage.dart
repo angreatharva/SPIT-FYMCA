@@ -18,6 +18,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    var isProfileComplete = formController.box.read("isProfileComplete");
     var resumeBox = formController.box.read("resume");
     var imageBox = formController.box.read("profileImage");
     var isPdf = formController.box.read("isPdf");
@@ -38,14 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         backgroundColor: Color(0xff1976D2),
       ),
-      body: resumeBox != null &&
-              imageBox != null &&
-              collegeNameGraduation != null &&
-              CGPA != null &&
-              collegeNameSSC != null &&
-              percentageSSC != null &&
-              collegeNameHSC != null &&
-              percentageHSC != null
+      body: isProfileComplete != null
           ? SingleChildScrollView(
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -13,7 +13,7 @@ class CommonDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final FormController formController = Get.put(FormController());
-
+    var isProfileComplete = formController.box.read("isProfileComplete");
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -22,7 +22,7 @@ class CommonDrawer extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Color(0xff1976D2),
               ),
-              accountName: formController.box.read("name") != null
+              accountName: isProfileComplete != null
                   ? Text(
                       "Atharva Angre",
                       style: TextStyle(color: Colors.white),
@@ -31,7 +31,7 @@ class CommonDrawer extends StatelessWidget {
                       "----- -----",
                       style: TextStyle(color: Colors.white),
                     ),
-              accountEmail: formController.box.read("emailId") != null
+              accountEmail: isProfileComplete != null
                   ? Text(
                       "angreatharva08@gmail.com",
                       style: TextStyle(color: Colors.white),
@@ -41,7 +41,7 @@ class CommonDrawer extends StatelessWidget {
                       style: TextStyle(color: Colors.white),
                     ),
               currentAccountPicture:
-                  formController.box.read("profileImage") != null
+              isProfileComplete != null
                       ? CircleAvatar(
                           radius: 100,
                           backgroundImage: FileImage(
