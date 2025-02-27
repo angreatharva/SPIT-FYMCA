@@ -4,6 +4,7 @@
 <%
     String username = request.getParameter("username");
     String password = request.getParameter("password");
+    String rememberMe = request.getParameter("rememberMe");
 
     // Basic validation
     if (username == null || username.trim().isEmpty() ||
@@ -36,6 +37,23 @@
         javax.servlet.http.Cookie userCookie = new javax.servlet.http.Cookie("currentUser", username);
         userCookie.setMaxAge(60 * 60 * 24 * 7); // 1 week
         response.addCookie(userCookie);
+
+        // Remember Me functionality
+        if ("on".equals(rememberMe)) {
+            Cookie usernameCookie = new Cookie("savedUsername", username);
+            Cookie passwordCookie = new Cookie("savedPassword", password);
+            usernameCookie.setMaxAge(60 * 60 * 24 * 7); // 1 week
+            passwordCookie.setMaxAge(60 * 60 * 24 * 7); // 1 week
+            response.addCookie(usernameCookie);
+            response.addCookie(passwordCookie);
+        } else {
+            Cookie usernameCookie = new Cookie("savedUsername", "");
+            Cookie passwordCookie = new Cookie("savedPassword", "");
+            usernameCookie.setMaxAge(0);
+            passwordCookie.setMaxAge(0);
+            response.addCookie(usernameCookie);
+            response.addCookie(passwordCookie);
+        }
 
         response.sendRedirect("homePage.jsp");
     } else {
