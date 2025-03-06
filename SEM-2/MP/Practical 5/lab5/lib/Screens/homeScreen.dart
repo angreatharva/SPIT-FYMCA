@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lab5/Screens/visionAndMission.dart';
 import 'package:lab5/Screens/webView.dart';
 import 'package:lab5/commonWidgets/commonDrawer.dart';
+
+import 'facultyInfo.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor:Colors.amber,
           title: const Text('MCA Dept.'),
           leading: Builder(
             builder: (context) {
@@ -32,17 +36,17 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }
           ),
-          bottom: const TabBar(
+          bottom:  TabBar(
             tabs: [
-              Tab(text: 'Faculty Information',),
+              Tab(text: 'Faculty info',),
               Tab(text: 'Vision and Mission',),
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
-            Center(child: Text("Faculty info")),
-            Center(child: Text("Vision and Mission")),
+            Center(child: FacultyInformation(),),
+            const Center(child: VisionAndMission()),
           ],
         ),
         drawer: CommonDrawer(),

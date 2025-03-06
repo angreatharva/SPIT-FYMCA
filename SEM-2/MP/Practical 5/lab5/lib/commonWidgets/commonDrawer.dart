@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '../Screens/events.dart';
+import '../Screens/feedback.dart';
 import '../Screens/webView.dart';
 
 class CommonDrawer extends StatefulWidget {
@@ -36,7 +38,7 @@ class _CommonDrawerState extends State<CommonDrawer> {
               title: Text("Events"),
               onTap: () {
                 Get.back();
-                // Get.to(CompaniesPage());
+                Get.to(EventsPage());
               }),
           ListTile(
               leading: Icon(Icons.phonelink_outlined),
@@ -50,7 +52,7 @@ class _CommonDrawerState extends State<CommonDrawer> {
               title: Text("Feedback"),
               onTap: () {
                 Get.back();
-                // Get.to(RegisterPage());
+                Get.to(FeedBackPage());
               }),
           Divider(),
           ListTile(

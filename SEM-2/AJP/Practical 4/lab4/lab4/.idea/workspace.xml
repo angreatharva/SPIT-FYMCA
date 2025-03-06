@@ -5,12 +5,66 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d54e857c-1b1f-4bdf-b6fd-817552563ded" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/homeScreen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/webView.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/commonWidgets/commonDrawer.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../DAA/Practical 3/Greedy_Algo/Greedy_Algo/src/Fractional_Knapsack.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/events.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/facultyInfo.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/feedback.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/visionAndMission.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/login.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/loginProcess.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/loginProcess.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.smarttomcat/lab4/conf/Catalina/localhost/JobPost.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.smarttomcat/lab4/conf/Catalina/localhost/LAB3_JSP.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.smarttomcat/lab4/conf/Catalina/localhost/WebApplication1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.smarttomcat/lab4/conf/catalina.policy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.smarttomcat/lab4/conf/catalina.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.smarttomcat/lab4/conf/context.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.smarttomcat/lab4/conf/jaspic-providers.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.smarttomcat/lab4/conf/jaspic-providers.xsd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.smarttomcat/lab4/conf/logging.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.smarttomcat/lab4/conf/server.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.smarttomcat/lab4/conf/tomcat-users.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.smarttomcat/lab4/conf/tomcat-users.xsd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/.smarttomcat/lab4/conf/web.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/src/main/webapp/WEB-INF/web.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/src/main/webapp/employers.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/src/main/webapp/homePage.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/src/main/webapp/index.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/src/main/webapp/jobApplication.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/src/main/webapp/login.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/src/main/webapp/loginProcess.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/src/main/webapp/logout.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/src/main/webapp/register.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 5/lab5/src/main/webapp/registerProcess.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 6/JobPortalAWT/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 6/JobPortalAWT/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 6/JobPortalAWT/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 6/JobPortalAWT/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 6/JobPortalAWT/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 6/JobPortalAWT/JobPortalAWT.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 6/JobPortalAWT/JobPortalAWT/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 6/JobPortalAWT/JobPortalAWT/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 6/JobPortalAWT/JobPortalAWT/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 6/JobPortalAWT/JobPortalAWT/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 6/JobPortalAWT/JobPortalAWT/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 6/JobPortalAWT/JobPortalAWT/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 6/JobPortalAWT/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Practical 6/JobPortalAWT/src/RegisterForm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../DAA/Practical 3/job_sequence/job_sequence/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../DAA/Practical 3/job_sequence/job_sequence/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../DAA/Practical 3/job_sequence/job_sequence/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../DAA/Practical 3/job_sequence/job_sequence/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../DAA/Practical 3/job_sequence/job_sequence/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../DAA/Practical 3/job_sequence/job_sequence/job_sequence.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../DAA/Practical 3/job_sequence/job_sequence/src/JobSequencing.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 4/Experiment4.docx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 4/Experiment4.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/homeScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/homeScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/commonWidgets/commonDrawer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/commonWidgets/commonDrawer.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../PA/Practical 5/PA5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../PA/Practical 5/PA5.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

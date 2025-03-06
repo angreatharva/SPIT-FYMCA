@@ -1,0 +1,4 @@
+Experiment 7 Assignment
+1) Design a bot to automate the task of encrypting the PDF document.
+2) Design a bot to extract the text from single PDF and store it in excel sheet.
+3) Design a bot to extract the text from minimum 3 PDF’s and store it in a single excel sheet.
