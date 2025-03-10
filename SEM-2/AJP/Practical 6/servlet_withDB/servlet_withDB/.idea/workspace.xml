@@ -5,18 +5,62 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a4a7b6db-8a7f-46f9-a8c4-4b0473c6564f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/DBConnection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/RegisterServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/UserDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../servlet_withoutDB/servlet_withoutDB/src/main/java/com/example/RegisterServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../servlet_withoutDB/servlet_withoutDB/src/main/java/com/example/RegisterServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../servlet_withoutDB/servlet_withoutDB/src/main/webapp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/../../servlet_withoutDB/servlet_withoutDB/src/main/webapp/index.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/assets/images/1.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/assets/images/2.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/assets/images/3.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/assets/images/4.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/assets/images/5.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/assets/images/6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/assets/images/git.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/assets/images/git1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/assets/images/linkedIn.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/assets/images/profileImage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/assets/images/spit.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/assets/success.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/lib/Screens/homeScreen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/lib/Screens/leaderboard_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/lib/Screens/practice_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/lib/Screens/profile_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/lib/Screens/quiz_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 6/lab_6/lib/Screens/splashScreen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/assets/animation/food_splash.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/assets/animation/success.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/assets/fonts/Jonesy Capitals.otf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/assets/fonts/Jonesy Capitals.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/assets/fonts/Jonesy Script.otf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/assets/fonts/Jonesy Script.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/assets/images/panneerbhurji.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/assets/images/tea.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/lib/Screens/cart_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/lib/Screens/homeScreen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/lib/Screens/restaurantDetailScreen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/lib/Screens/restaurant_details.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/lib/Screens/splashScreen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/lib/controller/RestaurantMenuController.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/lib/routes.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../MP/Practical 7/lab_7/lib/theme.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/DBConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/DBConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practcial 6/Experiment-6.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practcial 7/Experiment-7.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 1/profile/lib/Screens/profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 1/profile/lib/Screens/profile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/2024510001_MP_Practical5.docx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/2024510001_MP_Practical5.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/android/app/src/main/kotlin/com/example/lab5/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/android/app/src/main/kotlin/com/example/lab5/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/events.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/events.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/facultyInfo.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/facultyInfo.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/feedback.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/feedback.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/webView.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/lib/Screens/webView.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/linux/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../MP/Practical 5/lab5/windows/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../package-lock.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

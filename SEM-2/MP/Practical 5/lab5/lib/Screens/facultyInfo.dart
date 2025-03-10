@@ -155,13 +155,13 @@ class _FacultyInformationState extends State<FacultyInformation> {
               children: [
                 const SizedBox(height: 8),
                 Text(
-                  facultyList[index]['header'] ?? '',
-                  style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                  facultyList[index]['header']! ?? '',
+                  style: TextStyle(fontSize: 12, color: Colors.black),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   facultyList[index]['education'] ?? '',
-                  style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                  style: TextStyle(fontSize: 12, color: Colors.black),
                 ),
               ],
             ),

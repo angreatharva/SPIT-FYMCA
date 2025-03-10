@@ -20,8 +20,9 @@ class _WebViewPageState extends State<WebViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:Colors.amber,
       appBar: AppBar(
-        title: Text('WebView Example'),
+        title: Text('WebView'),
       ),
       body: WebViewWidget(controller: controller),
     );

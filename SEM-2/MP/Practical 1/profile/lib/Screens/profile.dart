@@ -125,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   // GitHub
                   GestureDetector(
-                    onTap: () => _launchURL('https://github.com/angreatharva'),
+                    onTap: () => _launchURL('https://mca.spit.ac.in/index.php/notifications/'),
                     child: Container(
                       height: Get.height * 0.08,
                       width: Get.width * 0.2,
