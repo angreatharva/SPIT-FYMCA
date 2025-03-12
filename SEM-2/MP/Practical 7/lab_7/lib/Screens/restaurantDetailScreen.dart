@@ -127,12 +127,12 @@ class RestaurantDetailScreen extends StatelessWidget {
                       children: items.map<Widget>((item) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 16),
+                              vertical: 15, horizontal: 16),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               // Checkbox (if needed)
-                              Icon(Icons.check_box_outline_blank,
+                              Icon(Icons.indeterminate_check_box_outlined,
                                   color: Colors.green),
 
                               // Food Name and Price
@@ -169,7 +169,7 @@ class RestaurantDetailScreen extends StatelessWidget {
                                 ),
 
                                 Positioned(
-                                  top:40,
+                                  top:50,
                                   left:5,
                                   child: ElevatedButton(
                                     onPressed: () {}, // Add to cart functionality

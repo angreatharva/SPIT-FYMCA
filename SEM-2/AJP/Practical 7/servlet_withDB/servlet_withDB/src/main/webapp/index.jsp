@@ -51,7 +51,7 @@
 </head>
 <body>
     <div class="container">
-        <h2>Register Here</h2>
+        <h2>Register With Database</h2>
         <form action="register" method="post">
             <input type="text" name="name" placeholder="Enter Name" required>
             <input type="email" name="email" placeholder="Enter Email" required>
