@@ -1,0 +1,21 @@
+Atharva Vasant Angre Practical 3 2024510001 
+Aim: Design Calculator using IF action 
+Objectives: To understand how to take user input and use if else conditions on it. 
+Tools Used: Automation Anywhere. 
+Concept: A calculator bot can be created in Automation Anywhere using the IF action to process user 
+input and perform arithmetic operations based on conditions. 
+Problem Statement: To run a simple calculator bot which takes 2 numbers and 1 operator. By using 
+the if else condition and return the expected outputs. 
+ 
+ 
+Atharva Vasant Angre Practical 3 2024510001 
+ 
+ 
+Atharva Vasant Angre Practical 3 2024510001 
+ 
+ 
+Observation: 
+The bot takes two numerical inputs and an operator as user input. 
+IF conditions are used to check the operator and perform the corresponding calculation. 
+The final result is displayed using a message box, ensuring correct execution based on user-provided 
+inputs. 

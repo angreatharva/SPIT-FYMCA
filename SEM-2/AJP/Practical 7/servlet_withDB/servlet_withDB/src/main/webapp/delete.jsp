@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register User</title>
+    <title>Delete User</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -110,6 +110,12 @@
         .btn:hover {
             background-color: #2980b9;
         }
+        .delete-btn {
+            background-color: #e74c3c;
+        }
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
         .alert {
             padding: 15px;
             border-radius: 4px;
@@ -147,28 +153,18 @@
         </div>
 
         <div class="card">
-            <div class="card-icon">➕</div>
-            <h2>Register New User</h2>
+            <div class="card-icon">❌</div>
+            <h2>Delete User</h2>
 
             <div id="message" class="alert"></div>
 
-            <form id="registerForm" action="register" method="post">
+            <form id="deleteForm">
                 <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name" required>
+                    <label for="deleteEmail">Email Address</label>
+                    <input type="email" id="deleteEmail" class="form-control" placeholder="Enter user email to delete" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email address" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Create a password" required>
-                </div>
-
-                <button type="submit" class="btn">Register User</button>
+                <button type="submit" class="btn delete-btn">Delete User</button>
             </form>
         </div>
 
@@ -178,46 +174,33 @@
     </div>
 
     <script>
-        // Check if there's a message parameter in the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const message = urlParams.get('message');
-        const messageDiv = document.getElementById('message');
+        document.getElementById('deleteForm').addEventListener('submit', function(event) {
+            event.preventDefault();
 
-        if (message) {
-            messageDiv.style.display = 'block';
-            if (message.includes('successfully')) {
-                messageDiv.className = 'alert alert-success';
-            } else {
-                messageDiv.className = 'alert alert-danger';
+            const email = document.getElementById('deleteEmail').value;
+            const messageDiv = document.getElementById('message');
+
+            // Confirm deletion
+            if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+                return;
             }
-            messageDiv.textContent = decodeURIComponent(message);
-        }
 
-        // For AJAX form submission
-       document.getElementById('registerForm').addEventListener('submit', function(event) {
-           event.preventDefault();
-
-           // Create a URL-encoded string from the form data
-           const formData = new FormData(this);
-           const urlEncodedData = new URLSearchParams(formData).toString();
-
-           fetch('register', {
-               method: 'POST',
-               headers: {
-                   'Content-Type': 'application/x-www-form-urlencoded',
-                   'Accept': 'application/json'
-               },
-               body: urlEncodedData
-           })
-           .then(response => response.json())
-           .then(data => {
+            fetch('register', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            })
+            .then(response => response.json())
+            .then(data => {
                 messageDiv.style.display = 'block';
+
                 if (data.message.includes('successfully')) {
                     messageDiv.className = 'alert alert-success';
-                    document.getElementById('registerForm').reset();
+                    document.getElementById('deleteForm').reset();
                 } else {
                     messageDiv.className = 'alert alert-danger';
                 }
+
                 messageDiv.textContent = data.message;
             })
             .catch(error => {

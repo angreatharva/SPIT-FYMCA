@@ -5,13 +5,28 @@
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
-    <servlet-name>RegisterServlet</servlet-name>
-    <servlet-class>com.example.RegisterServlet</servlet-class>
+    <servlet-name>UserServlet</servlet-name>
+    <servlet-class>com.example.UserServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>RegisterServlet</servlet-name>
+    <servlet-name>UserServlet</servlet-name>
     <url-pattern>/register</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>UserServlet</servlet-name>
+    <url-pattern>/users</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>UserServlet</servlet-name>
+    <url-pattern>/updateUser</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>UserServlet</servlet-name>
+    <url-pattern>/deleteUser</url-pattern>
   </servlet-mapping>
 
   <welcome-file-list>

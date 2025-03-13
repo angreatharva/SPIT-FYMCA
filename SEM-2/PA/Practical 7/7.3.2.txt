@@ -1,0 +1,127 @@
+Atharva Vasant Angre Practical 2 2024510001 
+Aim: Study of Actions of Automation Anywhere 
+ 
+Objectives: To understand which action does and the actions functionality. 
+ 
+Tools Used: Automation Anywhere. 
+ 
+Concept: Understanding the actions and their functionality. 
+ 
+Problem Statement: To understand different actions and their functionality. 
+ 
+1) Database Package 
+The Database Package is a robust tool that enables seamless interaction between bots and various 
+databases such as MySQL, SQL Server, and Oracle. This package automates data retrieval, updates, 
+and transactions, ensuring accuracy, efficiency, and security without manual effort. 
+Key Functions in the Database Package: 
+• Connect: Establishes a connection with the database before performing any operations. 
+• Begin Database Transaction: Groups multiple operations into a single unit, ensuring consistency. 
+• Read From: Retrieves records from the database using a query. 
+• Insert/Update/Delete: Facilitates inserting new records, updating existing ones, and deleting 
+unnecessary data. 
+• Run Stored Procedure: Executes predefined procedures in the database for complex operations. 
+• Export Datatable: Saves retrieved data in a table for further automation processing. 
+• End Database Transaction: Finalizes and commits all changes made during the transaction. 
+• Disconnect: Closes the database connection after completing the required operations. 
+  
+Atharva Vasant Angre Practical 2 2024510001 
+2) Error Handler Package 
+In Automation Anywhere, effective error handling is crucial for building resilient and reliable bots. 
+The Error Handler command provides a structured approach to manage exceptions and ensure that 
+bots can handle unexpected situations gracefully. This command comprises several key actions: 
+1. Try Action: This action contains the set of operations that you want to monitor for potential 
+errors. If an error occurs within this block, the control is transferred to the corresponding Catch 
+action. 
+2. Catch Action: When an error is encountered in the Try block, the Catch action is executed. Here, 
+you can define specific steps to handle the error, such as logging the error details, sending 
+notifications, or executing alternative logic to mitigate the issue. 
+3. Throw Action: Within the Try block, you can use the Throw action to deliberately raise an 
+exception. This is useful for testing error handling mechanisms or when a specific condition 
+warrants an intentional error to be caught by the Catch block. 
+4. Finally Action: This action is executed after the Try and Catch blocks, regardless of whether an 
+error occurred or not. It's typically used for cleanup activities, such as closing files or releasing 
+resources, ensuring that certain operations are performed at the end of the error handling process. 
+ 
+  
+  
+ 
+ 
+ 
+ 
+ 
+  
+Atharva Vasant Angre Practical 2 2024510001 
+3) Excel Basic Package 
+Designed for users who need to automate spreadsheet tasks without installing Microsoft Excel, the 
+Excel Basic Package leverages the Apache POI API to process XLSX files. However, it does not 
+support XLS or CSV formats. 
+When to Use the Excel Basic Package: 
+• If Excel is not installed on the system. 
+• For automating simple Excel operations like reading, writing, and modifying data. 
+• When working with files up to 30 MB in size. 
+Key Features: 
+• Open: Opens an Excel file in read-only or edit mode. 
+• Close: Closes an Excel file and saves modifications if needed. 
+• Set Cell: Writes a value to a specific cell. 
+• Get Single Cell: Retrieves the value of a single cell. 
+• Get Multiple Cells: Extracts data from multiple cells into a table variable. 
+• Get Cell Address: Provides the active cell's location. 
+• Get Column Name: Returns the column letter of a given cell. 
+• Get Row Number: Retrieves the row number of a specified cell. 
+• Go to Cell: Moves the cursor to a particular cell. 
+• Delete Cells: Removes specified or active cells. 
+• Replace: Updates values in a worksheet. 
+• Find: Locates specific values within a worksheet. 
+• Switch to Sheet: Activates a particular worksheet within a workbook. 
+• Save Workbook: Saves the current file. 
+This package is ideal for basic Excel automation tasks, but for advanced operations, the Excel Advanced 
+Package is recommended. 
+ 
+Atharva Vasant Angre Practical 2 2024510001 
+4) PDF Package 
+The PDF Package streamlines the automation of PDF-related tasks, eliminating the need for third-
+party PDF readers. It provides tools to efficiently handle and manage PDF files. 
+Key Actions in the PDF Package: 
+• Encrypt Document: Secures a PDF using encryption methods like RC4 40-bit, RC4 128-bit, or 
+AES 128-bit, with optional password protection. 
+• Decrypt Document: Unlocks an encrypted PDF. 
+• Extract Text: Retrieves text content from a PDF and saves it as a text file. 
+• Extract Images: Saves images from a PDF document. 
+• Extract Field: Extracts specific field values from an editable PDF and assigns them to variables. 
+• Get Properties: Retrieves metadata and document properties. 
+• Merge Document: Combines multiple PDFs into one. 
+• Split Document: Breaks a PDF into smaller sections based on set criteria. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+Atharva Vasant Angre Practical 2 2024510001 
+5) Email Package 
+The Email Package facilitates automation of email-related tasks using various protocols, including 
+Exchange Web Services (EWS), Microsoft Outlook, and other email servers. It supports EWS, POP3, 
+SMTP, and IMAP, enabling comprehensive email management. 
+Key Actions in the Email Package: 
+• Connect: Establishes a connection with an email server before performing tasks. 
+• Disconnect: Closes the email server connection post-task completion. 
+• Send: Sends emails with specified recipients, subject, body, and attachments—no prior 
+connection required. 
+• Forward: Forwards emails to specified recipients, with optional comments and attachments. 
+• Reply: Replies to an email, either to the sender or all recipients, with optional attachments. 
+• Save Attachments: Downloads attachments from selected emails to a designated folder. 
+• Move: Transfers emails from one folder to another for better organization. 
+• Delete All: Deletes all emails (read/unread) from a specified folder. 
+• Delete: Removes a particular email—commonly used within loops. 
+• Change Status: Modifies email statuses, such as marking messages as read/unread. 
+• Check if Folder Exists: Verifies the existence of a folder within the email server. 
+ 
+Observation: 
+The study of actions helps in understanding how different tools make automation easier. The Database 
+Package allows bots to work with databases by retrieving, updating, and managing data. The Error 
+Handler Package helps bots handle mistakes smoothly without stopping the process. The Excel Basic 
+Package automates simple spreadsheet tasks even if Microsoft Excel is not installed. The PDF Package 
+makes it easy to work with PDFs by extracting text, merging, or splitting files. Lastly, the Email Package 
+automates email tasks like sending, receiving, and organizing messages, making work more efficient. 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register User</title>
+    <title>Update User</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -147,28 +147,28 @@
         </div>
 
         <div class="card">
-            <div class="card-icon">➕</div>
-            <h2>Register New User</h2>
+            <div class="card-icon">🔄</div>
+            <h2>Update User</h2>
 
             <div id="message" class="alert"></div>
 
-            <form id="registerForm" action="register" method="post">
+            <form id="updateForm">
                 <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name" required>
+                    <label for="oldEmail">Current Email</label>
+                    <input type="email" id="oldEmail" class="form-control" placeholder="Enter current email address" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email address" required>
+                    <label for="newName">New Name</label>
+                    <input type="text" id="newName" class="form-control" placeholder="Enter new name" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Create a password" required>
+                    <label for="newEmail">New Email</label>
+                    <input type="email" id="newEmail" class="form-control" placeholder="Enter new email address" required>
                 </div>
 
-                <button type="submit" class="btn">Register User</button>
+                <button type="submit" class="btn">Update User</button>
             </form>
         </div>
 
@@ -178,46 +178,30 @@
     </div>
 
     <script>
-        // Check if there's a message parameter in the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const message = urlParams.get('message');
-        const messageDiv = document.getElementById('message');
+        document.getElementById('updateForm').addEventListener('submit', function(event) {
+            event.preventDefault();
 
-        if (message) {
-            messageDiv.style.display = 'block';
-            if (message.includes('successfully')) {
-                messageDiv.className = 'alert alert-success';
-            } else {
-                messageDiv.className = 'alert alert-danger';
-            }
-            messageDiv.textContent = decodeURIComponent(message);
-        }
+            const oldEmail = document.getElementById('oldEmail').value;
+            const newName = document.getElementById('newName').value;
+            const newEmail = document.getElementById('newEmail').value;
+            const messageDiv = document.getElementById('message');
 
-        // For AJAX form submission
-       document.getElementById('registerForm').addEventListener('submit', function(event) {
-           event.preventDefault();
-
-           // Create a URL-encoded string from the form data
-           const formData = new FormData(this);
-           const urlEncodedData = new URLSearchParams(formData).toString();
-
-           fetch('register', {
-               method: 'POST',
-               headers: {
-                   'Content-Type': 'application/x-www-form-urlencoded',
-                   'Accept': 'application/json'
-               },
-               body: urlEncodedData
-           })
-           .then(response => response.json())
-           .then(data => {
+            fetch('register', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ oldEmail, name: newName, email: newEmail })
+            })
+            .then(response => response.json())
+            .then(data => {
                 messageDiv.style.display = 'block';
+
                 if (data.message.includes('successfully')) {
                     messageDiv.className = 'alert alert-success';
-                    document.getElementById('registerForm').reset();
+                    document.getElementById('updateForm').reset();
                 } else {
                     messageDiv.className = 'alert alert-danger';
                 }
+
                 messageDiv.textContent = data.message;
             })
             .catch(error => {

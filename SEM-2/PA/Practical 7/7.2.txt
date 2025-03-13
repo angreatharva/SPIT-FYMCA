@@ -1,4 +1,131 @@
-Experiment 7 Assignment
-1) Design a bot to automate the task of encrypting the PDF document.
-2) Design a bot to extract the text from single PDF and store it in excel sheet.
-3) Design a bot to extract the text from minimum 3 PDF’s and store it in a single excel sheet.
+Atharva Vasant Angre Practical 6 2024510001 
+ 
+Aim: To Automate the excel. 
+Objectives: Understand how to Automate excel using the Excel and the Advance Excel 
+Actions. 
+Tools Used: Automation anywhere tools 
+Concept: 
+1. Excel advanced: Open: The Open action in Excel within an Automation Anywhere bot is 
+used to launch an Excel application instance and open a specified workbook. 
+2. Excel advanced: Go to Cell: Moves the active pointer to a designated cell (e.g., A1) within 
+the workbook. Sets the stage for precise data operations such as reading or writing. 
+3. Loop: Repeats a set of actions either a fixed number of times or until a condition is met. 
+Automates repetitive tasks within the bot’s workflow efficiently. 
+4.Number:toString: Converts a numeric value into its string representation. 
+Enables seamless integration of numbers with text for further processing. 
+5. Excel advanced: Set cell Formula: Inserts a specified Excel formula into a target cell for 
+dynamic calculations. Automates computation by applying standard Excel functions to data. 
+6. Excel advanced: Go to next empty cell: Navigates to the next available empty cell in a 
+column or row. Facilitates appending new data without overwriting existing content. 
+7. Number: Increment: Increases a numeric variable by a defined step, typically by one. 
+Supports counter operations and iterative processes within loops. 
+ 
+Problem Statement: Automate excel using the Excel and the Advance Excel. 
+ 
+ 
+ 
+ 
+Atharva Vasant Angre Practical 6 2024510001 
+ 
+Solution: 
+Step1: Open Workbook” action by specifying the full file path 
+ 
+Step 2: Select the “Excel Advanced – Go to Cell” action from the action palette. Input the 
+target cell reference M3. 
+ 
+Step 3: Now select the loop and run 69 times to calculate the 69 student marks. 
+Atharva Vasant Angre Practical 6 2024510001 
+ 
+ 
+Step 4: Create two number variables to define the range for 10 experiments. It will start 
+from row 3 excluding the header part. 
+ 
+ 
+Step 5: Convert number to string 
+Atharva Vasant Angre Practical 6 2024510001 
+ 
+ 
+ 
+Step 6: Choose the Excel Advanced – Set Cell Formula action and choose the active cell and 
+apply the formula to calculate total sum 
+ 
+Step 7: Select the Excel Advanced – Go to next empty  cell action again, to go to next cell. 
+Atharva Vasant Angre Practical 6 2024510001 
+ 
+ 
+Step 8: Now increment both the number by 1 to calculate the total marks of second row. 
+ 
+ 
+After these it will calculate all the marks of student 
+ 
+Now calculating the result analysis using standard deviation. 
+ 
+Step 9: Create the list and add all the column in to the list for e.g. C to M 
+ 
+Atharva Vasant Angre Practical 6 2024510001 
+ 
+ 
+Step 10:  Now iterate over the list using loop 
+ 
+Step 11: Store the current list item into variable currentAlphabet. Now select the Excel 
+Advanced -> go to cell and specifies the cell $currentAlphabet$78; 
+Atharva Vasant Angre Practical 6 2024510001 
+ 
+ 
+Step 12: Now calculate the average using Excel Advanced -> set cell Formula and specifies 
+the formula 
+ 
+Step 13: Now go to next empty cell by using Excel Advanced -> go to next empty cell 
+Atharva Vasant Angre Practical 6 2024510001 
+ 
+ 
+ 
+Step 14: Select Excel Advanced -> set cell formula to calculate the standard deviation 
+ 
+Step 15: Now go to next empty cell by using Excel Advanced -> go to next empty cell 
+Atharva Vasant Angre Practical 6 2024510001 
+ 
+ 
+ 
+Step 16: Select Excel Advanced -> set cell formula to calculate the Upper limit 
+ 
+Step 17: Now go to next empty cell by using Excel Advanced -> go to next empty cell 
+Atharva Vasant Angre Practical 6 2024510001 
+ 
+ 
+ 
+Step 18: Select Excel Advanced -> set cell formula to calculate the Lower limit 
+ 
+Step 19: Now go to next empty cell by using Excel Advanced -> go to next empty cell 
+Atharva Vasant Angre Practical 6 2024510001 
+ 
+ 
+ 
+Step 20: Select Excel Advanced -> set cell formula to calculate the NO.OF STUDENTS IN UPPER 
+TO LOWER RANGE 
+ 
+Step 21: Now go to next empty cell by using Excel Advanced -> go to next empty cell 
+Atharva Vasant Angre Practical 6 2024510001 
+ 
+ 
+Step 22: Select Excel Advanced -> set cell formula to calculate the CO ATTAINMENT 
+ 
+And after this loop will go the second item in the list until the items exhausted 
+ 
+  
+Atharva Vasant Angre Practical 6 2024510001 
+ 
+Output: 
+ 
+ 
+Atharva Vasant Angre Practical 6 2024510001 
+ 
+ 
+ 
+Observation: 
+Automating Excel with Automation Anywhere streamlines data processing, reducing manual 
+effort and errors. Using actions like "Open Workbook," "Go to Cell," and "Set Cell Formula," 
+the bot calculates student marks, performs statistical analysis, and determines attainment 
+levels. Loops and list operations ensure efficient execution across multiple columns. This 
+automation enhances accuracy, speeds up calculations, and improves workflow efficiency for 
+Excel-based tasks. 

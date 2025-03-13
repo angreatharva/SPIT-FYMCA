@@ -1,0 +1,36 @@
+Atharva Vasant Angre Practical 1 2024510001 
+Aim: Installation of Automation Anywhere and running a first bot. 
+Objectives: To install automation anywhere software and run a simple bot. 
+Tools Used: automation anywhere. 
+Concept: Automation Anywhere is a Robotic Process Automation (RPA) tool that allows users to 
+create bots to automate repetitive tasks without coding. 
+Problem Statement: To run a simple bot and take user input and show it as a message. 
+Steps for installation: 
+For installation go to Automation Anywhere and choose community edition. 
+Add the required details and signup.5 
+Wait for the mail with the credentials. 
+Login in with the given credentials only. 
+Go to manage->devices and click on add button and connect to your computer 
+It will download the Bot Agent installer. 
+Once the download is complete, open the installer file. 
+Follow the on-screen instructions and click "Next." 
+Accept the terms and conditions and continue with the installation. 
+After installation, you’ll have the Bot Agent installed on your device. 
+Steps for creating a bot: 
+Now create a new bot. 
+Add a prompt for value. 
+Add a message box to show the prompted value. 
+ 
+ 
+Atharva Vasant Angre Practical 1 2024510001 
+  
+Atharva Vasant Angre Practical 1 2024510001 
+Output: 
+ 
+ 
+ 
+ 
+Observation:  
+A simple bot can be created using a prompt action to take user input and a message box to display 
+the input. Automation Anywhere provides an very simple interface to design and execute bots 
+without extensive programming knowledge. 

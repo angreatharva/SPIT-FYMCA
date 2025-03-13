@@ -152,7 +152,7 @@
 
             <div id="message" class="alert"></div>
 
-            <form id="registerForm" action="register" method="post">
+            <form id="registerForm">
                 <div class="form-group">
                     <label for="name">Full Name</label>
                     <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name" required>
@@ -194,37 +194,78 @@
         }
 
         // For AJAX form submission
-       document.getElementById('registerForm').addEventListener('submit', function(event) {
-           event.preventDefault();
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
 
-           // Create a URL-encoded string from the form data
-           const formData = new FormData(this);
-           const urlEncodedData = new URLSearchParams(formData).toString();
+            console.log("Form submission started");
 
-           fetch('register', {
-               method: 'POST',
-               headers: {
-                   'Content-Type': 'application/x-www-form-urlencoded',
-                   'Accept': 'application/json'
-               },
-               body: urlEncodedData
-           })
-           .then(response => response.json())
-           .then(data => {
+            // Clear previous messages
+            messageDiv.style.display = 'none';
+
+            // Get form values
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            // Simple validation
+            if (!name || !email || !password) {
                 messageDiv.style.display = 'block';
-                if (data.message.includes('successfully')) {
+                messageDiv.className = 'alert alert-danger';
+                messageDiv.textContent = 'All fields are required!';
+                return;
+            }
+
+            console.log("Sending data - name: " + name + ", email: " + email);
+
+            // Create a URL-encoded string from the form data
+            const formData = new FormData(this);
+            const urlEncodedData = new URLSearchParams(formData).toString();
+            console.log("Form data: " + urlEncodedData);
+
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.textContent;
+            submitBtn.textContent = 'Processing...';
+            submitBtn.disabled = true;
+
+            fetch('register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Accept': 'application/json'
+                },
+                body: urlEncodedData
+            })
+            .then(response => {
+                // Log response status for debugging
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                return response.json();
+            })
+            .then(data => {
+                // Log data for debugging
+                console.log('Response data:', data);
+
+                messageDiv.style.display = 'block';
+                if (data.message && data.message.includes('successfully')) {
                     messageDiv.className = 'alert alert-success';
                     document.getElementById('registerForm').reset();
                 } else {
                     messageDiv.className = 'alert alert-danger';
                 }
-                messageDiv.textContent = data.message;
+                messageDiv.textContent = data.message || 'Unknown error occurred';
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Error details:', error);
                 messageDiv.style.display = 'block';
                 messageDiv.className = 'alert alert-danger';
                 messageDiv.textContent = 'An error occurred. Please try again.';
+            })
+            .finally(() => {
+                // Restore button state
+                submitBtn.textContent = originalBtnText;
+                submitBtn.disabled = false;
+                console.log("Form submission complete");
             });
         });
     </script>
