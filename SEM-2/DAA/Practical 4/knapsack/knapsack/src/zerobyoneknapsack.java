@@ -1,6 +1,6 @@
 public class zerobyoneknapsack {
     public static void main(String[] args) {
-        int[] weights = {2,3,5,7};
+        int[] weights = {-2,-3,-5,-7};
         int[] profits = {3,4,8,6};
         int capacity = 10;
         int n = weights.length;

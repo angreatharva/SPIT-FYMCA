@@ -8,7 +8,7 @@ import 'Screens/restaurant_details.dart';
 class AppRoutes {
   static final routes = [
     GetPage(name: '/', page: () => const HomeScreen()),
-    GetPage(name: '/cart', page: () => const CartScreen()),
+    GetPage(name: '/cart', page: () => CartScreen()),
     GetPage(name: '/restaurant', page: () => const RestaurantScreen()),
     GetPage(name: '/restaurantDetail', page: () => RestaurantDetailScreen()),
   ];

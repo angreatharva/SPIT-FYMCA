@@ -4,13 +4,10 @@ public class JobSequencing {
 
     public static void main(String[] args) {
         Job[] jobs = {
-                new Job(1, 4, 70),
-                new Job(2, 1, 80),
-                new Job(3, 1, 30),
-                new Job(4, 2, 100),
-                new Job(5, 3, 40),
-                new Job(6, 4, 20),
-                new Job(7, 2, 90)
+                new Job(1, 2, 50),
+                new Job(2, 3, 10),
+                new Job(3, 1, 60),
+
         };
 
         int n = jobs.length;
@@ -34,6 +31,7 @@ public class JobSequencing {
         int jobsDone = 0;
 
         for (Job job : jobs) {
+            if (job.profit < 0) continue;
             for (int j = job.deadline; j > 0; j--) {
                 if (!slot[j]) {
                     result[j] = job.id;
