@@ -126,7 +126,7 @@ class _FacultyInformationState extends State<FacultyInformation> {
                     const SizedBox(height: 2),
                     Text(
                       facultyList[index]['position'] ?? 'Position',
-                      style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                      style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14, color: Colors.grey[700]),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -156,12 +156,12 @@ class _FacultyInformationState extends State<FacultyInformation> {
                 const SizedBox(height: 8),
                 Text(
                   facultyList[index]['header']! ?? '',
-                  style: TextStyle(fontSize: 12, color: Colors.black),
+                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14, color: Colors.black),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   facultyList[index]['education'] ?? '',
-                  style: TextStyle(fontSize: 12, color: Colors.black),
+                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14, color: Colors.black),
                 ),
               ],
             ),

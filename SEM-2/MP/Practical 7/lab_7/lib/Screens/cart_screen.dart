@@ -3,13 +3,10 @@ import 'package:get/get.dart';
 import '../controller/RestaurantMenuController.dart';
 
 class CartScreen extends StatelessWidget {
-  // Retrieve the global controller instance.
   final RestaurantMenuController menuController = Get.find<RestaurantMenuController>();
 
-  // Example fees and charges
-  final double deliveryFee = 71.0;  // e.g. 71 Rs for 10 kms
-  final double taxRate = 0.08;      // e.g. 8% GST/other charges
-  // If you want to allow users to add tip, you could store tip in the controller or pass it as a variable
+  final double deliveryFee = 71.0;
+  final double taxRate = 0.08;
 
   CartScreen({Key? key}) : super(key: key);
 
@@ -20,18 +17,15 @@ class CartScreen extends StatelessWidget {
         title: const Text('Cart'),
       ),
       body: Obx(() {
-        // If cart is empty, show a placeholder
         if (menuController.cart.isEmpty) {
           return const Center(
             child: Text('Your cart is empty'),
           );
         }
 
-        // ---- Calculate Bill Totals ----
         double itemTotal = 0.0;
         menuController.cart.forEach((restaurantName, itemsMap) {
           (itemsMap as Map<String, int>).forEach((itemName, quantity) {
-            // Find item price from the categories
             var item = menuController.categories
                 .expand((category) => category["items"] as List)
                 .firstWhere(
@@ -44,18 +38,14 @@ class CartScreen extends StatelessWidget {
           });
         });
 
-        // Example: Tax or GST & Other Charges
         double taxAndOtherCharges = itemTotal * taxRate;
 
-        // If you implement tip, add it here. For now, we set tip = 0.
         double tip = 0.0;
 
-        // Final amount
         double toPay = itemTotal + deliveryFee + taxAndOtherCharges + tip;
 
         return Column(
           children: [
-            // ---- CART ITEMS LIST ----
             Expanded(
               child: ListView(
                 children: menuController.cart.entries.map<Widget>((restaurantEntry) {
@@ -100,7 +90,7 @@ class CartScreen extends StatelessWidget {
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            // Quantity control with border
+                            // Quantity control
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
@@ -126,7 +116,6 @@ class CartScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            // Show total price for this line item
                             Padding(
                               padding: const EdgeInsets.only(left: 20),
                               child: Text(
@@ -147,7 +136,6 @@ class CartScreen extends StatelessWidget {
               ),
             ),
 
-            // ---- BILL DETAILS SECTION ----
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -166,7 +154,6 @@ class CartScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
 
-                  // Item Total
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -175,7 +162,6 @@ class CartScreen extends StatelessWidget {
                     ],
                   ),
 
-                  // Delivery Fee
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -186,15 +172,13 @@ class CartScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   const Divider(thickness: 1),
 
-                  // Tip
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text("Delivery Tip"),
                       GestureDetector(
                         onTap: () {
-                          // You can open a dialog for user to input tip
-                          // For now, just show "Add tip" as text
+
                         },
                         child: const Text(
                           "Add tip",
@@ -206,7 +190,6 @@ class CartScreen extends StatelessWidget {
                     ],
                   ),
 
-                  // GST & Other Charges
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -218,7 +201,6 @@ class CartScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   const Divider(thickness: 1),
 
-                  // Final Payment
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

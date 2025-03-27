@@ -1,6 +1,28 @@
 import java.util.Scanner;
 
 public class MatrixChainMultiplication {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the number of matrices: ");
+        int numMatrices = sc.nextInt();
+
+        int[] dimensions = new int[numMatrices + 1];
+
+        System.out.println("Enter the array of dimensions (space-separated): ");
+        for (int i = 0; i <= numMatrices; i++) {
+            dimensions[i] = sc.nextInt();
+        }
+
+        System.out.println("\nMatrix dimensions:");
+        for (int i = 1; i <= numMatrices; i++) {
+            System.out.println("A" + i + " : " + dimensions[i - 1] + " x " + dimensions[i]);
+        }
+
+        matrixChainOrder(dimensions, numMatrices + 1);
+        sc.close();
+    }
+
     static void matrixChainOrder(int[] p, int n) {
         int[][] m = new int[n][n];
         int[][] s = new int[n][n];
@@ -19,12 +41,15 @@ public class MatrixChainMultiplication {
             }
         }
 
-        System.out.print("Optimal Parenthesis is: ");
+        System.out.print("\nOptimal Parenthesis: ");
         printOptimalParens(s, 1, n - 1);
-        System.out.println();
+        System.out.println("\n\nMinimum Cost of Multiplications: " + m[1][n - 1]);
 
         System.out.println("\nDP Table (Minimum Cost of Multiplications):");
         printDPTable(m, n);
+
+        System.out.println("\nSplit Table:");
+        printSplitTable(s, n);
     }
 
     static void printOptimalParens(int[][] s, int i, int j) {
@@ -48,31 +73,13 @@ public class MatrixChainMultiplication {
         }
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter the number of matrices: ");
-        int numMatrices = sc.nextInt();
-        int[] dimensions = new int[numMatrices + 1];
-
-        System.out.print("Enter dimensions of matrix A1 (format: rows columns): ");
-        int rows = sc.nextInt();
-        int cols = sc.nextInt();
-        dimensions[0] = rows;
-        dimensions[1] = cols;
-
-        for (int i = 2; i <= numMatrices; i++) {
-            System.out.print("Enter dimensions of matrix A" + i + " (format: " + cols + " columns): ");
-            rows = sc.nextInt();
-            if (rows != cols) {
-                System.out.println("Invalid dimensions! Number of rows in matrix A" + i + " must be " + cols + ".");
-                i--;
-                continue;
+    static void printSplitTable(int[][] s, int n) {
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < n; j++) {
+                if (i >= j) System.out.print("\t");
+                else System.out.print(s[i][j] + "\t");
             }
-            cols = sc.nextInt();
-            dimensions[i] = cols;
+            System.out.println();
         }
-
-        matrixChainOrder(dimensions, numMatrices + 1);
-        sc.close();
     }
 }
