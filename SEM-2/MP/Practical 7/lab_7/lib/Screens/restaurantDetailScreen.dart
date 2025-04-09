@@ -160,8 +160,8 @@ class RestaurantDetailScreen extends StatelessWidget {
                             ),
                             // Add to Cart UI (always shows "-" and "+" buttons)
                             Positioned(
-                              top: 90,
-                              left: 328,
+                              top: Get.height * 0.115,
+                              left: Get.width * 0.675,
                               child: Obx(() {
                                 int itemCount = menuController.getItemCount(
                                     restaurantName, item["name"]);
@@ -196,7 +196,7 @@ class RestaurantDetailScreen extends StatelessWidget {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 8.0),
                                         child: Text(
-                                          itemCount == 0 ? "Add" : "$itemCount",
+                                          itemCount == 0 ? "Add" : "  $itemCount  ",
                                           style: const TextStyle(
                                               color: Colors.white),
                                         ),

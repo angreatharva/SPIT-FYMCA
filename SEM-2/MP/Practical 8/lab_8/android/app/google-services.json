@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1035803595604",
+    "project_id": "mca-lab-8-firebase",
+    "storage_bucket": "mca-lab-8-firebase.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1035803595604:android:434cc8b927d5083f7aaec1",
+        "android_client_info": {
+          "package_name": "com.example.lab_8"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcT87_zxwDLhetZUvV9RtSGBJVvPs6GC8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
