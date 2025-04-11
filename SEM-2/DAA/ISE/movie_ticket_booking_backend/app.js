@@ -11,7 +11,7 @@ const bookingRoutes = require('./routes/bookingRoutes');
 
 const app = express();
 
-// Middleware to parse JSON requests
+// Middleware to parse JSON requestsx
 app.use(express.json({ limit: "100mb" }));
 app.use(express.urlencoded({ limit: "100mb", extended: true }));
 app.use(

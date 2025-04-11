@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMapMarkerAlt,
@@ -8,22 +8,41 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faInstagram, faFacebook } from "@fortawesome/free-brands-svg-icons";
 import "../components/style.css";
-import brandLogo from "D:/SPIT-FYMCA/WT PRAC/LAB 7/lab_7/src/assets/images/brand_logo.png";
-import shoeMain from "D:/SPIT-FYMCA/WT PRAC/LAB 7/lab_7/src/assets/images/NIKE+REVOLUTION+7.jpeg";
-import shoe1 from "D:/SPIT-FYMCA/WT PRAC/LAB 7/lab_7/src/assets/images/shoe1.png";
-import shoe2 from "D:/SPIT-FYMCA/WT PRAC/LAB 7/lab_7/src/assets/images/shoe2.png";
-import shoe3 from "D:/SPIT-FYMCA/WT PRAC/LAB 7/lab_7/src/assets/images/shoe3.png";
-import shoe4 from "D:/SPIT-FYMCA/WT PRAC/LAB 7/lab_7/src/assets/images/shoe4.png";
-import shoe5 from "D:/SPIT-FYMCA/WT PRAC/LAB 7/lab_7/src/assets/images/shoe5.png";
-import shoe6 from "D:/SPIT-FYMCA/WT PRAC/LAB 7/lab_7/src/assets/images/shoe6.png";
-import shoe7 from "D:/SPIT-FYMCA/WT PRAC/LAB 7/lab_7/src/assets/images/shoe7.png";
-import shoe8 from "D:/SPIT-FYMCA/WT PRAC/LAB 7/lab_7/src/assets/images/shoe8.png";
-import flipkartLogo from "D:/SPIT-FYMCA/WT PRAC/LAB 7/lab_7/src/assets/images/flipkart.png";
-import amazonLogo from "D:/SPIT-FYMCA/WT PRAC/LAB 7/lab_7/src/assets/images/amazon.png";
+import brandLogo from "D:/SPIT-FYMCA/SEM-1/WT PRAC/LAB 7/lab_7/src/assets/images/brand_logo.png";
+import shoeMain from "D:/SPIT-FYMCA/SEM-1/WT PRAC/LAB 7/lab_7/src/assets/images/NIKE+REVOLUTION+7.jpeg";
+import shoe1 from "D:/SPIT-FYMCA/SEM-1/WT PRAC/LAB 7/lab_7/src/assets/images/shoe1.png";
+import shoe2 from "D:/SPIT-FYMCA/SEM-1/WT PRAC/LAB 7/lab_7/src/assets/images/shoe2.png";
+import shoe3 from "D:/SPIT-FYMCA/SEM-1/WT PRAC/LAB 7/lab_7/src/assets/images/shoe3.png";
+import shoe4 from "D:/SPIT-FYMCA/SEM-1/WT PRAC/LAB 7/lab_7/src/assets/images/shoe4.png";
+import shoe5 from "D:/SPIT-FYMCA/SEM-1/WT PRAC/LAB 7/lab_7/src/assets/images/shoe5.png";
+import shoe6 from "D:/SPIT-FYMCA/SEM-1/WT PRAC/LAB 7/lab_7/src/assets/images/shoe6.png";
+import shoe7 from "D:/SPIT-FYMCA/SEM-1/WT PRAC/LAB 7/lab_7/src/assets/images/shoe7.png";
+import shoe8 from "D:/SPIT-FYMCA/SEM-1/WT PRAC/LAB 7/lab_7/src/assets/images/shoe8.png";
+import flipkartLogo from "D:/SPIT-FYMCA/SEM-1/WT PRAC/LAB 7/lab_7/src/assets/images/flipkart.png";
+import amazonLogo from "D:/SPIT-FYMCA/SEM-1/WT PRAC/LAB 7/lab_7/src/assets/images/amazon.png";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const navigate = useNavigate();
+   // State to store the current user
+  const [currentUser, setCurrentUser] = useState(null);
+
+  // On mount, read the current user from localStorage (if logged in)
+  useEffect(() => {
+    const userFromStorage = localStorage.getItem('currentUser');
+    if (userFromStorage) {
+      setCurrentUser(JSON.parse(userFromStorage));
+    }
+  }, []);
+
+  // Logout handler clears currentUser from localStorage and state
+  const handleLogout = () => {
+    localStorage.removeItem('currentUser');
+    setCurrentUser(null);
+    // Redirect to auth page if needed; otherwise, simply update the header display.
+    navigate('/');
+  };
+
   return (
     <div>
       {/* Header Section */}
@@ -72,9 +91,22 @@ const HomePage = () => {
           </p>
         </nav>
 
-        <div className="auth-buttons">
-          <button id="reg">Register</button>
-          <button id="sig">Sign In</button>
+       <div className="auth-buttons">
+          {currentUser ? (
+            <>
+              <span className="welcome-text">Welcome, {currentUser.fullname}</span>
+              <button onClick={handleLogout}>Logout</button>
+            </>
+          ) : (
+            <>
+              <button id="reg" onClick={() => navigate('/')}>
+                Register
+              </button>
+              <button id="sig" onClick={() => navigate('/')}>
+                Sign In
+              </button>
+            </>
+          )}
         </div>
       </header>
 
