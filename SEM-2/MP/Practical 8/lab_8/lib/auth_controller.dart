@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:lab_8/home_screen.dart';
+import 'package:lab_8/home_page.dart';
 
 import 'login_page.dart';
 
@@ -22,19 +22,19 @@ class AuthController extends GetxController {
         return;
       }
 
-      // Obtain the auth details from the request
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
-      // Create a new credential
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      // Sign in to Firebase with the Google [UserCredential]
       await auth.signInWithCredential(credential);
 
       Get.snackbar("Success", "Logged in with Google!");
+      await Future.delayed(Duration(seconds: 1));
+      Get.off(() => const HomePage());
+
     } catch (e) {
       print("signInWithGoogle: $e");
       Get.snackbar("Error", e.toString());
@@ -53,8 +53,8 @@ class AuthController extends GetxController {
       });
 
       Get.snackbar("Success", "Account created successfully!");
-      await Future.delayed(Duration(seconds: 2));
-      Get.off(() => HomeScreen());
+      await Future.delayed(Duration(seconds: 1));
+      Get.off(() => const HomePage());
 
     } catch (e) {
       print("registerUser: $e");
@@ -66,8 +66,8 @@ class AuthController extends GetxController {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
       Get.snackbar("Success", "Login successful");
-      await Future.delayed(Duration(seconds: 2));
-      Get.off(() => HomeScreen());
+      await Future.delayed(Duration(seconds: 1));
+      Get.off(() => const HomePage());
     } catch (e) {
       print("loginUser: $e");
       Get.snackbar("Error", e.toString());

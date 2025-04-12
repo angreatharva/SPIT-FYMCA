@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1035803595604",
+    "firebase_url": "https://mca-lab-8-firebase-default-rtdb.firebaseio.com",
     "project_id": "mca-lab-8-firebase",
     "storage_bucket": "mca-lab-8-firebase.firebasestorage.app"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.lab_8"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1035803595604-gu896ejg26hji5nj0sqmhr4ij6avqoem.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lab_8",
+            "certificate_hash": "5d982eadd949fa1244f28e13051bc9e207ea7fba"
+          }
+        },
+        {
+          "client_id": "1035803595604-93773me4j436vcrld997t6n4vbl926mt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAcT87_zxwDLhetZUvV9RtSGBJVvPs6GC8"
@@ -20,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1035803595604-93773me4j436vcrld997t6n4vbl926mt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1035803595604-20thn5jd55s3i1g172b6bhc074ml2h20.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.lab8"
+              }
+            }
+          ]
         }
       }
     }
