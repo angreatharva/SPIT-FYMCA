@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'auth_controller.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return const Scaffold(
+        body: Center(
+          child: Text('User not found'),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -20,9 +31,19 @@ class HomePage extends StatelessWidget {
         ),
         centerTitle: true,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => AuthController.to.logout(),
+            tooltip: 'Logout',
+          ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('notes').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('notes')
+            .where('userId', isEqualTo: user.uid)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
@@ -101,6 +122,7 @@ class HomePage extends StatelessWidget {
   void _showAddDialog(BuildContext context) {
     final titleController = TextEditingController();
     final contentController = TextEditingController();
+    final user = FirebaseAuth.instance.currentUser;
 
     showDialog(
       context: context,
@@ -137,10 +159,11 @@ class HomePage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              if (titleController.text.isNotEmpty) {
+              if (titleController.text.isNotEmpty && user != null) {
                 FirebaseFirestore.instance.collection('notes').add({
                   'title': titleController.text,
                   'content': contentController.text,
+                  'userId': user.uid,
                   'timestamp': FieldValue.serverTimestamp(),
                 });
                 Navigator.pop(context);
@@ -157,6 +180,7 @@ class HomePage extends StatelessWidget {
     final data = doc.data() as Map<String, dynamic>;
     final titleController = TextEditingController(text: data['title']);
     final contentController = TextEditingController(text: data['content']);
+    final user = FirebaseAuth.instance.currentUser;
 
     showDialog(
       context: context,
@@ -193,10 +217,11 @@ class HomePage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              if (titleController.text.isNotEmpty) {
+              if (titleController.text.isNotEmpty && user != null) {
                 FirebaseFirestore.instance.collection('notes').doc(doc.id).update({
                   'title': titleController.text,
                   'content': contentController.text,
+                  'userId': user.uid,
                   'timestamp': FieldValue.serverTimestamp(),
                 });
                 Navigator.pop(context);
