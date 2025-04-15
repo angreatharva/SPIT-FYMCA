@@ -14,7 +14,14 @@ exports.getAllMovies = async (req, res) => {
 // Create a new movie
 exports.createMovie = async (req, res) => {
   try {
-    const movie = new Movie(req.body);
+    const movieData = { ...req.body };
+    
+    // If a file was uploaded, store its path
+    if (req.file) {
+      movieData.posterUrl = `/uploads/${req.file.filename}`;
+    }
+    
+    const movie = new Movie(movieData);
     await movie.save();
     res.status(201).json(movie);
   } catch (err) {

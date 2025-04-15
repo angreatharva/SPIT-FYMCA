@@ -19,12 +19,12 @@ class Booking {
     this.bookingTime,
   });
 
-  factory Booking.fromJson(Map<String, dynamic> json) {
+  factory Booking.fromJson(Map<String, dynamic> json, String serverRootUrl) {
     return Booking(
       id: json['_id'],
       user: json['user'],
-      showId: json['show'] is String ? json['show'] : json['show']['_id'],
-      show: json['show'] is Map<String, dynamic> ? Show.fromJson(json['show']) : null,
+      showId: json['show'] is String ? json['show'] : json['show']?['_id'] ?? '',
+      show: json['show'] is Map<String, dynamic> ? Show.fromJson(json['show'], serverRootUrl) : null,
       seatNumbers: List<int>.from(json['seatNumbers']),
       totalPrice: json['totalPrice'].toDouble(),
       bookingTime: json['bookingTime'] != null ? DateTime.parse(json['bookingTime']) : null,

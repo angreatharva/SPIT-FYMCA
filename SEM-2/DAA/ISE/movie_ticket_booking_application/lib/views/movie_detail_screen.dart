@@ -9,6 +9,7 @@ class MovieDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("BG Image: ${movie.posterUrl}");
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -17,8 +18,7 @@ class MovieDetailScreen extends StatelessWidget {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(movie.title),
-              background: movie.posterUrl.isNotEmpty
-                  ? Image.network(
+              background: Image.network(
                 movie.posterUrl,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
@@ -27,10 +27,6 @@ class MovieDetailScreen extends StatelessWidget {
                     child: const Center(child: Icon(Icons.movie, size: 80, color: Colors.white70)),
                   );
                 },
-              )
-                  : Container(
-                color: Colors.grey[800],
-                child: const Center(child: Icon(Icons.movie, size: 80, color: Colors.white70)),
               ),
             ),
           ),

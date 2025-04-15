@@ -17,7 +17,16 @@ class Movie {
     required this.posterUrl,
   });
 
-  factory Movie.fromJson(Map<String, dynamic> json) {
+  factory Movie.fromJson(Map<String, dynamic> json, String serverRootUrl) {
+    String rawPosterUrl = json['posterUrl'] ?? '';
+    String finalPosterUrl = rawPosterUrl;
+
+    // Check if the URL is relative (starts with '/')
+    if (rawPosterUrl.startsWith('/')) {
+      finalPosterUrl = '$serverRootUrl$rawPosterUrl';
+    }
+    // You might want to add more checks here, e.g., if it's already a full URL
+
     return Movie(
       id: json['_id'],
       title: json['title'],
@@ -25,7 +34,7 @@ class Movie {
       duration: json['duration'] ?? 0,
       rating: (json['rating'] ?? 0).toDouble(),
       description: json['description'] ?? '',
-      posterUrl: json['posterUrl'] ?? '',
+      posterUrl: finalPosterUrl,
     );
   }
 }

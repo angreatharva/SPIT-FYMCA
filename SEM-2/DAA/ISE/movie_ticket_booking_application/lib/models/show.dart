@@ -24,13 +24,15 @@ class Show {
     required this.availableSeats,
   });
 
-  factory Show.fromJson(Map<String, dynamic> json) {
+  factory Show.fromJson(Map<String, dynamic> json, String serverRootUrl) {
     return Show(
       id: json['_id'],
-      movie: json['movie'] != null ? Movie.fromJson(json['movie']) : null,
+      movie: json['movie'] != null && json['movie'] is Map<String, dynamic>
+          ? Movie.fromJson(json['movie'], serverRootUrl)
+          : null,
       theatre: json['theatre'] != null ? Theatre.fromJson(json['theatre']) : null,
-      movieId: json['movie'] is String ? json['movie'] : json['movie']['_id'],
-      theatreId: json['theatre'] is String ? json['theatre'] : json['theatre']['_id'],
+      movieId: json['movie'] is String ? json['movie'] : json['movie']?['_id'] ?? '',
+      theatreId: json['theatre'] is String ? json['theatre'] : json['theatre']?['_id'] ?? '',
       date: DateTime.parse(json['date']),
       time: json['time'],
       price: json['price'].toDouble(),

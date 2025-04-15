@@ -19,7 +19,7 @@ class SeatWidget extends StatelessWidget {
         seatColor = Colors.white;
         break;
       case SeatStatus.taken:
-        seatColor = Colors.grey;
+        seatColor = Colors.grey.shade800;
         break;
       case SeatStatus.selected:
         seatColor = Colors.red;
@@ -40,7 +40,7 @@ class SeatWidget extends StatelessWidget {
           color: seat.status == SeatStatus.selected ? Colors.white : Colors.black,
           size: 20,
         )
-            : null,
+            : Icon(Icons.chair,color: Colors.white,),
       ),
     );
   }

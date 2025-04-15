@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require("cors");
 const connectDB = require('./config/database');
+const path = require('path');
 
 const movieRoutes = require('./routes/movieRoutes');
 const theatreRoutes = require('./routes/theatreRoutes');
@@ -19,6 +20,9 @@ app.use(
     origin: true,
   })
 );
+
+// Serve static files from the uploads directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Use API routes
 app.use('/api/movies', movieRoutes);
