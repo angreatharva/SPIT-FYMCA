@@ -6,8 +6,10 @@ import '../models/show.dart';
 import '../models/booking.dart';
 
 class ApiService {
-  static const String _apiBaseUrl = 'http://10.0.2.2:5000/api'; // For Android emulator
-  static const String serverRootUrl = 'http://10.0.2.2:5000'; // Server root for assets
+
+  // static const String serverRootUrl = ' http://localhost:5000'; // Server root for assets
+  static const String serverRootUrl = 'https://1fdb-103-104-226-58.ngrok-free.app'; // Server root for assets
+  static const String _apiBaseUrl = '$serverRootUrl/api'; // For Android emulator
   // Use 'http://localhost:5000/api' and 'http://localhost:5000' for iOS simulator
 
   // Movies
@@ -80,19 +82,96 @@ class ApiService {
     }
   }
 
+  Future<List<Booking>> fetchUserBookings(String userId) async {
+    print('GET: $_apiBaseUrl/bookings/user/$userId');
+    final response = await http.get(Uri.parse('$_apiBaseUrl/bookings/user/$userId'));
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      return data.map((json) => Booking.fromJson(json, serverRootUrl)).toList();
+    } else {
+      throw Exception('Failed to load user bookings');
+    }
+  }
+
   Future<Booking> createBooking(Booking booking) async {
     print('POST: $_apiBaseUrl/bookings');
+    print('Request body: ${json.encode(booking.toJson())}');
+    
+    try {
+      final response = await http.post(
+        Uri.parse('$_apiBaseUrl/bookings'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(booking.toJson()),
+      );
+      
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      
+      if (response.statusCode == 201) {
+        Map<String, dynamic> data = json.decode(response.body);
+        if (data['booking'] == null) {
+          print('Warning: Response has no booking data: $data');
+          // Create a basic booking object if the response doesn't have one
+          return booking;
+        }
+        // Pass the serverRootUrl to the fromJson factory if needed
+        return Booking.fromJson(data['booking'], serverRootUrl);
+      } else {
+        throw Exception('Failed to create booking: ${response.body}');
+      }
+    } catch (e) {
+      print('createBooking exception: $e');
+      throw Exception('Network error creating booking: $e');
+    }
+  }
+
+  // Find optimal seats using the knapsack algorithm
+  Future<Map<String, dynamic>> findOptimalSeats({
+    required String showId,
+    required int groupSize,
+    required double budget,
+    required Map<String, dynamic> preferences,
+  }) async {
+    print('POST: $_apiBaseUrl/bookings/find-optimal-seats');
     final response = await http.post(
-      Uri.parse('$_apiBaseUrl/bookings'),
+      Uri.parse('$_apiBaseUrl/bookings/find-optimal-seats'),
       headers: {'Content-Type': 'application/json'},
-      body: json.encode(booking.toJson()),
+      body: json.encode({
+        'showId': showId,
+        'groupSize': groupSize,
+        'budget': budget,
+        'preferences': preferences,
+      }),
     );
-    if (response.statusCode == 201) {
-      Map<String, dynamic> data = json.decode(response.body);
-      // Pass the serverRootUrl to the fromJson factory if needed
-      return Booking.fromJson(data['booking'], serverRootUrl);
+
+    if (response.statusCode == 200) {
+      print('Response: ${response.body}');
+      return json.decode(response.body);
     } else {
-      throw Exception('Failed to create booking: ${response.body}');
+      throw Exception('Failed to find optimal seats: ${response.body}');
+    }
+  }
+
+  // Get pricing details for selected seats
+  Future<Map<String, dynamic>> getPricingDetails({
+    required String showId,
+    required List<int> seatNumbers,
+  }) async {
+    print('POST: $_apiBaseUrl/bookings/pricing-details');
+    final response = await http.post(
+      Uri.parse('$_apiBaseUrl/bookings/pricing-details'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'showId': showId,
+        'seatNumbers': seatNumbers,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Response: ${response.body}');
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to get pricing details: ${response.body}');
     }
   }
 
@@ -110,6 +189,30 @@ class ApiService {
       return Show.fromJson(data['show'], serverRootUrl);
     } else {
       throw Exception('Failed to book seats: ${response.body}');
+    }
+  }
+
+  Future<Map<String, dynamic>> getAlternativeSeatSuggestions({
+    required String showId,
+    required List<int> selectedSeats,
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$_apiBaseUrl/bookings/alternative-suggestions'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'showId': showId,
+          'selectedSeats': selectedSeats,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        throw Exception('Failed to get alternative seat suggestions');
+      }
+    } catch (e) {
+      throw Exception('Error getting alternative seat suggestions: $e');
     }
   }
 }

@@ -25,6 +25,15 @@ class Show {
   });
 
   factory Show.fromJson(Map<String, dynamic> json, String serverRootUrl) {
+    // Safe price parsing
+    double parsePrice(dynamic value) {
+      if (value == null) return 0.0;
+      if (value is double) return value;
+      if (value is int) return value.toDouble();
+      if (value is String) return double.tryParse(value) ?? 0.0;
+      return 0.0;
+    }
+    
     return Show(
       id: json['_id'],
       movie: json['movie'] != null && json['movie'] is Map<String, dynamic>
@@ -35,7 +44,7 @@ class Show {
       theatreId: json['theatre'] is String ? json['theatre'] : json['theatre']?['_id'] ?? '',
       date: DateTime.parse(json['date']),
       time: json['time'],
-      price: json['price'].toDouble(),
+      price: parsePrice(json['price']),
       availableSeats: List<int>.from(json['availableSeats']),
     );
   }

@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require("cors");
 const connectDB = require('./config/database');
 const path = require('path');
+const ngrok = require('ngrok');
 
 const movieRoutes = require('./routes/movieRoutes');
 const theatreRoutes = require('./routes/theatreRoutes');
@@ -37,6 +38,32 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  
+  // 🚀 Start ngrok after server is up
+  (async function() {
+    try {
+      const url = await ngrok.connect({
+        proto: "http",
+        addr: PORT,
+        authtoken: process.env.NGROK_TOKEN, // Optional: Add your token to .env file if you have one
+      });
+      console.log(`\n🎉 Public URL (share this!): ${url}`);
+      
+    } catch (err) {
+      console.error("Failed to start ngrok:", err);
+    }
+  })();
+});
+
+// Handle server shutdown
+process.on('SIGINT', async () => {
+  console.log('Shutting down server...');
+  await ngrok.disconnect();
+  await ngrok.kill();
+  server.close(() => {
+    console.log('Server closed');
+    process.exit(0);
+  });
 });

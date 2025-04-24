@@ -1,58 +1,31 @@
 // controllers/bookingController.js
 const Booking = require('../models/Booking');
 const Show = require('../models/Show');
+const { knapsackSeatSelection, fractionalKnapsackPricing, lcsSeatSuggestions } = require('../utils/bookingAlgorithms');
 
 // Create a new booking
 exports.createBooking = async (req, res) => {
   try {
-    const { user, showId, seatNumbers, groupSize } = req.body;
+    const { user, showId, seatNumbers, totalPrice } = req.body;
     const show = await Show.findById(showId);
     if (!show) {
       return res.status(404).json({ message: 'Show not found' });
     }
 
-    let selectedSeats = [];
-    
-    // If explicit seat numbers are provided, use them.
-    if (seatNumbers && seatNumbers.length > 0) {
-      // Check if all requested seats are available
-      const isAvailable = seatNumbers.every(seat => show.availableSeats.includes(seat));
-      if (!isAvailable) {
-        return res.status(400).json({ message: 'Some seats are already booked' });
-      }
-      selectedSeats = seatNumbers;
-    } 
-    // Else, if a group size is provided, use the algorithm to find an optimal contiguous block.
-    else if (groupSize) {
-      selectedSeats = findOptimalContiguousSeats(show.availableSeats, groupSize);
-      if (selectedSeats.length !== groupSize) {
-        return res.status(400).json({ message: 'Not enough contiguous seats available' });
-      }
-    } 
-    else {
-      return res.status(400).json({ message: 'No seat selection provided' });
+    // Check if all requested seats are available
+    const isAvailable = seatNumbers.every(seat => show.availableSeats.includes(seat));
+    if (!isAvailable) {
+      return res.status(400).json({ message: 'Some seats are already booked' });
     }
 
     // Update available seats by removing the selected ones
-    show.availableSeats = show.availableSeats.filter(seat => !selectedSeats.includes(seat));
-    
-    // ===== Dynamic Pricing Calculation =====
-    // Assume a fixed total capacity for the show (for demonstration, totalCapacity = 100)
-    const totalCapacity = 100;
-    // Calculate current occupancy BEFORE booking these seats.
-    const currentOccupied = totalCapacity - show.availableSeats.length;
-    const occupancyRate = currentOccupied / totalCapacity;
-    // Adjust the price per seat based on occupancy demand.
-    const finalPricePerSeat = dynamicPriceAdjustment(show.price, occupancyRate);
-    // Calculate total price with adjusted price.
-    const totalPrice = selectedSeats.length * finalPricePerSeat;
-
+    show.availableSeats = show.availableSeats.filter(seat => !seatNumbers.includes(seat));
     await show.save();
 
     const booking = new Booking({
       user,
       show: show._id,
-      seatNumbers: selectedSeats,
+      seatNumbers,
       totalPrice,
     });
     await booking.save();
@@ -76,66 +49,201 @@ exports.getAllBookings = async (req, res) => {
   }
 };
 
-/**
- * findOptimalContiguousSeats:
- * Finds all contiguous blocks of available seats of size groupSize,
- * then returns the block whose average seat number is closest to the ideal center.
- *
- * Assumes availableSeats is an array of seat numbers.
- */
-function findOptimalContiguousSeats(availableSeats, groupSize) {
-  // Sort the available seats to ensure they're in order
-  const sortedSeats = [...availableSeats].sort((a, b) => a - b);
-  let blocks = [];
+// Retrieve bookings for a specific user
+exports.getUserBookings = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const bookings = await Booking.find({ user: userId }).populate({
+      path: 'show',
+      populate: [{ path: 'movie' }, { path: 'theatre' }],
+    });
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
-  // Iterate to find all contiguous blocks of desired size
-  for (let i = 0; i <= sortedSeats.length - groupSize; i++) {
-    let block = [sortedSeats[i]];
-    for (let j = i + 1; j < sortedSeats.length; j++) {
-      if (sortedSeats[j] === block[block.length - 1] + 1) {
-        block.push(sortedSeats[j]);
-        if (block.length === groupSize) {
-          blocks.push([...block]);
-          break; // Break out once a full block is found starting at index i.
-        }
-      } else {
-        break; // No longer contiguous
-      }
+// Find optimal seats based on user preferences using Knapsack algorithm
+exports.findOptimalSeats = async (req, res) => {
+  try {
+    const { showId, groupSize, budget, preferences } = req.body;
+    
+    // Validate required inputs
+    if (!showId || !groupSize || !budget) {
+      return res.status(400).json({ message: 'Missing required parameters: showId, groupSize, and budget are required' });
     }
-  }
-  if (blocks.length === 0) return [];
-
-  // Define an ideal center seat (assuming total capacity of 100)
-  const totalCapacity = 100;
-  const idealCenter = Math.floor(totalCapacity / 2);
-
-  // Pick the block whose average is closest to the ideal center
-  let bestBlock = blocks[0];
-  let bestDistance = Math.abs(average(bestBlock) - idealCenter);
-
-  for (const block of blocks) {
-    const distance = Math.abs(average(block) - idealCenter);
-    if (distance < bestDistance) {
-      bestDistance = distance;
-      bestBlock = block;
+    
+    const show = await Show.findById(showId);
+    if (!show) {
+      return res.status(404).json({ message: 'Show not found' });
     }
+    
+    // Format available seats for the algorithm
+    const availableSeats = show.availableSeats.map(seatNumber => ({
+      number: seatNumber,
+      basePrice: show.price
+    }));
+    
+    // Use knapsack algorithm to find optimal seats
+    const selectedSeats = knapsackSeatSelection(availableSeats, groupSize, budget, preferences || {});
+    
+    if (selectedSeats.length < groupSize) {
+      // If we can't find enough optimal seats, try to find alternative suggestions
+      const alternatives = lcsSeatSuggestions(selectedSeats, availableSeats);
+      
+      return res.json({
+        success: false,
+        message: 'Not enough optimal seats found. Consider these alternatives:',
+        selectedSeats,
+        alternatives,
+      });
+    }
+    
+    // Calculate the total price based on dynamic pricing
+    const totalCapacity = 100; // Assuming total capacity is 100 seats
+    const occupancyRate = (totalCapacity - show.availableSeats.length) / totalCapacity;
+    
+    // Get current day and time for pricing factors
+    const now = new Date();
+    const isWeekend = now.getDay() === 0 || now.getDay() === 6; // Sunday or Saturday
+    const timeOfDay = now.getHours();
+    
+    const pricedSeats = fractionalKnapsackPricing(selectedSeats, occupancyRate, { isWeekend, timeOfDay });
+    const totalPrice = pricedSeats.reduce((sum, seat) => sum + seat.adjustedPrice, 0);
+    
+    res.json({
+      success: true,
+      seats: pricedSeats,
+      totalPrice,
+      occupancyRate,
+      pricingFactors: { isWeekend, timeOfDay }
+    });
+    
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-  return bestBlock;
-}
+};
 
-// Helper function to compute the average of a list of numbers.
-function average(arr) {
-  return arr.reduce((sum, val) => sum + val, 0) / arr.length;
-}
-
-/**
- * dynamicPriceAdjustment:
- * Adjusts the base price based on current occupancy rate.
- * For example, if occupancyRate >= 0.8, the price is increased by 20%.
- */
-function dynamicPriceAdjustment(basePrice, occupancyRate) {
-  if (occupancyRate >= 0.8) {
-    return basePrice * 1.2;
+// Get dynamic pricing details for selected seats
+exports.getPricingDetails = async (req, res) => {
+  try {
+    const { showId, seatNumbers } = req.body;
+    
+    if (!showId || !seatNumbers || !Array.isArray(seatNumbers)) {
+      return res.status(400).json({ message: 'Missing required parameters: showId and seatNumbers (array) are required' });
+    }
+    
+    const show = await Show.findById(showId);
+    if (!show) {
+      return res.status(404).json({ message: 'Show not found' });
+    }
+    
+    // Check if all requested seats are available
+    const isAvailable = seatNumbers.every(seat => show.availableSeats.includes(seat));
+    if (!isAvailable) {
+      return res.status(400).json({ message: 'Some seats are already booked' });
+    }
+    
+    // Format seats for the pricing algorithm
+    const seatsToPrice = seatNumbers.map(seatNumber => ({
+      number: seatNumber,
+      basePrice: show.price
+    }));
+    
+    // Calculate occupancy rate for dynamic pricing
+    const totalCapacity = 100; // Assuming total capacity is 100 seats
+    const occupancyRate = (totalCapacity - show.availableSeats.length) / totalCapacity;
+    
+    // Get current day and time for pricing factors
+    const now = new Date();
+    const isWeekend = now.getDay() === 0 || now.getDay() === 6; // Sunday or Saturday
+    const timeOfDay = now.getHours();
+    
+    // Apply dynamic pricing using Fractional Knapsack algorithm
+    const pricedSeats = fractionalKnapsackPricing(seatsToPrice, occupancyRate, { isWeekend, timeOfDay });
+    const totalPrice = pricedSeats.reduce((sum, seat) => sum + seat.adjustedPrice, 0);
+    
+    res.json({
+      success: true,
+      basePrice: show.price,
+      pricedSeats,
+      totalPrice,
+      occupancyRate,
+      pricingFactors: { isWeekend, timeOfDay }
+    });
+    
+  } catch (error) {
+    console.error('Error getting pricing details:', error);
+    res.status(500).json({ message: 'Error getting pricing details', error: error.message });
   }
-  return basePrice;
+};
+
+// Get alternative seat suggestions
+exports.getAlternativeSeatSuggestions = async (req, res) => {
+  try {
+    const { showId, selectedSeats } = req.body;
+    
+    if (!showId || !selectedSeats || !Array.isArray(selectedSeats) || selectedSeats.length === 0) {
+      return res.status(400).json({ message: 'Show ID and selected seats are required' });
+    }
+    
+    // Get the show to access available seats
+    const show = await Show.findById(showId);
+    if (!show) {
+      return res.status(404).json({ message: 'Show not found' });
+    }
+    
+    // Format selected seats for the algorithm
+    const formattedSelectedSeats = selectedSeats.map(seatNumber => ({
+      number: seatNumber,
+      basePrice: show.price
+    }));
+    
+    // Get available seats from the show
+    const availableSeats = show.availableSeats.map(seatNumber => ({
+      number: seatNumber,
+      basePrice: show.price
+    }));
+    
+    // Get alternative suggestions using LCS algorithm
+    const rawSuggestions = lcsSeatSuggestions(formattedSelectedSeats, availableSeats);
+    
+    // Format suggestions for the frontend
+    const suggestions = rawSuggestions.map((suggestion, index) => {
+      // Extract just the seat numbers
+      const seats = suggestion.map(seat => seat.number);
+      
+      // Calculate similarity score (0-1)
+      const similarityScore = calculateSimilarityScore(formattedSelectedSeats, suggestion) / 100;
+      
+      return {
+        id: index + 1,
+        seats,
+        similarityScore
+      };
+    });
+    
+    res.json({ suggestions });
+  } catch (error) {
+    console.error('Error getting alternative seat suggestions:', error);
+    res.status(500).json({ message: 'Error getting alternative seat suggestions', error: error.message });
+  }
+};
+
+// Helper function to calculate similarity score
+function calculateSimilarityScore(original, suggestion) {
+  if (original.length !== suggestion.length) {
+    return 0;
+  }
+  
+  // Calculate average position difference
+  let totalDiff = 0;
+  for (let i = 0; i < original.length; i++) {
+    totalDiff += Math.abs(original[i].number - suggestion[i].number);
+  }
+  
+  const avgDiff = totalDiff / original.length;
+  
+  // Convert to a score (lower difference = higher score)
+  return 100 - avgDiff;
 }

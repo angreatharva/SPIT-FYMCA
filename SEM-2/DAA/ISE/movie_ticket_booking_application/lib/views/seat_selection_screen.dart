@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../controllers/booking_controller.dart';
+import '../controllers/show_controller.dart';
 import '../models/booking.dart';
 import '../models/seat.dart';
 import '../models/show.dart';
@@ -8,9 +9,16 @@ import '../widgets/seat_widget.dart';
 import 'booking_confirmation_screen.dart';
 
 class SeatSelectionScreen extends StatefulWidget {
-  final Show show;
+  final String showId;
+  final String movieTitle;
+  final List<int>? preselectedSeats;
 
-  const SeatSelectionScreen({Key? key, required this.show}) : super(key: key);
+  const SeatSelectionScreen({
+    Key? key, 
+    required this.showId, 
+    required this.movieTitle,
+    this.preselectedSeats,
+  }) : super(key: key);
 
   @override
   State<SeatSelectionScreen> createState() => _SeatSelectionScreenState();
@@ -18,28 +26,94 @@ class SeatSelectionScreen extends StatefulWidget {
 
 class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
   final BookingController _bookingController = BookingController();
+  final ShowController _showController = ShowController();
   List<Seat> _seats = [];
   List<int> _selectedSeats = [];
   bool _isLoading = false;
   int _groupSize = 2; // Default group size
   final int _seatsPerRow = 10;
   double _priceMultiplier = 1.0; // Default price multiplier
+  double _occupancyRate = 0.0; // Add this line to store occupancy rate
+  Show? _show;
+  bool _isWeekend = false;
+  bool _isPeakHour = false;
 
   @override
   void initState() {
     super.initState();
-    _initializeSeats();
-    // Show dialog after the screen is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showGroupSizeDialog();
+    _loadShowDetails();
+  }
+
+  Future<void> _loadShowDetails() async {
+    setState(() {
+      _isLoading = true;
     });
+    
+    try {
+      final shows = await _showController.getAllShows();
+      final show = shows.firstWhere((s) => s.id == widget.showId);
+      
+      setState(() {
+        _show = show;
+        _initializeSeats();
+        
+        // Check if theater is full immediately after loading seats
+        int availableSeatsCount = _seats.where((seat) => seat.status == SeatStatus.available).length;
+        if (availableSeatsCount == 0) {
+          // If no seats available, show a persistent message at the top of the screen
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('This showing is completely sold out.'),
+                duration: Duration(days: 1), // Effectively permanent until dismissed
+                backgroundColor: Colors.red,
+                action: SnackBarAction(
+                  label: 'Close',
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Go back to previous screen
+                  },
+                ),
+              ),
+            );
+          });
+        } else if (widget.preselectedSeats != null && widget.preselectedSeats!.isNotEmpty) {
+          // Apply preselected seats if provided
+          for (int seatNumber in widget.preselectedSeats!) {
+            int index = _seats.indexWhere((seat) => seat.number == seatNumber);
+            if (index != -1 && _seats[index].status == SeatStatus.available) {
+              _seats[index].status = SeatStatus.selected;
+              _selectedSeats.add(seatNumber);
+            }
+          }
+          _groupSize = _selectedSeats.length;
+        } else if (availableSeatsCount > 0) {
+          // Only show dialog after the screen is built if theater is not full and no preselected seats
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _showGroupSizeDialog();
+          });
+        }
+        
+        _isLoading = false;
+      });
+    } catch (e) {
+      print("error${e}");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error loading show details: $e')),
+      );
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   void _initializeSeats() {
+    if (_show == null) return;
+    
     // Create a list of 100 seats (typical for a theatre)
     final List<Seat> seats = List.generate(100, (index) {
       final seatNumber = index + 1;
-      final isAvailable = widget.show.availableSeats.contains(seatNumber);
+      final isAvailable = _show!.availableSeats.contains(seatNumber);
       return Seat(
         number: seatNumber,
         status: isAvailable ? SeatStatus.available : SeatStatus.taken,
@@ -55,22 +129,81 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
   void _calculatePriceMultiplier() {
     final totalSeats = _seats.length;
     final availableSeats = _seats.where((seat) => seat.status == SeatStatus.available).length;
-    final percentageBooked = (totalSeats - availableSeats) / totalSeats;
+    final occupancyRate = (totalSeats - availableSeats) / totalSeats;
     
+    // Use the same pricing logic as the backend
+    double baseMultiplier = 1.0;
+    
+    // Base multiplier based on occupancy
+    if (occupancyRate > 0.9) {
+      baseMultiplier = 1.3; // High demand
+    } else if (occupancyRate > 0.7) {
+      baseMultiplier = 1.2; // Medium-high demand
+    } else if (occupancyRate > 0.5) {
+      baseMultiplier = 1.1; // Medium demand
+    }
+    
+    // Apply time-based factors
+    final now = DateTime.now();
+    final isWeekend = now.weekday == DateTime.saturday || now.weekday == DateTime.sunday;
+    final currentHour = now.hour;
+    
+    if (isWeekend) {
+      baseMultiplier += 0.1; // Weekend premium
+    }
+    
+    if (currentHour >= 18 && currentHour <= 22) {
+      baseMultiplier += 0.1; // Evening premium
+    }
+    
+    // Apply the multiplier
     setState(() {
-      // If 80% or more seats are booked, apply 1.2X price multiplier
-      _priceMultiplier = percentageBooked >= 0.8 ? 1.2 : 1.0;
+      _priceMultiplier = baseMultiplier;
+      _isWeekend = isWeekend;
+      _isPeakHour = (currentHour >= 18 && currentHour <= 22);
+      _occupancyRate = occupancyRate;
     });
 
     // Debug info
     print('Total seats: $totalSeats');
     print('Available seats: $availableSeats');
-    print('Percentage booked: ${(percentageBooked * 100).toStringAsFixed(1)}%');
+    print('Occupancy rate: ${(occupancyRate * 100).toStringAsFixed(1)}%');
+    print('Is weekend: $_isWeekend');
+    print('Current hour: $currentHour (peak: $_isPeakHour)');
     print('Price multiplier: $_priceMultiplier');
   }
 
+  // Calculate adjusted price for individual seats
+  double getAdjustedSeatPrice(int seatNumber) {
+    // Base price with occupancy and time multiplier
+    double price = _show!.price * _priceMultiplier;
+    
+    // Apply center seat premium if applicable
+    final row = (seatNumber - 1) ~/ _seatsPerRow; // Get the row (0-indexed)
+    final seatPosition = (seatNumber - 1) % _seatsPerRow; // Get position in row (0-indexed)
+    
+    // Center seats are typically positions 3,4,5,6 (in a 0-9 indexed row)
+    if (seatPosition >= 3 && seatPosition <= 6) {
+      price = price * 1.1; // 10% premium for center seats
+    }
+    
+    return price;
+  }
+  
+  // Calculate total price for selected seats with all factors
+  double calculateTotalPrice() {
+    if (_selectedSeats.isEmpty) return 0.0;
+    
+    double total = 0.0;
+    for (int seatNumber in _selectedSeats) {
+      total += getAdjustedSeatPrice(seatNumber);
+    }
+    
+    return total;
+  }
+
   // Calculate the current ticket price with multiplier
-  double get currentTicketPrice => widget.show.price * _priceMultiplier;
+  double get currentTicketPrice => _show!.price * _priceMultiplier;
 
   void _showGroupSizeDialog() {
     // Temporary state variable for the dialog's dropdown
@@ -130,15 +263,33 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // Display price information if applicable
-                  if (_priceMultiplier > 1.0)
-                    Text(
-                      'High demand! Price is ${(_priceMultiplier * 100 - 100).toStringAsFixed(0)}% higher.',
-                      style: const TextStyle(
-                        color: Colors.amber,
-                        fontWeight: FontWeight.bold,
+                  // Display price information based on factors
+                  if (_priceMultiplier > 1.0) ...[
+                    if (_occupancyRate > 0.0)
+                      Text(
+                        'High demand! Price is ${(_priceMultiplier * 100 - 100).toStringAsFixed(0)}% higher.',
+                        style: const TextStyle(
+                          color: Colors.amber,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
+                    if (_isWeekend)
+                      Text(
+                        'Weekend pricing: +10%',
+                        style: const TextStyle(
+                          color: Colors.amber,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    if (_isPeakHour)
+                      Text(
+                        'Evening hour pricing: +10%',
+                        style: const TextStyle(
+                          color: Colors.amber,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                  ],
                 ],
               ),
               actions: [
@@ -261,13 +412,17 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
         List<List<int>> blocks = consecutiveBlocksByRow[row]!;
         
         // Find the block closest to center of the row
-        int centerSeat = row * _seatsPerRow + _seatsPerRow ~/ 2;
+        // For a row with 10 seats (1-10), the center is between seats 5 and 6
+        // So we calculate the center as row * _seatsPerRow + (_seatsPerRow / 2) + 0.5
+        // This gives us 5.5 for the first row, which is between seats 5 and 6
+        double exactCenter = row * _seatsPerRow + (_seatsPerRow / 2) + 0.5;
         List<int> bestBlock = blocks[0];
-        int minDistance = 999;
+        double minDistance = 999;
         
         for (List<int> block in blocks) {
-          int blockCenter = block[block.length ~/ 2];
-          int distance = (blockCenter - centerSeat).abs();
+          // Calculate the center of the block as the average of all seat numbers
+          double blockCenter = block.reduce((a, b) => a + b) / block.length;
+          double distance = (blockCenter - exactCenter).abs();
           
           if (distance < minDistance) {
             minDistance = distance;
@@ -436,12 +591,17 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
     });
 
     try {
-      // Create booking with adjusted price
+      // Calculate the total price using our local method that matches backend logic
+      final calculatedTotalPrice = calculateTotalPrice();
+      
+      print('Total price calculated client-side: $calculatedTotalPrice');
+      
+      // Create booking with our calculated price
       final booking = Booking(
         user: 'current_user', // In a real app, this would be the logged-in user's ID
-        showId: widget.show.id,
+        showId: widget.showId,
         seatNumbers: _selectedSeats,
-        totalPrice: _selectedSeats.length * currentTicketPrice,
+        totalPrice: calculatedTotalPrice,
       );
 
       final createdBooking = await _bookingController.createBooking(booking);
@@ -453,9 +613,10 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
         MaterialPageRoute(
           builder: (context) => BookingConfirmationScreen(booking: createdBooking),
         ),
-            (route) => route.isFirst,
+        (route) => route.isFirst,
       );
     } catch (e) {
+      print("Booking error: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Booking failed: $e')),
       );
@@ -470,27 +631,179 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
     return a < b ? a : b;
   }
 
+  // Get alternative seat suggestions using LCS algorithm
+  Future<void> _getAlternativeSuggestions() async {
+    if (_selectedSeats.isEmpty) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final result = await _bookingController.getAlternativeSeatSuggestions(
+        showId: widget.showId,
+        selectedSeats: _selectedSeats,
+      );
+
+      if (result.containsKey('suggestions') && result['suggestions'] is List) {
+        List<dynamic> suggestions = result['suggestions'];
+        if (suggestions.isNotEmpty) {
+          _showAlternativeSuggestions(suggestions);
+        }
+      }
+    } catch (e) {
+      print('Error getting seat suggestions: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to get alternative seat suggestions')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  // Show a dialog with alternative seat suggestions
+  void _showAlternativeSuggestions(List<dynamic> suggestions) {
+    if (!mounted) return;
+    
+    showDialog(
+      // barrierColor: Colors.black,
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Color(0xFF222222),
+        title: Text(
+          'Alternative Seating Options',
+          style: TextStyle(color: Colors.red),
+        ),
+        content: Container(
+          width: double.maxFinite,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: min(suggestions.length, 3),
+            itemBuilder: (context, index) {
+              final suggestion = suggestions[index];
+              final List<dynamic> seats = suggestion['seats'];
+              // Safe conversion of similarityScore to double
+              final double similarityScore = suggestion['similarityScore'] != null 
+                  ? (suggestion['similarityScore'] is int 
+                      ? (suggestion['similarityScore'] as int).toDouble() 
+                      : suggestion['similarityScore'] as double)
+                  : 0.0;
+              
+              return Card(
+                color: Colors.black87, 
+                margin: EdgeInsets.only(bottom: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: BorderSide(color: Colors.red.withOpacity(0.5), width: 1), // Red border
+                ),
+                child: ListTile(
+                  title: Text(
+                    'Option ${index + 1}',
+                    style: TextStyle(color: Colors.red), // Red title text
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${seats.length} seats',
+                        style: TextStyle(color: Colors.white), // White text
+                      ),
+                      Text(
+                        'Similarity: ${(similarityScore * 100).toStringAsFixed(0)}%',
+                        style: TextStyle(color: Colors.white), // White text
+                      ),
+                      Text(
+                        'Seats: ${seats.join(", ")}',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: Colors.white), // White text
+                      ),
+                    ],
+                  ),
+                  trailing: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red, // Red button
+                      foregroundColor: Colors.white, // White text
+                    ),
+                    child: Text('Select'),
+                    onPressed: () {
+                      setState(() {
+                        // Clear current selections
+                        _clearSelectedSeats();
+                        
+                        // Select the suggested seats
+                        for (var seatNumber in seats) {
+                          int index = _seats.indexWhere((seat) => seat.number == seatNumber);
+                          if (index != -1) {
+                            _seats[index].status = SeatStatus.selected;
+                            _selectedSeats.add(seatNumber);
+                          }
+                        }
+                      });
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.red, // Red text
+            ),
+            child: Text('Cancel'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final movieTitle = widget.show.movie?.title ?? 'Movie';
-    final theatreName = widget.show.theatre?.name ?? 'Theatre';
-    final showDate = DateFormat('E, MMM d').format(widget.show.date);
-    final totalPrice = _selectedSeats.length * currentTicketPrice;
+    if (_show == null) {
+      return Scaffold(
+        appBar: AppBar(title: Text('Select Seats')),
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    
+    final movieTitle = widget.movieTitle;
+    final theatreName = _show!.theatre?.name ?? 'Theatre';
+    final showDate = DateFormat('E, MMM d').format(_show!.date);
+    
+    // Calculate accurate price with all factors
+    final basePrice = _show!.price;
+    final dynamicPrice = calculateTotalPrice();
     
     // Calculate occupancy percentage
     final totalSeats = _seats.length;
     final bookedSeats = _seats.where((seat) => seat.status == SeatStatus.taken).length;
+    final availableSeats = _seats.where((seat) => seat.status == SeatStatus.available).length;
     final occupancyPercentage = (bookedSeats / totalSeats * 100).toStringAsFixed(0);
+    final isSoldOut = availableSeats == 0;
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Select Seats'),
         actions: [
-          IconButton(
-            icon: Icon(Icons.group),
-            onPressed: _showGroupSizeDialog,
-            tooltip: 'Change number of seats',
-          ),
+          // Only show group size button if no preselected seats and there are available seats
+          if (widget.preselectedSeats == null && !isSoldOut)
+            IconButton(
+              icon: Icon(Icons.group),
+              onPressed: _showGroupSizeDialog,
+              tooltip: 'Change number of seats',
+            ),
+          // Add button for alternative seat suggestions
+          if (_selectedSeats.isNotEmpty)
+            IconButton(
+              icon: Icon(Icons.swap_horiz),
+              onPressed: _getAlternativeSuggestions,
+              tooltip: 'See alternative seating options',
+            ),
         ],
       ),
       body: _isLoading
@@ -510,31 +823,47 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                   ),
                 ),
                 Text(
-                  '$theatreName - $showDate - ${widget.show.time}',
+                  '$theatreName - $showDate - ${_show!.time}',
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey[400],
                   ),
                 ),
                 const SizedBox(height: 8),
-                // Show occupancy and price information
-                _priceMultiplier > 1.0
+                // Show occupancy or sold out message
+                isSoldOut
                     ? Container(
                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
-                          color: Colors.amber.withOpacity(0.2),
+                          color: Colors.red.withOpacity(0.5),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
-                          'Theater is $occupancyPercentage% full! Prices are ${(_priceMultiplier * 100 - 100).toStringAsFixed(0)}% higher',
+                          'SOLD OUT',
                           style: TextStyle(
-                            color: Colors.amber,
-                            fontSize: 12,
+                            color: Colors.white,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       )
-                    : SizedBox.shrink(),
+                    : (_priceMultiplier > 1.0 && _occupancyRate > 0.0
+                        ? Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Colors.amber.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              'Theater is $occupancyPercentage% full! Dynamic pricing in effect',
+                              style: TextStyle(
+                                color: Colors.amber,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        : SizedBox.shrink()),
               ],
             ),
           ),
@@ -685,7 +1014,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Mykola Ovodova 51,Vinnista, Vinnista region',
+                      'Mumbai',
                       style: TextStyle(fontSize: 12, color: Colors.grey[400]),
                     ),
                   ],
@@ -693,30 +1022,62 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                Text(
-                  '\$${totalPrice.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                    Text(
+                      '\$${dynamicPrice.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                     // Show ticket price breakdown
                     Text(
-                      '${_selectedSeats.length} × \$${currentTicketPrice.toStringAsFixed(2)}',
+                      'Base: \$${basePrice.toStringAsFixed(2)} × ${_selectedSeats.length} seats',
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey[400],
                       ),
                     ),
-                    if (_priceMultiplier > 1.0)
-                      Text(
-                        'High demand: +${(_priceMultiplier * 100 - 100).toStringAsFixed(0)}%',
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.amber,
+                    // Dynamic pricing factors
+                    if (_priceMultiplier > 1.0) ...[
+                      if (_occupancyRate > 0.5)
+                        Text(
+                          'Demand (${occupancyPercentage}% full): ${_getPriceChange(_occupancyRate)}',
+                          style: TextStyle(fontSize: 11, color: Colors.amber),
                         ),
-                      ),
+                      if (_isWeekend)
+                        Text(
+                          'Weekend: +10%',
+                          style: TextStyle(fontSize: 11, color: Colors.amber),
+                        ),
+                      if (_isPeakHour)
+                        Text(
+                          'Evening hours: +10%',
+                          style: TextStyle(fontSize: 11, color: Colors.amber),
+                        ),
+                      // Show center seats premium information
+                      if (_selectedSeats.isNotEmpty && _selectedSeats.where((seatNum) {
+                        final seatPosition = (seatNum - 1) % _seatsPerRow;
+                        return seatPosition >= 3 && seatPosition <= 6;
+                      }).length > 0)
+                        Builder(
+                          builder: (context) {
+                            // Count how many center seats are selected
+                            final centerSeatCount = _selectedSeats.where((seatNum) {
+                              final seatPosition = (seatNum - 1) % _seatsPerRow;
+                              return seatPosition >= 3 && seatPosition <= 6;
+                            }).length;
+                            
+                            // Calculate percentage of selected seats that are center seats
+                            final centerSeatPercentage = (centerSeatCount / _selectedSeats.length * 100).toInt();
+                            
+                            return Text(
+                              'Center seats ($centerSeatCount/${_selectedSeats.length}): +10%',
+                              style: TextStyle(fontSize: 11, color: Colors.amber),
+                            );
+                          }
+                        ),
+                    ],
                   ],
                 ),
               ],
@@ -727,14 +1088,14 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
             width: double.infinity,
             padding: const EdgeInsets.all(12),
             child: ElevatedButton(
-              onPressed: _selectedSeats.isNotEmpty ? _bookTickets : null,
+              onPressed: isSoldOut ? null : (_selectedSeats.isNotEmpty ? _bookTickets : null),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
                 padding: const EdgeInsets.symmetric(vertical: 15),
-                disabledBackgroundColor: Colors.grey,
+                disabledBackgroundColor: isSoldOut ? Colors.red.withOpacity(0.5) : Colors.grey,
               ),
               child: Text(
-                'Buy Ticket\$${totalPrice.toStringAsFixed(2)}',
+                isSoldOut ? 'SOLD OUT' : 'Buy Ticket \$${dynamicPrice.toStringAsFixed(2)}',
                 style: const TextStyle(fontSize: 16),
               ),
             ),
@@ -742,5 +1103,13 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
         ],
       ),
     );
+  }
+
+  // Helper method to display price changes based on occupancy
+  String _getPriceChange(double occupancyRate) {
+    if (occupancyRate > 0.9) return '+30%';
+    if (occupancyRate > 0.7) return '+20%';
+    if (occupancyRate > 0.5) return '+10%';
+    return '0%';
   }
 }

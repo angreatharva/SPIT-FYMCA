@@ -33,7 +33,7 @@ class _ShowSelectionScreenState extends State<ShowSelectionScreen> {
 
   List<Show> _getShowsForSelectedDate(List<Show> shows) {
     final selectedDate = DateFormat('yyyy-MM-dd').format(_selectedDate);
-   print("selectedDate: $selectedDate");
+    print("selectedDate: $selectedDate");
     return shows.where((show) {
       final showDate = DateFormat('yyyy-MM-dd').format(show.date);
       return showDate == selectedDate;
@@ -165,17 +165,25 @@ class _ShowSelectionScreenState extends State<ShowSelectionScreen> {
                                 spacing: 10,
                                 runSpacing: 10,
                                 children: theatreShows.map((show) {
-                                  return ShowTimeCard(
-                                    time: show.time,
-                                    price: show.price,
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => SeatSelectionScreen(show: show),
-                                        ),
-                                      );
-                                    },
+                                  return Column(
+                                    children: [
+                                      ShowTimeCard(
+                                        time: show.time,
+                                        price: show.price,
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => SeatSelectionScreen(
+                                                showId: show.id,
+                                                movieTitle: widget.movie.title,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                     
+                                    ],
                                   );
                                 }).toList(),
                               ),
