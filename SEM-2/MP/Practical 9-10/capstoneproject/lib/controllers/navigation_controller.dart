@@ -12,8 +12,9 @@ class NavigationController extends GetxController {
   
   // Navigation destinations
   static const int HOME_INDEX = 0;
-  static const int VIDEO_CALL_INDEX = 2; // Center button
-  static const int PROFILE_INDEX = 4;
+  static const int VIDEO_CALL_INDEX = 1;
+  static const int  BLOGS_INDEX= 2;
+  static const int PROFILE_INDEX = 3;
 
   // Navigation items definition
   final List<NavigationItem> navigationItems = [
@@ -25,9 +26,15 @@ class NavigationController extends GetxController {
     ),
     NavigationItem(
       index: VIDEO_CALL_INDEX,
-      route: AppRoutes.roleSelection,
-      icon: 'roleSelection',
-      label: 'roleSelection',
+      route: AppRoutes.videoCall,
+      icon: 'videocam',
+      label: 'Video Call',
+    ),
+    NavigationItem(
+      index: BLOGS_INDEX,
+      route: AppRoutes.blogs,
+      icon: 'message_outlined',
+      label: 'Blogs',
     ),
     NavigationItem(
       index: PROFILE_INDEX,
@@ -67,8 +74,16 @@ class NavigationController extends GetxController {
         case HOME_INDEX:
           Get.offAllNamed(AppRoutes.home);
           break;
+        case BLOGS_INDEX:
+          Get.offAllNamed(AppRoutes.blogs);
+          break;
         case VIDEO_CALL_INDEX:
-          Get.offAllNamed(AppRoutes.roleSelection);
+          // Navigate based on user type
+          if (UserController.to.isDoctor) {
+            Get.offAllNamed(AppRoutes.doctorPendingCalls);
+          } else {
+            Get.offAllNamed(AppRoutes.activeDoctors);
+          }
           break;
         case PROFILE_INDEX:
           Get.offAllNamed(AppRoutes.profile);
@@ -84,7 +99,11 @@ class NavigationController extends GetxController {
       case AppRoutes.home:
         currentIndex.value = HOME_INDEX;
         break;
-      case AppRoutes.roleSelection:
+      case AppRoutes.blogs:
+        currentIndex.value = BLOGS_INDEX;
+        break;
+      case AppRoutes.activeDoctors:
+      case AppRoutes.doctorPendingCalls:
         currentIndex.value = VIDEO_CALL_INDEX;
         break;
       case AppRoutes.profile:

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../controllers/health_controller.dart';
 import '../controllers/navigation_controller.dart';
 import '../controllers/user_controller.dart';
+import '../utils/theme_constants.dart';
 import '../widgets/custom_bottom_nav.dart';
 import '../widgets/health_tracking_card.dart';
 
@@ -15,11 +16,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // UI variables
-  final Color _primaryColor = const Color(0xFF2A7DE1);
-  final Color _accentColor = const Color(0xFF1E5BB6);
-  final Color _backgroundColor = const Color(0xFFE8EDDE);
-  
+
   final UserController userController = Get.find<UserController>();
   bool isAuthenticated = false;
 
@@ -55,17 +52,15 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!isAuthenticated) {
       // Show a loading indicator while authentication is checked
       return Scaffold(
-        backgroundColor: _backgroundColor,
         body: Center(
           child: CircularProgressIndicator(
-            color: _primaryColor,
+            color: ThemeConstants.primaryColor,
           ),
         ),
       );
     }
 
     return Scaffold(
-      backgroundColor: _backgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -75,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Obx(() => Text(
               'Welcome ${userController.isDoctor ? "Dr." : ""} ${userController.userName}',
               style: TextStyle(
-                color: _accentColor,
+                color: ThemeConstants.accentColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -96,9 +91,9 @@ class _HomeScreenState extends State<HomeScreen> {
           // Health Tracking Card
           Expanded(
             child: HealthTrackingCard(
-              primaryColor: _primaryColor,
-              accentColor: _accentColor,
-              backgroundColor: _backgroundColor,
+              primaryColor: ThemeConstants.primaryColor,
+              accentColor: ThemeConstants.accentColor,
+              backgroundColor: ThemeConstants.backgroundColor,
             ),
           ),
         ],

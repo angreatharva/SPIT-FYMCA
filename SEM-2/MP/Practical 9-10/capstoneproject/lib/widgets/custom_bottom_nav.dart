@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import '../controllers/navigation_controller.dart';
 
 class CustomBottomNav extends GetView<NavigationController> {
@@ -11,7 +12,7 @@ class CustomBottomNav extends GetView<NavigationController> {
       height: 70,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0XFF284C1C),
         borderRadius: BorderRadius.circular(50),
         boxShadow: [
           BoxShadow(
@@ -32,18 +33,27 @@ class CustomBottomNav extends GetView<NavigationController> {
                 index: NavigationController.HOME_INDEX,
                 icon: Icons.home,
                 label: 'Home',
+                lottieAsset: 'assets/lottie/Home.json',
               ),
-              // Empty space for the center button
+              // Video call
               _buildNavItem(
                 index: NavigationController.VIDEO_CALL_INDEX,
                 icon: Icons.videocam,
-                label: 'Profile',
+                label: 'Video Call',
+                lottieAsset: 'assets/lottie/VideoCall.json',
+              ),
+              _buildNavItem(
+                index: NavigationController.BLOGS_INDEX,
+                icon: Icons.message_outlined,
+                label: 'Blogs',
+                lottieAsset: 'assets/lottie/Blog.json',
               ),
               // Profile
               _buildNavItem(
                 index: NavigationController.PROFILE_INDEX,
                 icon: Icons.person,
                 label: 'Profile',
+                lottieAsset: 'assets/lottie/Profile.json',
               ),
             ],
           ),
@@ -56,6 +66,7 @@ class CustomBottomNav extends GetView<NavigationController> {
     required int index,
     required IconData icon,
     required String label,
+    required String lottieAsset,
   }) {
     return Obx(() {
       final bool isSelected = controller.currentIndex.value == index;
@@ -63,21 +74,23 @@ class CustomBottomNav extends GetView<NavigationController> {
         onTap: () => controller.changeTab(index),
         borderRadius: BorderRadius.circular(20),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                icon,
-                color: isSelected ? const Color(0xFF2A7DE1) : Colors.grey,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: isSelected ? const Color(0xFF2A7DE1) : Colors.grey,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              Container(
+                height: 60,
+                width: 60,
+                decoration: BoxDecoration(
+                  color: isSelected ? Color(0XFFFFFFFF) : Color(0XFF385D34),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                padding: EdgeInsets.all(10), // Added padding to reduce effective size
+                child: Lottie.asset(
+                  lottieAsset,
+                  animate: isSelected,
+                  fit: BoxFit.contain,
+                  repeat: isSelected,
                 ),
               ),
             ],
@@ -86,4 +99,4 @@ class CustomBottomNav extends GetView<NavigationController> {
       );
     });
   }
-} 
+}

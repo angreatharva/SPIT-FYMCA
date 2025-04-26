@@ -1,9 +1,12 @@
+import 'package:capstoneproject/screens/blogs_screen.dart';
 import 'package:capstoneproject/screens/role_selection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../screens/profile_screen.dart';
 import '../screens/home_screen.dart';
-import '../screens/join_screen.dart';
+import '../screens/active_doctors_screen.dart';
+import '../screens/pending_calls_screen.dart';
+import '../screens/call_screen.dart';
 import '../screens/login_screen.dart';
 import '../screens/doctor_registration_screen.dart';
 import '../screens/user_registration_screen.dart';
@@ -14,15 +17,20 @@ import '../controllers/navigation_controller.dart';
 import '../controllers/user_controller.dart';
 import '../controllers/doctor_controller.dart';
 import '../controllers/health_controller.dart';
+import '../controllers/calling_controller.dart';
 
 class AppRoutes {
   static const String home = '/home';
   static const String profile = '/profile';
   static const String joinScreen = '/join';
   static const String roleSelection = '/role-selection';
+  static const String videoCall = '/video-call'; // General route identifier
+  static const String activeDoctors = '/active-doctors';
+  static const String doctorPendingCalls = '/pending-calls';
   static const String login = '/login';
   static const String userRegistration = '/user-registration';
   static const String doctorRegistration = '/doctor-registration';
+  static const String blogs = '/blogs';
 
   // Initialize required controllers
   static void initControllers() {
@@ -43,6 +51,11 @@ class AppRoutes {
       if (!Get.isRegistered<HealthController>()) {
         Get.put(HealthController(), permanent: true);
       }
+      
+      if (!Get.isRegistered<CallingController>()) {
+        Get.put(CallingController(), permanent: true);
+      }
+      
       dev.log("AppRoutes: Controllers initialized successfully");
     } catch (e) {
       dev.log("AppRoutes: Error initializing controllers: $e");
@@ -56,12 +69,10 @@ class AppRoutes {
       middlewares: [AuthMiddleware()],
     ),
     GetPage(
-      name: roleSelection,
+      name: activeDoctors,
       page: () {
         final storageService = StorageService.instance;
         final user = storageService.getUserData();
-        print("User Data: ${user}");
-        print("User Data: ${userRegistration}");
 
         if (user == null) {
           dev.log('No user data found, redirecting to login');
@@ -71,22 +82,24 @@ class AppRoutes {
           return const SizedBox.shrink(); // Return placeholder, redirect will happen
         }
         
-        return RoleSelectionScreen(selfCallerId: storageService.getCallerId());
+        // If user is a doctor, redirect to doctor pending calls
+        if (user.isDoctor) {
+          Future.delayed(Duration.zero, () {
+            Get.offAllNamed(doctorPendingCalls);
+          });
+          return const SizedBox.shrink();
+        }
+        
+        return ActiveDoctorsScreen(selfCallerId: storageService.getCallerId());
       },
       middlewares: [AuthMiddleware()],
     ),
     GetPage(
-      name: profile,
-      page: () => const ProfileScreen(),
-      middlewares: [AuthMiddleware()],
-    ),
-    GetPage(
-      name: joinScreen,
+      name: doctorPendingCalls,
       page: () {
         final storageService = StorageService.instance;
         final user = storageService.getUserData();
-        final callerId = storageService.getCallerId();
-        
+
         if (user == null) {
           dev.log('No user data found, redirecting to login');
           Future.delayed(Duration.zero, () {
@@ -95,13 +108,26 @@ class AppRoutes {
           return const SizedBox.shrink(); // Return placeholder, redirect will happen
         }
         
-        return JoinScreen(
-          selfCallerId: callerId,
-          role: user.isDoctor,
-          // userId: user.id,
-          // userName: user.name,
-        );
+        // If user is not a doctor, redirect to active doctors
+        if (!user.isDoctor) {
+          Future.delayed(Duration.zero, () {
+            Get.offAllNamed(activeDoctors);
+          });
+          return const SizedBox.shrink();
+        }
+        
+        return PendingCallsScreen(selfCallerId: storageService.getCallerId());
       },
+      middlewares: [AuthMiddleware()],
+    ),
+    GetPage(
+      name: blogs,
+      page: () => const BlogsScreen(),
+      middlewares: [AuthMiddleware()],
+    ),
+    GetPage(
+      name: profile,
+      page: () => const ProfileScreen(),
       middlewares: [AuthMiddleware()],
     ),
     GetPage(

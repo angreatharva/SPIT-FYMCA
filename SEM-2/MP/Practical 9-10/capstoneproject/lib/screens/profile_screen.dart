@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../controllers/doctor_controller.dart';
 import '../controllers/navigation_controller.dart';
 import '../controllers/user_controller.dart';
+import '../utils/theme_constants.dart';
 import '../widgets/custom_bottom_nav.dart';
 
 class ProfileScreen extends GetView<NavigationController> {
@@ -31,8 +32,12 @@ class ProfileScreen extends GetView<NavigationController> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
-        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        title: const Text('Profile', style: TextStyle(
+          color: ThemeConstants.accentColor,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -50,6 +55,11 @@ class ProfileScreen extends GetView<NavigationController> {
             const SizedBox(height: 20),
             Card(
               margin: const EdgeInsets.all(16),
+              color: Color(0XFFC3DEA9),
+              elevation: 3,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(

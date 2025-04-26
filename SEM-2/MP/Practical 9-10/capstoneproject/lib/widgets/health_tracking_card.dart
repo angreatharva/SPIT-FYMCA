@@ -92,7 +92,7 @@ class HealthTrackingCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Text(
-                'Tasks refresh at midnight. Completed tasks cannot be unchecked.',
+                'Tasks are refreshed at very midnight.',
                 style: TextStyle(
                   fontSize: 12,
                   fontStyle: FontStyle.italic,
@@ -157,13 +157,13 @@ class HealthTrackingCard extends StatelessWidget {
     BuildContext context,
   ) {
     return Card(
-      elevation: 2,
+      elevation: 3,
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(25),
       ),
       // Use different background color for completed tasks
-      color: question.response ? Colors.green.shade50 : Colors.white,
+      color: question.response ? Colors.green.shade50 : Color(0XFFC3DEA9),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(

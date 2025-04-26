@@ -2,14 +2,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:get/get.dart' as getx;
+import '../controllers/user_controller.dart';
 import '../services/signalling.service.dart';
 import '../services/native_speech_service.dart';
+import '../controllers/calling_controller.dart';
 
 class CallScreen extends StatefulWidget {
   final String callerId;
   final String calleeId;
   final dynamic offer;
   final bool isDoctor;
+  final String? requestId;
 
   const CallScreen({
     super.key,
@@ -17,6 +21,7 @@ class CallScreen extends StatefulWidget {
     required this.callerId,
     required this.calleeId,
     required this.isDoctor,
+    this.requestId,
   });
 
   @override
@@ -51,6 +56,12 @@ class _CallScreenState extends State<CallScreen> with WidgetsBindingObserver {
   bool _isTranscribing = false;
   String _recognizedText = '';
   StreamSubscription? _transcriptionSubscription;
+  
+  // Calling controller
+  final CallingController _callingController = getx.Get.find<CallingController>();
+
+  final UserController _userController = getx.Get.find<UserController>();
+
 
   @override
   void initState() {
@@ -310,6 +321,40 @@ class _CallScreenState extends State<CallScreen> with WidgetsBindingObserver {
     _showEndCallDialog();
   }
 
+  // Clean up resources when call ends
+  Future<void> _cleanupCall() async {
+    // Stop timers
+    _callDurationTimer?.cancel();
+    
+    // Stop speech recognition
+    if (_isTranscribing) {
+      await _stopTranscription();
+    }
+    _transcriptionSubscription?.cancel();
+    
+    // Close WebRTC connection
+    _localStream?.getTracks().forEach((track) => track.stop());
+    await _rtcPeerConnection?.close();
+    await _localRTCVideoRenderer.dispose();
+    await _remoteRTCVideoRenderer.dispose();
+    
+    // If this is a doctor and we have a request ID, mark the call as completed
+    if (widget.isDoctor && widget.requestId != null) {
+      await _completeCallRequest();
+    }
+  }
+  
+  // Mark call as completed on the server
+  Future<void> _completeCallRequest() async {
+    if (widget.requestId != null) {
+      await _callingController.updateCallRequestStatus(
+        widget.requestId!,
+        'completed'
+      );
+      debugPrint("📝 Call marked as completed on server");
+    }
+  }
+
   _showEndCallDialog() {
     showDialog(
       context: context,
@@ -335,9 +380,19 @@ class _CallScreenState extends State<CallScreen> with WidgetsBindingObserver {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(context).pop(); // Close dialog
-                Navigator.of(context).pop(); // Leave call screen
+                
+                // Clean up resources
+                await _cleanupCall();
+                
+                // If doctor, refresh pending calls first
+                if (widget.isDoctor && widget.requestId != null) {
+                  await _callingController.fetchPendingRequests(_callingController.doctorId.value);
+                }
+                
+                // Leave call screen
+                getx.Get.back();
               },
               child: const Text('End Call'),
             ),
@@ -854,42 +909,34 @@ class _CallScreenState extends State<CallScreen> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    debugPrint("🧹 Disposing resources");
+    debugPrint("🧹 Cleaning up call resources");
+    _callDurationTimer?.cancel();
+    _transcriptionSubscription?.cancel();
+    _localStream?.getTracks().forEach((track) => track.stop());
+    _rtcPeerConnection?.close();
+    _localRTCVideoRenderer.dispose();
+    _remoteRTCVideoRenderer.dispose();
     WidgetsBinding.instance.removeObserver(this);
-
-    try {
-      // Stop speech recognition first to avoid conflicts during cleanup
-      if (_isTranscribing) {
-        _stopTranscription();
-      }
-
-      // Cancel subscription and dispose speech service
-      _transcriptionSubscription?.cancel();
-      _transcriptionSubscription = null;
-      _speechService.dispose();
-
-      // Then clean up WebRTC resources
-      if (_rtcPeerConnection != null) {
-        _rtcPeerConnection!.close();
-
-        // Explicitly end all tracks
-        _localStream?.getTracks().forEach((track) {
-          track.stop();
-        });
-      }
-
-      _localRTCVideoRenderer.dispose();
-      _remoteRTCVideoRenderer.dispose();
-      _localStream?.dispose();
-      _rtcPeerConnection?.dispose();
-      _rtcPeerConnection = null;
-
-      _callDurationTimer?.cancel();
-      _callDurationTimer = null;
-    } catch (e) {
-      debugPrint('Error during resource cleanup: $e');
-    }
-
     super.dispose();
+  }
+
+  // Join Call (handles both outgoing and incoming calls)
+  void _joinCall({
+    required String callerId,
+    required String calleeId,
+    dynamic offer,
+    String? requestId,
+  }) {
+    // Navigate to call screen
+    getx.Get.to(() => CallScreen(
+      callerId: callerId,
+      calleeId: calleeId,
+      offer: offer,
+      isDoctor: _userController.isDoctor,
+      requestId: requestId,
+    ));
+    
+    // Clear incoming call offer
+    _callingController.clearIncomingCall();
   }
 }
