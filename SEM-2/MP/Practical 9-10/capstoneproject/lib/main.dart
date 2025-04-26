@@ -8,8 +8,6 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as dev;
 
-import 'controllers/doctor_controller.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   

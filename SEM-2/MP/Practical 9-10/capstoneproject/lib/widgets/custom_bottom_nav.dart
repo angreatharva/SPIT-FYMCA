@@ -34,7 +34,11 @@ class CustomBottomNav extends GetView<NavigationController> {
                 label: 'Home',
               ),
               // Empty space for the center button
-              const SizedBox(width: 60),
+              _buildNavItem(
+                index: NavigationController.VIDEO_CALL_INDEX,
+                icon: Icons.videocam,
+                label: 'Profile',
+              ),
               // Profile
               _buildNavItem(
                 index: NavigationController.PROFILE_INDEX,
@@ -42,33 +46,6 @@ class CustomBottomNav extends GetView<NavigationController> {
                 label: 'Profile',
               ),
             ],
-          ),
-          // Center button for video call
-          Positioned(
-            top: 5,
-            child: Container(
-              height: 60,
-              width: 60,
-              decoration: BoxDecoration(
-                color: const Color(0xFF2A7DE1),
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.blue.withOpacity(0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: IconButton(
-                icon: const Icon(
-                  Icons.videocam,
-                  color: Colors.white,
-                  size: 30,
-                ),
-                onPressed: controller.handleVideoCallTap,
-              ),
-            ),
           ),
         ],
       ),

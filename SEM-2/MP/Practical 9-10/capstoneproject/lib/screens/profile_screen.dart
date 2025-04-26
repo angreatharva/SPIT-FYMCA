@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer' as dev;
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/doctor_controller.dart';

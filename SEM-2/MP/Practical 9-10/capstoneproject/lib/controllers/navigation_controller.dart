@@ -24,6 +24,12 @@ class NavigationController extends GetxController {
       label: 'Home',
     ),
     NavigationItem(
+      index: VIDEO_CALL_INDEX,
+      route: AppRoutes.roleSelection,
+      icon: 'roleSelection',
+      label: 'roleSelection',
+    ),
+    NavigationItem(
       index: PROFILE_INDEX,
       route: AppRoutes.profile,
       icon: 'person',
@@ -61,31 +67,25 @@ class NavigationController extends GetxController {
         case HOME_INDEX:
           Get.offAllNamed(AppRoutes.home);
           break;
+        case VIDEO_CALL_INDEX:
+          Get.offAllNamed(AppRoutes.roleSelection);
+          break;
         case PROFILE_INDEX:
           Get.offAllNamed(AppRoutes.profile);
           break;
       }
     }
   }
-  
-  /// Handle video call button press
-  void handleVideoCallTap() {
-    dev.log('Video call button tapped');
-    
-    // First check if user is logged in
-    if (!UserController.to.validateUser()) {
-      return;
-    }
-    
-    // Navigate to video calling screen
-    Get.toNamed(AppRoutes.roleSelection);
-  }
+
   
   /// Update current index based on the current route
   void updateIndexFromRoute(String route) {
     switch (route) {
       case AppRoutes.home:
         currentIndex.value = HOME_INDEX;
+        break;
+      case AppRoutes.roleSelection:
+        currentIndex.value = VIDEO_CALL_INDEX;
         break;
       case AppRoutes.profile:
         currentIndex.value = PROFILE_INDEX;

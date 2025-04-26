@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/custom_bottom_nav.dart';
 import 'join_screen.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
@@ -36,6 +37,7 @@ class RoleSelectionScreen extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: const CustomBottomNav(),
     );
   }
 
@@ -56,7 +58,7 @@ class RoleSelectionScreen extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => JoinScreen(selfCallerId: selfCallerId,role: isDoctor,)
+              builder: (_) => JoinScreen(selfCallerId: selfCallerId,role: isDoctor,)
           ),
         );
       },

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'dart:developer' as dev;
 
 import '../controllers/health_controller.dart';
 import '../controllers/navigation_controller.dart';

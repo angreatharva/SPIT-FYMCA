@@ -45,7 +45,7 @@ class ProfileController extends GetxController {
 
   void startVideoCall() {
     dev.log('Starting video call from profile');
-    Get.toNamed(AppRoutes.videoCallingScreen);
+    Get.toNamed(AppRoutes.roleSelection);
   }
   
   // Method to log out the user

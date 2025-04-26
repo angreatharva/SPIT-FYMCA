@@ -1,9 +1,7 @@
 import 'package:get/get.dart';
 import '../routes/app_routes.dart';
-import '../services/storage_service.dart';
 import 'dart:developer' as dev;
 
-import '../screens/profile_screen.dart';
 
 class HomeController extends GetxController {
   final RxInt selectedFilterIndex = 0.obs;
@@ -60,6 +58,6 @@ class HomeController extends GetxController {
 
   void startVideoCall() {
     dev.log('Starting video call');
-    Get.toNamed(AppRoutes.videoCallingScreen);
+    Get.toNamed(AppRoutes.roleSelection);
   }
 } 

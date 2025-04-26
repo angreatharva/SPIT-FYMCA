@@ -1,4 +1,4 @@
-import 'package:capstoneproject/screens/RoleSelectionScreen.dart';
+import 'package:capstoneproject/screens/role_selection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../screens/profile_screen.dart';
@@ -7,23 +7,19 @@ import '../screens/join_screen.dart';
 import '../screens/login_screen.dart';
 import '../screens/doctor_registration_screen.dart';
 import '../screens/user_registration_screen.dart';
-import '../screens/video_calling_screen.dart';
 import '../services/storage_service.dart';
-import '../services/call_request_service.dart';
 import 'auth_middleware.dart';
 import 'dart:developer' as dev;
 import '../controllers/navigation_controller.dart';
 import '../controllers/user_controller.dart';
 import '../controllers/doctor_controller.dart';
 import '../controllers/health_controller.dart';
-import '../controllers/call_request_controller.dart';
 
 class AppRoutes {
   static const String home = '/home';
   static const String profile = '/profile';
   static const String joinScreen = '/join';
   static const String roleSelection = '/role-selection';
-  static const String videoCallingScreen = '/video-calling';
   static const String login = '/login';
   static const String userRegistration = '/user-registration';
   static const String doctorRegistration = '/doctor-registration';
@@ -47,15 +43,6 @@ class AppRoutes {
       if (!Get.isRegistered<HealthController>()) {
         Get.put(HealthController(), permanent: true);
       }
-      
-      if (!Get.isRegistered<CallRequestService>()) {
-        Get.put(CallRequestService(), permanent: true);
-      }
-      
-      if (!Get.isRegistered<CallRequestController>()) {
-        Get.put(CallRequestController(), permanent: true);
-      }
-      
       dev.log("AppRoutes: Controllers initialized successfully");
     } catch (e) {
       dev.log("AppRoutes: Error initializing controllers: $e");
@@ -85,24 +72,6 @@ class AppRoutes {
         }
         
         return RoleSelectionScreen(selfCallerId: storageService.getCallerId());
-      },
-      middlewares: [AuthMiddleware()],
-    ),
-    GetPage(
-      name: videoCallingScreen,
-      page: () {
-        final storageService = StorageService.instance;
-        final user = storageService.getUserData();
-        
-        if (user == null) {
-          dev.log('No user data found, redirecting to login');
-          Future.delayed(Duration.zero, () {
-            Get.offAllNamed(login);
-          });
-          return const SizedBox.shrink(); // Return placeholder, redirect will happen
-        }
-        
-        return VideoCallingScreen();
       },
       middlewares: [AuthMiddleware()],
     ),
