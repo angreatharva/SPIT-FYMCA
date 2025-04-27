@@ -1,0 +1,108 @@
+import 'package:dio/dio.dart';
+import 'package:get/get.dart';
+import '../services/api_service.dart';
+import '../models/health_tracking_model.dart';
+import 'dart:developer' as dev;
+
+class HealthService extends GetxService {
+  final Dio _dio = ApiService.instance.client;
+  
+  // Singleton instance
+  static HealthService get instance => Get.find<HealthService>();
+  
+  // Get all health questions
+  Future<List<dynamic>> getAllQuestions() async {
+    try {
+      final response = await _dio.get(
+        '${ApiService.baseUrl}/api/health/questions',
+      );
+      
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        return response.data['data'] ?? [];
+      } else {
+        dev.log('Error getting health questions: ${response.data}');
+        return [];
+      }
+    } catch (e) {
+      dev.log('Exception getting health questions: $e');
+      return [];
+    }
+  }
+  
+  // Get today's health tracking for a user
+  Future<HealthTrackingModel?> getUserHealthTracking(String userId) async {
+    try {
+      final response = await _dio.get(
+        '${ApiService.baseUrl}/api/health/tracking/$userId',
+      );
+      
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        return HealthTrackingModel.fromJson(response.data['data']);
+      } else {
+        dev.log('Error getting health tracking: ${response.data}');
+        return null;
+      }
+    } catch (e) {
+      dev.log('Exception getting health tracking: $e');
+      return null;
+    }
+  }
+  
+  // Complete a health question
+  Future<bool> completeHealthQuestion(String userId, String trackingId, String questionId) async {
+    try {
+      final response = await _dio.post(
+        '${ApiService.baseUrl}/api/health/tracking/$userId/$trackingId/complete/$questionId',
+      );
+      
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        return true;
+      } else {
+        dev.log('Error completing health question: ${response.data}');
+        return false;
+      }
+    } catch (e) {
+      dev.log('Exception completing health question: $e');
+      return false;
+    }
+  }
+  
+  // Get health activity heatmap data
+  Future<Map<String, dynamic>?> getHealthActivityHeatmap(
+    String userId, {
+    String? startDate,
+    String? endDate,
+  }) async {
+    try {
+      Map<String, dynamic> queryParams = {};
+      
+      if (startDate != null) {
+        queryParams['startDate'] = startDate;
+      }
+      
+      if (endDate != null) {
+        queryParams['endDate'] = endDate;
+      }
+      
+      final response = await _dio.get(
+        '${ApiService.baseUrl}/api/health/heatmap/$userId',
+        queryParameters: queryParams,
+      );
+      
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        return response.data['data'];
+      } else {
+        dev.log('Error getting health heatmap: ${response.data}');
+        return null;
+      }
+    } catch (e) {
+      dev.log('Exception getting health heatmap: $e');
+      return null;
+    }
+  }
+
+  // Initialize method for GetX service
+  Future<HealthService> init() async {
+    return this;
+  }
+} 

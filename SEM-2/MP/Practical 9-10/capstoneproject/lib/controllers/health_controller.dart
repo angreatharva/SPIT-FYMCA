@@ -1,8 +1,7 @@
 import 'package:get/get.dart';
-import 'package:dio/dio.dart';
 import '../models/health_tracking_model.dart';
-import '../services/api_service.dart';
 import '../services/storage_service.dart';
+import '../services/health_service.dart';
 import 'dart:developer' as dev;
 
 class HealthController extends GetxController {
@@ -10,9 +9,10 @@ class HealthController extends GetxController {
   final RxBool isHealthSectionExpanded = true.obs;
   final RxBool isLoading = false.obs;
   final RxString trackingId = ''.obs;
+  final RxMap<String, dynamic> healthHeatmap = <String, dynamic>{}.obs;
   
   late String userId;
-  final Dio _dio = Dio();
+  final HealthService _healthService = Get.find<HealthService>();
 
   @override
   void onInit() {
@@ -39,31 +39,18 @@ class HealthController extends GetxController {
     isLoading.value = true;
     
     try {
-      final response = await _dio.get(
-        '${ApiService.baseUrl}/api/health/tracking/$userId',
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        ),
-      );
+      final healthTrackingData = await _healthService.getUserHealthTracking(userId);
       
-      if (response.statusCode == 200) {
-        final data = response.data;
-        
-        if (data['success'] == true && data['data'] != null) {
-          // Convert server response to HealthTrackingModel
-          healthTracking.value = HealthTrackingModel.fromJson(data['data']);
-          dev.log('Health data loaded from server');
-        } else {
-          // Fall back to default data if server returns error
-          healthTracking.value = HealthTrackingModel.createDefault();
-          dev.log('Server returned error, using default health data');
+      if (healthTrackingData != null) {
+        healthTracking.value = healthTrackingData;
+        if (healthTrackingData.trackingId != null) {
+          trackingId.value = healthTrackingData.trackingId!;
         }
+        dev.log('Health data loaded from server');
       } else {
-        // Handle API error
-        dev.log('API error: ${response.statusCode} - ${response.data}');
+        // Fall back to default data if server returns error
         healthTracking.value = HealthTrackingModel.createDefault();
+        dev.log('Server returned error, using default health data');
       }
     } catch (e) {
       dev.log('Error loading health data from server: $e');
@@ -128,20 +115,17 @@ class HealthController extends GetxController {
       }
       
       try {
-        final response = await _dio.post(
-          '${ApiService.baseUrl}/api/health/tracking/$userId/${healthTracking.value.trackingId}/complete/$questionId',
-          options: Options(
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          ),
+        final success = await _healthService.completeHealthQuestion(
+          userId, 
+          healthTracking.value.trackingId!, 
+          questionId
         );
         
-        if (response.statusCode == 200) {
+        if (success) {
           dev.log('Question marked as completed on server');
         } else {
           // Handle API error
-          dev.log('API error updating question: ${response.statusCode} - ${response.data}');
+          dev.log('API error updating question');
           // Refresh from server to sync data
           await loadHealthData();
         }
@@ -150,6 +134,31 @@ class HealthController extends GetxController {
         // Refresh from server to sync data
         await loadHealthData();
       }
+    }
+  }
+
+  // Load health activity heatmap data
+  Future<void> loadHealthHeatmap({String? startDate, String? endDate}) async {
+    if (userId.isEmpty) {
+      dev.log('Cannot load health heatmap: User ID is empty');
+      return;
+    }
+    
+    try {
+      final heatmapData = await _healthService.getHealthActivityHeatmap(
+        userId,
+        startDate: startDate,
+        endDate: endDate,
+      );
+      
+      if (heatmapData != null) {
+        healthHeatmap.value = heatmapData;
+        dev.log('Health heatmap data loaded');
+      } else {
+        dev.log('Failed to load health heatmap data');
+      }
+    } catch (e) {
+      dev.log('Error loading health heatmap: $e');
     }
   }
 

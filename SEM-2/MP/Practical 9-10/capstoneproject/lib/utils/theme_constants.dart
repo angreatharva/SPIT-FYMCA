@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ThemeConstants {
-  static const Color primaryColor = Color(0xFF2A7DE1); // Medical blue
-  static const Color accentColor = Color(0xFF1E5BB6); // Darker medical blue
-  static const Color backgroundColor = Color(0xFFE8EDDE); // Light blue-tinted white
-  static const Color secondaryColor = Color(0xFF10B981); // Teal/green for positive actions
-  static const Color dangerColor = Color(0xFFEF4444); // Red for ending call/negative actions
+
+  static const Color mainColor = Color(0xFF284C1C);
+  static const Color mainColorInActive = Color(0xFF385D34);
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color greyInActive = Color(0xFFDEE2D1);
+  static const Color primaryColor = Color(0xFF2A7DE1);
+  static const Color accentColor = Color(0xFF1E5BB6);
+  static const Color backgroundColor = Color(0xFFE8EDDE);
+  static const Color secondaryColor = Color(0xFF10B981);
+  static const Color dangerColor = Color(0xFFEF4444);
 
   static const double borderRadius = 12.0;
   static const double padding = 16.0;

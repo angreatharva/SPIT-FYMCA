@@ -52,9 +52,42 @@ const healthTrackingSchema = new Schema({
 // Create compound index on userId and date to ensure one record per user per day
 healthTrackingSchema.index({ userId: 1, date: 1 }, { unique: true });
 
+// Define health activity stats schema for heatmap
+const healthActivitySchema = new Schema({
+  userId: {
+    type: String,
+    required: true,
+    index: true
+  },
+  date: {
+    type: Date,
+    required: true
+  },
+  completedTasks: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  totalTasks: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  score: {
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 100
+  }
+}, { timestamps: true });
+
+// Create compound index on userId and date to ensure one record per user per day
+healthActivitySchema.index({ userId: 1, date: 1 }, { unique: true });
+
 // Create models
 const HealthQuestion = mongoose.model("HealthQuestion", healthQuestionSchema);
 const HealthTracking = mongoose.model("HealthTracking", healthTrackingSchema);
+const HealthActivity = mongoose.model("HealthActivity", healthActivitySchema);
 
 // Default questions to be created on system initialization
 const defaultQuestions = [
@@ -103,5 +136,6 @@ initializeDefaultQuestions();
 
 module.exports = {
   HealthQuestion,
-  HealthTracking
+  HealthTracking,
+  HealthActivity
 }; 

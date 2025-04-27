@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class ApiService extends GetxService {
   // Base URL for the API server
-  static const String baseUrl = 'https://31b2-210-16-113-49.ngrok-free.app';
+  static const String baseUrl = 'https://5b55-202-134-186-20.ngrok-free.app';
   
   // Singleton instance
   static ApiService get instance => Get.find<ApiService>();

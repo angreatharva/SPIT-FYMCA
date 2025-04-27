@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import '../controllers/navigation_controller.dart';
+import '../utils/theme_constants.dart';
 
 class CustomBottomNav extends GetView<NavigationController> {
   const CustomBottomNav({Key? key}) : super(key: key);
@@ -82,15 +83,20 @@ class CustomBottomNav extends GetView<NavigationController> {
                 height: 60,
                 width: 60,
                 decoration: BoxDecoration(
-                  color: isSelected ? Color(0XFFFFFFFF) : Color(0XFF385D34),
+                  color: isSelected ? ThemeConstants.white : ThemeConstants.mainColorInActive,
                   borderRadius: BorderRadius.circular(50),
+                  boxShadow: isSelected ? [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ] : null,
                 ),
-                padding: EdgeInsets.all(10), // Added padding to reduce effective size
+                padding: EdgeInsets.all(10),
                 child: Lottie.asset(
                   lottieAsset,
-                  animate: isSelected,
                   fit: BoxFit.contain,
-                  repeat: isSelected,
                 ),
               ),
             ],

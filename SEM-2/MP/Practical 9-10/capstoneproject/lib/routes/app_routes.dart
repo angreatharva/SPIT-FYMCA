@@ -1,12 +1,10 @@
 import 'package:capstoneproject/screens/blogs_screen.dart';
-import 'package:capstoneproject/screens/role_selection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../screens/profile_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/active_doctors_screen.dart';
 import '../screens/pending_calls_screen.dart';
-import '../screens/call_screen.dart';
 import '../screens/login_screen.dart';
 import '../screens/doctor_registration_screen.dart';
 import '../screens/user_registration_screen.dart';

@@ -11,18 +11,29 @@ router.get('/tracking/:userId', healthController.getUserHealthTracking);
 // Complete a health question
 router.post('/tracking/:userId/:trackingId/complete/:questionId', healthController.completeHealthQuestion);
 
-// For Admin: Manually trigger the refresh of all health tracking records
+// Get health activity heatmap data for a user
+router.get('/heatmap/:userId', healthController.getHealthActivityHeatmap);
+
+// Admin routes
+// Manually trigger a refresh of all health tracking records
 router.post('/admin/refresh', async (req, res) => {
   try {
     const result = await healthController.refreshAllHealthTracking();
-    return res.status(200).json(result);
+    if (result.success) {
+      return res.status(200).json(result);
+    } else {
+      return res.status(500).json(result);
+    }
   } catch (error) {
     console.error('Error refreshing health tracking:', error);
     return res.status(500).json({
       success: false,
-      message: 'Failed to refresh health tracking'
+      message: 'Failed to refresh health tracking records'
     });
   }
 });
+
+// Backfill health activity data
+router.post('/admin/backfill', healthController.backfillHealthActivity);
 
 module.exports = router; 

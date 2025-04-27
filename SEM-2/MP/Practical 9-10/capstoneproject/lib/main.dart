@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:capstoneproject/routes/app_routes.dart';
 import 'package:capstoneproject/services/api_service.dart';
+import 'package:capstoneproject/services/health_service.dart';
 import 'package:capstoneproject/services/signalling.service.dart';
 import 'package:capstoneproject/services/storage_service.dart';
 import 'package:capstoneproject/utils/theme_constants.dart';
@@ -14,6 +15,7 @@ void main() async {
   // Initialize Services
   await Get.putAsync(() => ApiService().init());
   await Get.putAsync(() => StorageService().init());
+  await Get.putAsync(() => HealthService().init());
   
   runApp(VideoCallApp());
 }
