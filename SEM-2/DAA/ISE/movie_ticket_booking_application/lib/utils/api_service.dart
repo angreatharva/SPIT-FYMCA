@@ -8,7 +8,7 @@ import '../models/booking.dart';
 class ApiService {
 
   // static const String serverRootUrl = ' http://localhost:5000';
-  static const String serverRootUrl = 'https://baa9-202-134-190-225.ngrok-free.app';
+  static const String serverRootUrl = 'https://b6af-202-134-190-225.ngrok-free.app';
   static const String _apiBaseUrl = '$serverRootUrl/api';
 
   // Movies

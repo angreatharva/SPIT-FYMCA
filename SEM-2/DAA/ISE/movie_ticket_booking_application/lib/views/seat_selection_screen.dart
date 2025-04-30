@@ -454,6 +454,298 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
     );
   }
 
+  // Find optimal seats using the knapsack algorithm from the backend
+  Future<void> _findOptimalSeats() async {
+    if (_show == null) return;
+    
+    setState(() {
+      _isLoading = true;
+    });
+    
+    try {
+      // Calculate budget based on maximum price per seat
+      double budget = _show!.price * 1.5; // Allow for premium pricing up to 50% more
+      
+      // Gather user preferences
+      Map<String, dynamic> preferences = await _showPreferencesDialog();
+      if (preferences.isEmpty) {
+        setState(() {
+          _isLoading = false;
+        });
+        return; // User cancelled the dialog
+      }
+      
+      final result = await _bookingController.findOptimalSeats(
+        showId: _show!.id,
+        groupSize: _groupSize,
+        budget: budget,
+        preferences: preferences,
+      );
+      
+      if (result['success'] == true) {
+        // Reset any previously selected seats
+        _clearSelectedSeats();
+        
+        // Extract the seat numbers from the result
+        final List<dynamic> pricedSeats = result['seats'];
+        List<int> optimalSeatNumbers = [];
+        
+        for (var seat in pricedSeats) {
+          int seatNumber = seat['number'];
+          optimalSeatNumbers.add(seatNumber);
+          
+          // Log the seat's adjusted price for debugging
+          print('Seat $seatNumber price: ${seat['adjustedPrice']}');
+        }
+        
+        // Update the UI with the selected seats
+        setState(() {
+          for (int seatNumber in optimalSeatNumbers) {
+            int index = _seats.indexWhere((seat) => seat.number == seatNumber);
+            if (index != -1) {
+              _seats[index].status = SeatStatus.selected;
+              _selectedSeats.add(seatNumber);
+            }
+          }
+          
+          // Show a message with the total price
+          double totalPrice = result['totalPrice'];
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'We found $_groupSize optimal seats for you! Total: ₹${totalPrice.toStringAsFixed(2)}',
+              ),
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        });
+      } else {
+        // If not enough optimal seats found, show alternative suggestions
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result['message'] ?? 'Could not find optimal seats'),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+        
+        // Try the local algorithm as a fallback
+        _findBestSeats();
+      }
+    } catch (e) {
+      print('Error finding optimal seats: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error finding optimal seats. Trying alternative method...'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      
+      // Fall back to the local algorithm
+      _findBestSeats();
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+  
+  // Show a dialog to collect user preferences for seat selection
+  Future<Map<String, dynamic>> _showPreferencesDialog() async {
+    int preferredRow = 4; // Default to middle row
+    String viewAngle = 'Center'; // Default to center view
+    bool? result;
+    
+    // Wait for the dialog result
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: Color(0xff222222),
+              title: Text('Seat Preferences',style: TextStyle(color: Colors.white),),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('AI will recommend seats based on your preferences:'),
+                  SizedBox(height: 16),
+                  
+                  Text('Preferred Row:'),
+                  DropdownButton<int>(
+                    value: preferredRow,
+                    isExpanded: true,
+                    items: List.generate(10, (index) {
+                      // Map row numbers 0-9 to more user-friendly labels
+                      String rowLabel;
+                      if (index < 3) rowLabel = 'Front (Row ${index + 1})';
+                      else if (index < 7) rowLabel = 'Middle (Row ${index + 1})';
+                      else rowLabel = 'Back (Row ${index + 1})';
+                      
+                      return DropdownMenuItem(
+                        value: index,
+                        child: Text(rowLabel,style: TextStyle(color: Colors.white),),
+                      );
+                    }),
+                    onChanged: (value) {
+                      setState(() {
+                        preferredRow = value!;
+                      });
+                    },
+                  ),
+                  
+                  SizedBox(height: 16),
+                  Text('View Angle:'),
+                  DropdownButton<String>(
+                    value: viewAngle,
+                    isExpanded: true,
+                    items: ['Left', 'Center', 'Right'].map((angle) {
+                      return DropdownMenuItem(
+                        value: angle,
+                        child: Text(angle,style: TextStyle(color: Colors.white),),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        viewAngle = value!;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    result = false;
+                  },
+                  child: Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    result = true;
+                  },
+                  child: Text('Find Seats'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+    
+    if (result == true) {
+      return {
+        'preferredRow': preferredRow,
+        'viewAngle': viewAngle,
+      };
+    } else {
+      return {}; // Empty map means user cancelled
+    }
+  }
+
+  // Get dynamic pricing details from the backend
+  Future<void> _getDynamicPricing() async {
+    if (_show == null || _selectedSeats.isEmpty) return;
+    
+    try {
+      final result = await _bookingController.getPricingDetails(
+        showId: _show!.id,
+        seatNumbers: _selectedSeats,
+      );
+      
+      if (result['success'] == true) {
+        final basePrice = result['basePrice'];
+        final List<dynamic> pricedSeats = result['pricedSeats'];
+        final totalPrice = result['totalPrice'];
+        
+        // Show a dialog with the pricing breakdown
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              backgroundColor: Color(0xFF222222),
+              title: Text('Dynamic Pricing Details',style: TextStyle(color: Colors.white),),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Base price: ₹${basePrice.toStringAsFixed(2)}'),
+                    Divider(),
+                    ...pricedSeats.map<Widget>((seat) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Seat ${seat['number']}:'),
+                            Text('₹${seat['adjustedPrice'].toStringAsFixed(2)}'),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                    Divider(thickness: 2),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Total price:', style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text('₹${totalPrice.toStringAsFixed(2)}', style: TextStyle(fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    Text('Pricing Factors:'),
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(Icons.person, size: 16,color:Colors.white),
+                        SizedBox(width: 4),
+                        Text('Occupancy: ${(result['occupancyRate'] * 100).toStringAsFixed(0)}%'),
+                      ],
+                    ),
+                    SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Icon(Icons.calendar_today, size: 16,color:Colors.white),
+                        SizedBox(width: 4),
+                        Text('Weekend: ${result['pricingFactors']['isWeekend'] ? 'Yes' : 'No'}'),
+                      ],
+                    ),
+                    SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Icon(Icons.access_time, size: 16,color:Colors.white),
+                        SizedBox(width: 4),
+                        Text('Time: ${result['pricingFactors']['timeOfDay']}:00'),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Close'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (e) {
+      print('Error getting pricing details: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error getting pricing details: $e'),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
   // This function selects a new group of consecutive seats starting from clickedSeatNumber
   void _selectConsecutiveSeats(int clickedSeatNumber) {
     // First, clear any existing selections
@@ -898,7 +1190,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
           // Seat counter
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
@@ -907,10 +1199,41 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                TextButton.icon(
-                  icon: Icon(Icons.refresh),
-                  label: Text('Reset Selection'),
-                  onPressed: _findBestSeats,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextButton.icon(
+                      icon: Icon(Icons.refresh, size: 16),
+                      label: Text('Reset'),
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        minimumSize: Size(10, 36),
+                      ),
+                      onPressed: _selectedSeats.isNotEmpty ? () {
+                        setState(() {
+                          _clearSelectedSeats();
+                        });
+                      } : null,
+                    ),
+                    TextButton.icon(
+                      icon: Icon(Icons.grid_view, size: 16),
+                      label: Text('Best Seats'),
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        minimumSize: Size(10, 36),
+                      ),
+                      onPressed: _findBestSeats,
+                    ),
+                    TextButton.icon(
+                      icon: Icon(Icons.smart_toy, size: 16),
+                      label: Text('AI Select'),
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        minimumSize: Size(10, 36),
+                      ),
+                      onPressed: _findOptimalSeats,
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -1017,13 +1340,26 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                       'Mumbai',
                       style: TextStyle(fontSize: 12, color: Colors.grey[400]),
                     ),
+                    // Add pricing details button when seats are selected
+                    if (_selectedSeats.isNotEmpty)
+                      TextButton.icon(
+                        icon: Icon(Icons.price_change, size: 16),
+                        label: Text('View Pricing Details'),
+                        onPressed: _getDynamicPricing,
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: Size(50, 25),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          foregroundColor: Colors.amber,
+                        ),
+                      ),
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '\$${dynamicPrice.toStringAsFixed(2)}',
+                      '₹${dynamicPrice.toStringAsFixed(2)}',
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -1032,7 +1368,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                     ),
                     // Show ticket price breakdown
                     Text(
-                      'Base: \$${basePrice.toStringAsFixed(2)} × ${_selectedSeats.length} seats',
+                      'Base: ₹${basePrice.toStringAsFixed(2)} × ${_selectedSeats.length} seats',
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey[400],
@@ -1095,7 +1431,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                 disabledBackgroundColor: isSoldOut ? Colors.red.withOpacity(0.5) : Colors.grey,
               ),
               child: Text(
-                isSoldOut ? 'SOLD OUT' : 'Buy Ticket \$${dynamicPrice.toStringAsFixed(2)}',
+                isSoldOut ? 'SOLD OUT' : 'Buy Ticket ₹${dynamicPrice.toStringAsFixed(2)}',
                 style: const TextStyle(fontSize: 16),
               ),
             ),

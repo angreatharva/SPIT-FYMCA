@@ -74,7 +74,7 @@ class BookingConfirmationScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      'Total Amount: \$${booking.totalPrice.toStringAsFixed(2)}',
+                      'Total Amount: ₹${booking.totalPrice.toStringAsFixed(2)}',
                       style: const TextStyle(fontSize: 16),
                     ),
                     if (booking.bookingTime != null) ...[

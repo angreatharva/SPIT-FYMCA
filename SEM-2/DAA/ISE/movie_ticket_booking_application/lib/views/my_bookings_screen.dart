@@ -110,7 +110,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    'Total: \$${booking.totalPrice.toStringAsFixed(2)}',
+                                    'Total: ₹${booking.totalPrice.toStringAsFixed(2)}',
                                     style: const TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                 ],

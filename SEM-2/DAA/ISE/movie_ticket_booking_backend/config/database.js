@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/movieticket", {
+  .connect(
+    process.env.MONGO_URI
+    // "mongodb://127.0.0.1:27017/movieticket"
+  , {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
