@@ -1,4 +1,6 @@
 import 'package:capstoneproject/screens/blogs_screen.dart';
+import 'package:capstoneproject/screens/create_blog_screen.dart';
+import 'package:capstoneproject/screens/blog_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../screens/profile_screen.dart';
@@ -29,6 +31,8 @@ class AppRoutes {
   static const String userRegistration = '/user-registration';
   static const String doctorRegistration = '/doctor-registration';
   static const String blogs = '/blogs';
+  static const String createBlog = '/create-blog';
+  static const String blogDetail = '/blog-detail';
 
   // Initialize required controllers
   static void initControllers() {
@@ -121,6 +125,11 @@ class AppRoutes {
     GetPage(
       name: blogs,
       page: () => const BlogsScreen(),
+      middlewares: [AuthMiddleware()],
+    ),
+    GetPage(
+      name: createBlog,
+      page: () => const CreateBlogScreen(),
       middlewares: [AuthMiddleware()],
     ),
     GetPage(

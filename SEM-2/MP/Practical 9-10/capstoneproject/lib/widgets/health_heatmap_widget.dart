@@ -28,6 +28,8 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
   
   Map<DateTime, int> _heatmapData = {};
   bool _isLoading = true;
+  bool _hasError = false;
+  String _errorMessage = '';
   
   @override
   void initState() {
@@ -38,6 +40,8 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
   Future<void> _loadHeatmapData() async {
     setState(() {
       _isLoading = true;
+      _hasError = false;
+      _errorMessage = '';
     });
     
     try {
@@ -52,6 +56,10 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
       
       _processHeatmapData();
     } catch (e) {
+      setState(() {
+        _hasError = true;
+        _errorMessage = e.toString();
+      });
       print('Error loading heatmap data: $e');
     } finally {
       if (mounted) {
@@ -77,6 +85,10 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
         }
       }
     } catch (e) {
+      setState(() {
+        _hasError = true;
+        _errorMessage = 'Could not process heatmap data: $e';
+      });
       print('Error processing heatmap data: $e');
     }
   }
@@ -101,6 +113,78 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
       );
     }
     
+    if (_hasError) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline, color: Colors.orange[400], size: 64),
+            const SizedBox(height: 16),
+            Text(
+              'Could not load health calendar',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.orange[800],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Text(
+                'Calendar data is still being prepared for your account.',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[700],
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: _loadHeatmapData,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: widget.primaryColor,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              ),
+              child: const Text('Try Again'),
+            ),
+          ],
+        ),
+      );
+    }
+    
+    // If we have no data but no error, show empty state
+    if (_heatmapData.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.calendar_today, color: Colors.grey[400], size: 64),
+            const SizedBox(height: 16),
+            Text(
+              'No health activity recorded yet',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[600],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Complete your daily health tasks to see activity in your calendar',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[700],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+
     return ListView(
       padding: EdgeInsets.zero,
       shrinkWrap: true,

@@ -5,7 +5,11 @@ const healthController = require('../controllers/health.controller');
 // Get all health questions
 router.get('/questions', healthController.getAllQuestions);
 
+// Get questions by role (doctor, patient, or both)
+router.get('/questions/role/:role', healthController.getQuestionsByRole);
+
 // Get today's health tracking for a user
+// userType query parameter can be 'doctor' or 'patient' (default: 'patient')
 router.get('/tracking/:userId', healthController.getUserHealthTracking);
 
 // Complete a health question

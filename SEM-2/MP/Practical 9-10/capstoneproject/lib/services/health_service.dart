@@ -30,10 +30,11 @@ class HealthService extends GetxService {
   }
   
   // Get today's health tracking for a user
-  Future<HealthTrackingModel?> getUserHealthTracking(String userId) async {
+  Future<HealthTrackingModel?> getUserHealthTracking(String userId, {String userType = 'patient'}) async {
     try {
       final response = await _dio.get(
         '${ApiService.baseUrl}/api/health/tracking/$userId',
+        queryParameters: {'userType': userType},
       );
       
       if (response.statusCode == 200 && response.data['success'] == true) {
@@ -72,6 +73,7 @@ class HealthService extends GetxService {
     String userId, {
     String? startDate,
     String? endDate,
+    String userType = 'patient',
   }) async {
     try {
       Map<String, dynamic> queryParams = {};
@@ -83,6 +85,8 @@ class HealthService extends GetxService {
       if (endDate != null) {
         queryParams['endDate'] = endDate;
       }
+      
+      queryParams['userType'] = userType;
       
       final response = await _dio.get(
         '${ApiService.baseUrl}/api/health/heatmap/$userId',
@@ -98,6 +102,25 @@ class HealthService extends GetxService {
     } catch (e) {
       dev.log('Exception getting health heatmap: $e');
       return null;
+    }
+  }
+
+  // Get questions by role (doctor, patient, or both)
+  Future<List<dynamic>> getQuestionsByRole(String role) async {
+    try {
+      final response = await _dio.get(
+        '${ApiService.baseUrl}/api/health/questions/role/$role',
+      );
+      
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        return response.data['data'] ?? [];
+      } else {
+        dev.log('Error getting health questions by role: ${response.data}');
+        return [];
+      }
+    } catch (e) {
+      dev.log('Exception getting health questions by role: $e');
+      return [];
     }
   }
 

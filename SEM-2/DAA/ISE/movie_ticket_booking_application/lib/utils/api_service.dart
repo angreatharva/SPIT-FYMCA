@@ -7,10 +7,9 @@ import '../models/booking.dart';
 
 class ApiService {
 
-  // static const String serverRootUrl = ' http://localhost:5000'; // Server root for assets
-  static const String serverRootUrl = 'https://1fdb-103-104-226-58.ngrok-free.app'; // Server root for assets
-  static const String _apiBaseUrl = '$serverRootUrl/api'; // For Android emulator
-  // Use 'http://localhost:5000/api' and 'http://localhost:5000' for iOS simulator
+  // static const String serverRootUrl = ' http://localhost:5000';
+  static const String serverRootUrl = 'https://baa9-202-134-190-225.ngrok-free.app';
+  static const String _apiBaseUrl = '$serverRootUrl/api';
 
   // Movies
   Future<List<Movie>> fetchMovies() async {
@@ -197,6 +196,7 @@ class ApiService {
     required List<int> selectedSeats,
   }) async {
     try {
+      print('PUT: $_apiBaseUrl/bookings/alternative-suggestions');
       final response = await http.post(
         Uri.parse('$_apiBaseUrl/bookings/alternative-suggestions'),
         headers: {'Content-Type': 'application/json'},

@@ -1,5 +1,6 @@
 const { HealthQuestion, HealthTracking, HealthActivity } = require('../models/health.model');
 const UserModel = require('../models/user.model');
+const DoctorModel = require('../models/doctor.model');
 const moment = require('moment');
 
 // Helper function to get today's date (start of day in UTC)
@@ -57,13 +58,22 @@ exports.getAllQuestions = async (req, res) => {
   }
 };
 
-// Get today's health tracking for a user
+// Get today's health tracking for a user (patient or doctor)
 exports.getUserHealthTracking = async (req, res) => {
   const { userId } = req.params;
+  const { userType } = req.query; // 'doctor' or 'patient' (default to 'patient')
 
   try {
-    // Verify user exists
-    const user = await UserModel.findById(userId);
+    // Determine if this is a doctor or patient
+    let user = null;
+    let role = userType || 'patient';
+    
+    if (role === 'doctor') {
+      user = await DoctorModel.findById(userId);
+    } else {
+      user = await UserModel.findById(userId);
+    }
+    
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -74,7 +84,7 @@ exports.getUserHealthTracking = async (req, res) => {
     // Get today's date (start of day)
     const today = getTodayDate();
 
-    // Find or create today's health tracking
+    // Find today's health tracking
     let healthTracking = await HealthTracking.findOne({
       userId,
       date: {
@@ -83,12 +93,14 @@ exports.getUserHealthTracking = async (req, res) => {
       }
     });
 
-    // If no tracking exists for today, create a new one with default questions
+    // If no tracking exists for today, create a new one with role-specific questions
     if (!healthTracking) {
-      // Get default questions
-      const questions = await HealthQuestion.find().sort({ order: 1 });
+      // Get questions for this role
+      const questions = await HealthQuestion.find({ 
+        $or: [{ role: role }, { role: 'both' }] 
+      }).sort({ order: 1 });
       
-      // Create tracking with all questions
+      // Create tracking with role-specific questions
       healthTracking = await HealthTracking.create({
         userId,
         date: today,
@@ -100,7 +112,7 @@ exports.getUserHealthTracking = async (req, res) => {
         }))
       });
 
-      console.log(`Created new health tracking for user ${userId} with ${questions.length} questions`);
+      console.log(`Created new health tracking for ${role} ${userId} with ${questions.length} questions`);
       
       // Initialize health activity for the new tracking
       await updateHealthActivity(healthTracking);
@@ -191,12 +203,21 @@ exports.completeHealthQuestion = async (req, res) => {
 // Get health activity heatmap data for a user
 exports.getHealthActivityHeatmap = async (req, res) => {
   const { userId } = req.params;
-  const { startDate, endDate } = req.query;
+  const { startDate, endDate, userType } = req.query;
   
   try {
-    // Verify user exists
-    const user = await UserModel.findById(userId);
-    if (!user) {
+    // Verify user exists - check appropriate model based on userType
+    let userExists = false;
+    
+    if (userType === 'doctor') {
+      const doctor = await DoctorModel.findById(userId);
+      userExists = doctor !== null;
+    } else {
+      const user = await UserModel.findById(userId);
+      userExists = user !== null;
+    }
+    
+    if (!userExists) {
       return res.status(404).json({
         success: false,
         message: 'User not found'
@@ -246,23 +267,37 @@ exports.refreshAllHealthTracking = async () => {
     // Create today's date
     const today = getTodayDate();
     
-    // Get all users
-    const users = await UserModel.find({}, { _id: 1 });
-    console.log(`Found ${users.length} users to create health tracking for`);
+    // Get all patients
+    const patients = await UserModel.find({}, { _id: 1 });
+    console.log(`Found ${patients.length} patients to create health tracking for`);
     
-    // Get default questions
-    const questions = await HealthQuestion.find().sort({ order: 1 });
+    // Get all doctors
+    const doctors = await DoctorModel.find({}, { _id: 1 });
+    console.log(`Found ${doctors.length} doctors to create health tracking for`);
     
-    // Create new health tracking records for all users
-    const operations = users.map(user => {
-      return {
+    // Get patient questions
+    const patientQuestions = await HealthQuestion.find({ 
+      $or: [{ role: 'patient' }, { role: 'both' }] 
+    }).sort({ order: 1 });
+    
+    // Get doctor questions
+    const doctorQuestions = await HealthQuestion.find({ 
+      $or: [{ role: 'doctor' }, { role: 'both' }] 
+    }).sort({ order: 1 });
+    
+    // Create operations array for bulk write
+    const operations = [];
+    
+    // Add operations for patients
+    patients.forEach(patient => {
+      operations.push({
         updateOne: {
-          filter: { userId: user._id.toString(), date: today },
+          filter: { userId: patient._id.toString(), date: today },
           update: {
             $setOnInsert: {
-              userId: user._id.toString(),
+              userId: patient._id.toString(),
               date: today,
-              questions: questions.map(q => ({
+              questions: patientQuestions.map(q => ({
                 questionId: q._id,
                 question: q.question,
                 completed: false,
@@ -272,7 +307,29 @@ exports.refreshAllHealthTracking = async () => {
           },
           upsert: true
         }
-      };
+      });
+    });
+    
+    // Add operations for doctors
+    doctors.forEach(doctor => {
+      operations.push({
+        updateOne: {
+          filter: { userId: doctor._id.toString(), date: today },
+          update: {
+            $setOnInsert: {
+              userId: doctor._id.toString(),
+              date: today,
+              questions: doctorQuestions.map(q => ({
+                questionId: q._id,
+                question: q.question,
+                completed: false,
+                completedAt: null
+              }))
+            }
+          },
+          upsert: true
+        }
+      });
     });
     
     if (operations.length > 0) {
@@ -281,8 +338,10 @@ exports.refreshAllHealthTracking = async () => {
       
       // Initialize health activity for all newly created trackings
       const newTrackings = await HealthTracking.find({
-        userId: { $in: users.map(u => u._id.toString()) },
-        date: today
+        $or: [
+          { userId: { $in: patients.map(p => p._id.toString()) }, date: today },
+          { userId: { $in: doctors.map(d => d._id.toString()) }, date: today }
+        ]
       });
       
       for (const tracking of newTrackings) {
@@ -292,7 +351,7 @@ exports.refreshAllHealthTracking = async () => {
     
     return {
       success: true,
-      message: `Created health tracking records for ${operations.length} users`
+      message: `Created health tracking records for ${operations.length} users (${patients.length} patients and ${doctors.length} doctors)`
     };
   } catch (error) {
     console.error('Error refreshing health tracking records:', error);
@@ -347,6 +406,45 @@ exports.backfillHealthActivity = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: 'Failed to backfill health activity data'
+    });
+  }
+};
+
+// Get health questions by role
+exports.getQuestionsByRole = async (req, res) => {
+  const { role } = req.params; // 'doctor', 'patient', or 'both'
+  
+  try {
+    const validRoles = ['doctor', 'patient', 'both'];
+    
+    if (!validRoles.includes(role)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid role. Must be doctor, patient, or both.'
+      });
+    }
+    
+    let filter = {};
+    
+    if (role === 'both') {
+      // Return all questions
+      filter = {};
+    } else {
+      // Return role-specific questions and 'both' questions
+      filter = { $or: [{ role: role }, { role: 'both' }] };
+    }
+    
+    const questions = await HealthQuestion.find(filter).sort({ order: 1 });
+    
+    return res.status(200).json({
+      success: true,
+      data: questions
+    });
+  } catch (error) {
+    console.error('Error getting health questions by role:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to get health questions'
     });
   }
 }; 

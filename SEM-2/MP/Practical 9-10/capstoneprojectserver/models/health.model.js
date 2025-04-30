@@ -14,6 +14,11 @@ const healthQuestionSchema = new Schema({
   order: {
     type: Number,
     default: 0,
+  },
+  role: {
+    type: String,
+    enum: ['patient', 'doctor', 'both'],
+    default: 'patient'
   }
 }, { timestamps: true });
 
@@ -94,37 +99,86 @@ const defaultQuestions = [
   {
     question: "Did you drink 3 liters of water today?",
     isDefault: true,
-    order: 1
+    order: 1,
+    role: 'patient'
   },
   {
     question: "Did you work out today?",
     isDefault: true,
-    order: 2
+    order: 2,
+    role: 'patient'
   },
   {
     question: "Did you take your medications?",
     isDefault: true,
-    order: 3
+    order: 3,
+    role: 'patient'
   },
   {
     question: "Did you eat healthy today?",
     isDefault: true,
-    order: 4
+    order: 4,
+    role: 'patient'
+  }
+];
+
+// Doctor-specific default questions
+const doctorDefaultQuestions = [
+  {
+    question: "Did you stay hydrated and drink enough water today?",
+    isDefault: true,
+    order: 1,
+    role: 'doctor'
+  },
+  {
+    question: "Did you take a break or rest during your shift today?",
+    isDefault: true,
+    order: 2,
+    role: 'doctor'
+  },
+  {
+    question: "Did you eat a balanced meal today?",
+    isDefault: true,
+    order: 3,
+    role: 'doctor'
+  },
+  {
+    question: "Did you do any physical activity or movement today?",
+    isDefault: true,
+    order: 4,
+    role: 'doctor'
+  },
+  {
+    question: "Did you get at least 7 hours of sleep last night?",
+    isDefault: true,
+    order: 5,
+    role: 'doctor'
   }
 ];
 
 // Initialize default questions
 const initializeDefaultQuestions = async () => {
   try {
-    // Check if default questions already exist
-    const count = await HealthQuestion.countDocuments({ isDefault: true });
+    // Check if default patient questions already exist
+    const patientCount = await HealthQuestion.countDocuments({ isDefault: true, role: 'patient' });
     
-    if (count === 0) {
-      // Create default questions
+    if (patientCount === 0) {
+      // Create default patient questions
       await HealthQuestion.insertMany(defaultQuestions);
-      console.log('Default health questions initialized');
+      console.log('Default patient health questions initialized');
     } else {
-      console.log(`${count} default health questions already exist`);
+      console.log(`${patientCount} default patient health questions already exist`);
+    }
+    
+    // Check if default doctor questions already exist
+    const doctorCount = await HealthQuestion.countDocuments({ isDefault: true, role: 'doctor' });
+    
+    if (doctorCount === 0) {
+      // Create default doctor questions
+      await HealthQuestion.insertMany(doctorDefaultQuestions);
+      console.log('Default doctor health questions initialized');
+    } else {
+      console.log(`${doctorCount} default doctor health questions already exist`);
     }
   } catch (error) {
     console.error('Error initializing default health questions:', error);

@@ -25,36 +25,52 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
   @override
   void initState() {
     super.initState();
-    healthController = Get.find<HealthController>();
-    
-    // Ensure questions are expanded by default
-    if (!healthController.isHealthSectionExpanded.value) {
-      healthController.toggleHealthSectionExpanded();
+    try {
+      healthController = Get.find<HealthController>();
+      
+      // Ensure questions are expanded by default
+      if (!healthController.isHealthSectionExpanded.value) {
+        healthController.toggleHealthSectionExpanded();
+      }
+      
+      // Add listener to refresh UI when data changes
+      healthController.healthTracking.listen((_) {
+        if (mounted) setState(() {});
+      });
+      
+      healthController.isLoading.listen((_) {
+        if (mounted) setState(() {});
+      });
+    } catch (e) {
+      // If there's any error finding or initializing the controller,
+      // it will be handled in the build method
+      print('Error initializing health controller: $e');
     }
-    
-    // Add listener to refresh UI when data changes
-    healthController.healthTracking.listen((_) {
-      if (mounted) setState(() {});
-    });
-    
-    healthController.isLoading.listen((_) {
-      if (mounted) setState(() {});
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (healthController.isLoading.value) {
+    // Handle case where controller isn't initialized
+    if (!GetInstance().isRegistered<HealthController>()) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(color: widget.primaryColor),
+            Icon(Icons.error_outline, color: Colors.red[400], size: 64),
             const SizedBox(height: 16),
-            Text(
-              'Loading your daily health tasks...',
+            const Text(
+              'Health tracking is not available',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.red,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Please try again later or contact support',
+              style: TextStyle(
+                fontSize: 14,
                 color: Colors.grey[700],
               ),
             ),
@@ -63,67 +79,129 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
       );
     }
     
-    return Container(
-      padding: const EdgeInsets.only(top: 16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min, 
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    'Daily Health Check',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: widget.accentColor,
+    // Safe check for late initialization error
+    try {
+      if (healthController.isLoading.value) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(color: widget.primaryColor),
+              const SizedBox(height: 16),
+              Text(
+                'Loading your daily health tasks...',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+      
+      return Container(
+        padding: const EdgeInsets.only(top: 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min, 
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Daily Health Check',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: widget.accentColor,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          
-          // Description
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Track your daily health habits to stay healthy and fit',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[700],
+            
+            // Description
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Track your daily health habits to stay healthy and fit',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[700],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Tasks are refreshed at midnight.',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontStyle: FontStyle.italic,
-                    color: Colors.grey[600],
+                  const SizedBox(height: 4),
+                  Text(
+                    'Tasks are refreshed at midnight.',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.grey[600],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          
-          const SizedBox(height: 16),
-          
-          // Questions - Always show since we're in a tab now
-          Expanded(
-            child: _buildQuestionsView(),
-          ),
-        ],
-      ),
-    );
+            
+            const SizedBox(height: 16),
+            
+            // Questions - Always show since we're in a tab now
+            Expanded(
+              child: _buildQuestionsView(),
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      // Fallback for any unexpected errors
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline, color: Colors.orange[400], size: 64),
+            const SizedBox(height: 16),
+            Text(
+              'Something went wrong',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.orange[800],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              e.toString(),
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[700],
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {}); // Force rebuild
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: widget.primaryColor,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              ),
+              child: const Text('Try Again'),
+            ),
+          ],
+        ),
+      );
+    }
   }
   
   Widget _buildQuestionsView() {
@@ -144,7 +222,19 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () => healthController.loadHealthData(),
+              onPressed: () async {
+                try {
+                  await healthController.loadHealthData();
+                } catch (e) {
+                  // Show error message or handle gracefully
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Could not load health data: $e'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: widget.primaryColor,
                 foregroundColor: Colors.white,

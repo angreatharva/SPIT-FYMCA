@@ -1,4 +1,3 @@
-
 class HealthQuestionModel {
   final String id;
   final String question;
@@ -79,36 +78,75 @@ class HealthTrackingModel {
     };
   }
 
-  // Create default health tracking model with predefined questions
-  factory HealthTrackingModel.createDefault() {
-    return HealthTrackingModel(
-      questions: [
-        HealthQuestionModel(
-          id: '1',
-          question: 'Did you drink 3 liters of water today?',
-          response: false,
-          date: DateTime.now(),
-        ),
-        HealthQuestionModel(
-          id: '2',
-          question: 'Did you work out today?',
-          response: false,
-          date: DateTime.now(),
-        ),
-        HealthQuestionModel(
-          id: '3',
-          question: 'Did you take your medications?',
-          response: false,
-          date: DateTime.now(),
-        ),
-        HealthQuestionModel(
-          id: '4',
-          question: 'Did you eat healthy today?',
-          response: false,
-          date: DateTime.now(),
-        ),
-      ],
-      date: DateTime.now(),
-    );
+  // Create default health tracking model with predefined questions based on role
+  factory HealthTrackingModel.createDefault({String role = 'patient'}) {
+    if (role == 'doctor') {
+      return HealthTrackingModel(
+        questions: [
+          HealthQuestionModel(
+            id: '1',
+            question: 'Did you stay hydrated and drink enough water today?',
+            response: false,
+            date: DateTime.now(),
+          ),
+          HealthQuestionModel(
+            id: '2',
+            question: 'Did you take a break or rest during your shift today?',
+            response: false,
+            date: DateTime.now(),
+          ),
+          HealthQuestionModel(
+            id: '3',
+            question: 'Did you eat a balanced meal today?',
+            response: false,
+            date: DateTime.now(),
+          ),
+          HealthQuestionModel(
+            id: '4',
+            question: 'Did you do any physical activity or movement today?',
+            response: false,
+            date: DateTime.now(),
+          ),
+          HealthQuestionModel(
+            id: '5',
+            question: 'Did you get at least 7 hours of sleep last night?',
+            response: false,
+            date: DateTime.now(),
+          ),
+        ],
+        date: DateTime.now(),
+      );
+    } else {
+      // Default patient questions
+      return HealthTrackingModel(
+        questions: [
+          HealthQuestionModel(
+            id: '1',
+            question: 'Did you drink 3 liters of water today?',
+            response: false,
+            date: DateTime.now(),
+          ),
+          HealthQuestionModel(
+            id: '2',
+            question: 'Did you work out today?',
+            response: false,
+            date: DateTime.now(),
+          ),
+          HealthQuestionModel(
+            id: '3',
+            question: 'Did you take your medications?',
+            response: false,
+            date: DateTime.now(),
+          ),
+          HealthQuestionModel(
+            id: '4',
+            question: 'Did you eat healthy today?',
+            response: false,
+            date: DateTime.now(),
+          ),
+        ],
+        date: DateTime.now(),
+      );
+    }
   }
 } 

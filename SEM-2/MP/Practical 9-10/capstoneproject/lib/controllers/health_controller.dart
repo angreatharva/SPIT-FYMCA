@@ -5,13 +5,17 @@ import '../services/health_service.dart';
 import 'dart:developer' as dev;
 
 class HealthController extends GetxController {
-  final Rx<HealthTrackingModel> healthTracking = HealthTrackingModel.createDefault().obs;
+  final Rx<HealthTrackingModel> healthTracking = HealthTrackingModel(
+    questions: [],
+    date: DateTime.now(),
+  ).obs;
   final RxBool isHealthSectionExpanded = true.obs;
   final RxBool isLoading = false.obs;
   final RxString trackingId = ''.obs;
   final RxMap<String, dynamic> healthHeatmap = <String, dynamic>{}.obs;
   
-  late String userId;
+  // Initialize with empty string to avoid late initialization error
+  String userId = '';
   final HealthService _healthService = Get.find<HealthService>();
 
   @override
@@ -26,36 +30,77 @@ class HealthController extends GetxController {
     final user = storageService.getUserData();
     if (user != null) {
       userId = user.id;
+      dev.log('HealthController: Initialized userId: $userId');
+    } else {
+      dev.log('HealthController: Could not initialize userId, user is null');
     }
   }
 
   // Load health data from the server
   Future<void> loadHealthData() async {
+    // If userId is empty, try to reinitialize it
     if (userId.isEmpty) {
-      dev.log('Cannot load health data: User ID is empty');
-      return;
+      dev.log('HealthController: User ID is empty, attempting to re-initialize');
+      _initializeUserId();
+      
+      // If still empty after re-initialization, use default empty data
+      if (userId.isEmpty) {
+        dev.log('HealthController: Unable to load health data: User ID is still empty');
+        healthTracking.value = HealthTrackingModel(
+          questions: [],
+          date: DateTime.now(),
+        );
+        return;
+      }
     }
     
     isLoading.value = true;
     
     try {
-      final healthTrackingData = await _healthService.getUserHealthTracking(userId);
+      // Get user data from storage
+      final StorageService storageService = StorageService.instance;
+      final user = storageService.getUserData();
+      
+      // If user is null, we can't determine the type
+      if (user == null) {
+        dev.log('HealthController: User data is null, using default empty model');
+        healthTracking.value = HealthTrackingModel(
+          questions: [],
+          date: DateTime.now(),
+        );
+        isLoading.value = false;
+        return;
+      }
+      
+      // Determine user type using the isDoctor property
+      final String userType = user.isDoctor ? 'doctor' : 'patient';
+      
+      dev.log('HealthController: Loading health data for user: $userId with userType: $userType');
+      
+      final healthTrackingData = await _healthService.getUserHealthTracking(userId, userType: userType);
       
       if (healthTrackingData != null) {
         healthTracking.value = healthTrackingData;
         if (healthTrackingData.trackingId != null) {
           trackingId.value = healthTrackingData.trackingId!;
+          dev.log('HealthController: Updated trackingId to ${trackingId.value}');
         }
         dev.log('Health data loaded from server');
       } else {
         // Fall back to default data if server returns error
-        healthTracking.value = HealthTrackingModel.createDefault();
+        healthTracking.value = HealthTrackingModel.createDefault(role: userType);
         dev.log('Server returned error, using default health data');
       }
     } catch (e) {
       dev.log('Error loading health data from server: $e');
+      
+      // Get user data to determine role for default questions
+      final StorageService storageService = StorageService.instance;
+      final user = storageService.getUserData();
+      final String userType = user != null && user.isDoctor ? 'doctor' : 'patient';
+      
       // Fall back to default data
-      healthTracking.value = HealthTrackingModel.createDefault();
+      healthTracking.value = HealthTrackingModel.createDefault(role: userType);
     } finally {
       isLoading.value = false;
     }
@@ -63,6 +108,12 @@ class HealthController extends GetxController {
 
   // Update a question's response
   Future<void> updateQuestionResponse(String questionId, bool response) async {
+    // Skip if user is not logged in or userId is empty
+    if (userId.isEmpty) {
+      dev.log('HealthController: Cannot update question - user not logged in (userId is empty)');
+      return;
+    }
+
     // Skip if trying to unmark a completed question
     final questionIndex = healthTracking.value.questions.indexWhere((q) => q.id == questionId);
     
@@ -110,11 +161,22 @@ class HealthController extends GetxController {
       
       // Server update
       if (userId.isEmpty || healthTracking.value.trackingId == null) {
-        dev.log('Cannot update question: User ID or tracking ID is empty');
-        return;
+        dev.log('HealthController: Cannot update question: User ID or tracking ID is empty');
+        dev.log('HealthController: Current userId: $userId, trackingId: ${healthTracking.value.trackingId}');
+        dev.log('HealthController: Attempting to reload health data to get trackingId');
+        await loadHealthData();
+        
+        // Check if we now have a trackingId
+        if (healthTracking.value.trackingId == null) {
+          dev.log('HealthController: Reload failed, trackingId still null');
+          return;
+        } else {
+          dev.log('HealthController: Successfully retrieved trackingId: ${healthTracking.value.trackingId}');
+        }
       }
       
       try {
+        dev.log('HealthController: Attempting to update question $questionId to $response');
         final success = await _healthService.completeHealthQuestion(
           userId, 
           healthTracking.value.trackingId!, 
@@ -145,10 +207,20 @@ class HealthController extends GetxController {
     }
     
     try {
+      // Get user data to determine type
+      final StorageService storageService = StorageService.instance;
+      final user = storageService.getUserData();
+      
+      // Determine user type using the isDoctor property
+      final String userType = user != null && user.isDoctor ? 'doctor' : 'patient';
+      
+      dev.log('HealthController: Loading health heatmap for user: $userId with userType: $userType');
+      
       final heatmapData = await _healthService.getHealthActivityHeatmap(
         userId,
         startDate: startDate,
         endDate: endDate,
+        userType: userType,
       );
       
       if (heatmapData != null) {
