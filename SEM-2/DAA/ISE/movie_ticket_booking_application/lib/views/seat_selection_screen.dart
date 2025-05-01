@@ -37,6 +37,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
   Show? _show;
   bool _isWeekend = false;
   bool _isPeakHour = false;
+  double? _serverPrice; // Add this line to store server price when available
 
   @override
   void initState() {
@@ -660,6 +661,11 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
         final List<dynamic> pricedSeats = result['pricedSeats'];
         final totalPrice = result['totalPrice'];
         
+        // Store the server price for use in the UI
+        setState(() {
+          _serverPrice = totalPrice;
+        });
+        
         // Show a dialog with the pricing breakdown
         showDialog(
           context: context,
@@ -883,17 +889,27 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
     });
 
     try {
-      // Calculate the total price using our local method that matches backend logic
-      final calculatedTotalPrice = calculateTotalPrice();
+      // Get pricing details from the server to ensure consistent pricing
+      final pricingResult = await _bookingController.getPricingDetails(
+        showId: widget.showId,
+        seatNumbers: _selectedSeats,
+      );
       
-      print('Total price calculated client-side: $calculatedTotalPrice');
+      if (!pricingResult['success']) {
+        throw Exception('Failed to get pricing details from server');
+      }
       
-      // Create booking with our calculated price
+      // Use the server's total price
+      final serverTotalPrice = pricingResult['totalPrice'];
+      
+      print('Total price from server: $serverTotalPrice');
+      
+      // Create booking with the server-calculated price
       final booking = Booking(
         user: 'current_user', // In a real app, this would be the logged-in user's ID
         showId: widget.showId,
         seatNumbers: _selectedSeats,
-        totalPrice: calculatedTotalPrice,
+        totalPrice: serverTotalPrice,
       );
 
       final createdBooking = await _bookingController.createBooking(booking);
@@ -1226,7 +1242,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                     ),
                     TextButton.icon(
                       icon: Icon(Icons.smart_toy, size: 16),
-                      label: Text('AI Select'),
+                      label: Text('Auto Selection'),
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.symmetric(horizontal: 8),
                         minimumSize: Size(10, 36),
@@ -1341,25 +1357,25 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                       style: TextStyle(fontSize: 12, color: Colors.grey[400]),
                     ),
                     // Add pricing details button when seats are selected
-                    if (_selectedSeats.isNotEmpty)
-                      TextButton.icon(
-                        icon: Icon(Icons.price_change, size: 16),
-                        label: Text('View Pricing Details'),
-                        onPressed: _getDynamicPricing,
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          minimumSize: Size(50, 25),
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          foregroundColor: Colors.amber,
-                        ),
-                      ),
+                    // if (_selectedSeats.isNotEmpty)
+                    //   TextButton.icon(
+                    //     icon: Icon(Icons.price_change, size: 16),
+                    //     label: Text('View Pricing Details'),
+                    //     onPressed: _getDynamicPricing,
+                    //     style: TextButton.styleFrom(
+                    //       padding: EdgeInsets.zero,
+                    //       minimumSize: Size(50, 25),
+                    //       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    //       foregroundColor: Colors.amber,
+                    //     ),
+                    //   ),
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '₹${dynamicPrice.toStringAsFixed(2)}',
+                      '₹${(_serverPrice ?? dynamicPrice).toStringAsFixed(2)}',
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -1431,7 +1447,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
                 disabledBackgroundColor: isSoldOut ? Colors.red.withOpacity(0.5) : Colors.grey,
               ),
               child: Text(
-                isSoldOut ? 'SOLD OUT' : 'Buy Ticket ₹${dynamicPrice.toStringAsFixed(2)}',
+                isSoldOut ? 'SOLD OUT' : 'Buy Ticket ₹${(_serverPrice ?? dynamicPrice).toStringAsFixed(2)}',
                 style: const TextStyle(fontSize: 16),
               ),
             ),

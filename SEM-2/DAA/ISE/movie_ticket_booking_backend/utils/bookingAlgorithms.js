@@ -70,6 +70,7 @@ const knapsackSeatSelection = (availableSeats, groupSize, budget, preferences) =
 const fractionalKnapsackPricing = (seats, occupancyRate, factors) => {
   // Base multiplier based on occupancy
   let baseMultiplier = 1.0;
+
   
   if (occupancyRate > 0.9) {
     baseMultiplier = 1.3; // High demand
@@ -79,6 +80,9 @@ const fractionalKnapsackPricing = (seats, occupancyRate, factors) => {
     baseMultiplier = 1.1; // Medium demand
   }
   
+  console.log('Occupancy Rate:', occupancyRate);
+  console.log('baseMultiplier:',baseMultiplier);
+  
   // Apply time-based factors
   if (factors.isWeekend) {
     baseMultiplier += 0.1; // Weekend premium
@@ -87,6 +91,10 @@ const fractionalKnapsackPricing = (seats, occupancyRate, factors) => {
   if (factors.timeOfDay >= 18 || factors.timeOfDay <= 22) {
     baseMultiplier += 0.1; // Evening premium
   }
+
+  console.log('Factors:', factors);
+  console.log('baseMultiplier:',baseMultiplier);
+
   
   // Apply pricing to each seat
   return seats.map(seat => {
@@ -101,7 +109,8 @@ const fractionalKnapsackPricing = (seats, occupancyRate, factors) => {
     
     // Calculate adjusted price
     const adjustedPrice = seat.basePrice * seatMultiplier;
-    
+      console.log('adjustedPrice:', adjustedPrice);
+      console.log('baseMultiplier:',baseMultiplier);
     return {
       ...seat,
       adjustedPrice,
