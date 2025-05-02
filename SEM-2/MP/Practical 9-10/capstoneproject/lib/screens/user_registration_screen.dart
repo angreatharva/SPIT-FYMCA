@@ -21,153 +21,388 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
   final _passwordController = TextEditingController();
   String _selectedGender = 'Male';
   bool _isLoading = false;
+  bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ThemeConstants.backgroundColor,
-      appBar: AppBar(
-        title: const Text('Patient Registration'),
-        backgroundColor: ThemeConstants.primaryColor,
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(ThemeConstants.padding * 2),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Icon(
-                  Icons.person_add,
-                  size: 80,
-                  color: ThemeConstants.primaryColor,
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  'Create Patient Account',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 32),
-                TextFormField(
-                  controller: _nameController,
-                  decoration: ThemeConstants.textFieldDecoration(
-                    'Full Name',
-                    Icons.person,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: Get.width * 0.06),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // App Bar with back button
+                  SizedBox(height: Get.height * 0.02),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          color: ThemeConstants.mainColor,
+                          size: Get.width * 0.05,
+                        ),
+                        onPressed: () => Get.back(),
+                      ),
+                      SizedBox(width: Get.width * 0.02),
+                      Text(
+                        'Patient Registration',
+                        style: TextStyle(
+                          color: ThemeConstants.mainColor,
+                          fontSize: Get.width * 0.055,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? 'Please enter your name' : null,
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: ThemeConstants.textFieldDecoration(
-                    'Email',
-                    Icons.email,
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return 'Please enter your email';
-                    }
-                    if (!value!.contains('@')) {
-                      return 'Please enter a valid email';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _phoneController,
-                  decoration: ThemeConstants.textFieldDecoration(
-                    'Phone Number',
-                    Icons.phone,
-                  ),
-                  keyboardType: TextInputType.phone,
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? 'Please enter your phone number' : null,
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _ageController,
-                  decoration: ThemeConstants.textFieldDecoration(
-                    'Age',
-                    Icons.calendar_today,
-                  ),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return 'Please enter your age';
-                    }
-                    final age = int.tryParse(value!);
-                    if (age == null || age < 0 || age > 120) {
-                      return 'Please enter a valid age';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                DropdownButtonFormField<String>(
-                  value: _selectedGender,
-                  decoration: ThemeConstants.textFieldDecoration(
-                    'Gender',
-                    Icons.people,
-                  ),
-                  items: ['Male', 'Female', 'Other']
-                      .map((gender) => DropdownMenuItem(
-                            value: gender,
-                            child: Text(gender),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedGender = value!;
-                    });
-                  },
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: ThemeConstants.textFieldDecoration(
-                    'Password',
-                    Icons.lock,
-                  ),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return 'Please enter a password';
-                    }
-                    if (value!.length < 6) {
-                      return 'Password must be at least 6 characters';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 32),
-                ElevatedButton(
-                  onPressed: _isLoading ? null : _handleRegistration,
-                  style: ThemeConstants.elevatedButtonStyle(),
-                  child: _isLoading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
+                  
+                  SizedBox(height: Get.height * 0.02),
+                  
+                  // Logo and App Name
+                  Center(
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(Get.width * 0.04),
+                          decoration: BoxDecoration(
+                            color: ThemeConstants.mainColor,
+                            borderRadius: BorderRadius.circular(Get.width * 0.05),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 10,
+                                spreadRadius: 1,
+                              ),
+                            ],
                           ),
-                        )
-                      : const Text('Register'),
-                ),
-                const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () => Get.back(),
-                  child: const Text('Already have an account? Login'),
-                ),
-              ],
+                          child: Icon(
+                            Icons.person_add,
+                            size: Get.width * 0.12,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: Get.height * 0.02),
+                        Text(
+                          'NeuraLife',
+                          style: TextStyle(
+                            color: ThemeConstants.mainColor,
+                            fontSize: Get.width * 0.07,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: Get.height * 0.01),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Get.width * 0.04,
+                            vertical: Get.height * 0.01,
+                          ),
+                          decoration: BoxDecoration(
+                            color: ThemeConstants.mainColor.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(Get.width * 0.05),
+                          ),
+                          child: Text(
+                            'Your Health, Our Priority',
+                            style: TextStyle(
+                              color: ThemeConstants.mainColor,
+                              fontSize: Get.width * 0.04,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  
+                  SizedBox(height: Get.height * 0.04),
+                  
+                  // Registration Form
+                  Text(
+                    'Create Your Account',
+                    style: TextStyle(
+                      color: ThemeConstants.mainColor,
+                      fontSize: Get.width * 0.06,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: Get.height * 0.01),
+                  Text(
+                    'Fill in your details to register as a patient',
+                    style: TextStyle(
+                      fontSize: Get.width * 0.04,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  SizedBox(height: Get.height * 0.03),
+                  
+                  // Full Name Field
+                  _buildTextField(
+                    controller: _nameController,
+                    icon: Icons.person_outline,
+                    hint: 'Full Name',
+                    validator: (value) => value!.isEmpty ? 'Please enter your name' : null,
+                  ),
+                  SizedBox(height: Get.height * 0.02),
+                  
+                  // Email Field
+                  _buildTextField(
+                    controller: _emailController,
+                    icon: Icons.email_outlined,
+                    hint: 'Email Address',
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      if (!value.contains('@')) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: Get.height * 0.02),
+                  
+                  // Phone Field
+                  _buildTextField(
+                    controller: _phoneController,
+                    icon: Icons.phone_outlined,
+                    hint: 'Phone Number',
+                    keyboardType: TextInputType.phone,
+                    validator: (value) => value!.isEmpty ? 'Please enter your phone number' : null,
+                  ),
+                  SizedBox(height: Get.height * 0.02),
+                  
+                  // Age Field
+                  _buildTextField(
+                    controller: _ageController,
+                    icon: Icons.calendar_today_outlined,
+                    hint: 'Age',
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your age';
+                      }
+                      final age = int.tryParse(value);
+                      if (age == null || age < 0 || age > 120) {
+                        return 'Please enter a valid age';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: Get.height * 0.02),
+                  
+                  // Gender Dropdown
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(Get.width * 0.04),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          spreadRadius: 0,
+                        ),
+                      ],
+                    ),
+                    child: DropdownButtonFormField<String>(
+                      value: _selectedGender,
+                      decoration: InputDecoration(
+                        hintText: 'Gender',
+                        prefixIcon: Icon(
+                          Icons.people_outline,
+                          color: ThemeConstants.mainColor,
+                          size: Get.width * 0.06,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(Get.width * 0.04),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: Get.width * 0.04,
+                          vertical: Get.height * 0.02,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      style: TextStyle(
+                        fontSize: Get.width * 0.04,
+                        color: Colors.black87,
+                      ),
+                      dropdownColor: Colors.white,
+                      items: ['Male', 'Female', 'Other']
+                          .map((gender) => DropdownMenuItem(
+                                value: gender,
+                                child: Text(gender),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedGender = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(height: Get.height * 0.02),
+                  
+                  // Password Field
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(Get.width * 0.04),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          spreadRadius: 0,
+                        ),
+                      ],
+                    ),
+                    child: TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        hintText: 'Password',
+                        prefixIcon: Icon(
+                          Icons.lock_outline,
+                          color: ThemeConstants.mainColor,
+                          size: Get.width * 0.06,
+                        ),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                          child: Icon(
+                            _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                            color: ThemeConstants.mainColor,
+                            size: Get.width * 0.06,
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(Get.width * 0.04),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: Get.width * 0.04,
+                          vertical: Get.height * 0.02,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      obscureText: _obscurePassword,
+                      style: TextStyle(fontSize: Get.width * 0.04),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter a password';
+                        }
+                        if (value.length < 6) {
+                          return 'Password must be at least 6 characters';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  
+                  SizedBox(height: Get.height * 0.04),
+                  
+                  // Register Button
+                  ElevatedButton(
+                    onPressed: _isLoading ? null : _handleRegistration,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ThemeConstants.mainColor,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(vertical: Get.height * 0.02),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(Get.width * 0.04),
+                      ),
+                      elevation: 2,
+                    ),
+                    child: _isLoading
+                        ? SizedBox(
+                            height: Get.width * 0.06,
+                            width: Get.width * 0.06,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : Text(
+                            'Register',
+                            style: TextStyle(
+                              fontSize: Get.width * 0.045,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                  ),
+                  
+                  SizedBox(height: Get.height * 0.02),
+                  
+                  // Login Link
+                  TextButton(
+                    onPressed: () => Get.back(),
+                    child: Text(
+                      'Already have an account? Login',
+                      style: TextStyle(
+                        color: ThemeConstants.mainColor,
+                        fontSize: Get.width * 0.04,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: Get.height * 0.02),
+                ],
+              ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required IconData icon,
+    required String hint,
+    TextInputType keyboardType = TextInputType.text,
+    required String? Function(String?) validator,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(Get.width * 0.04),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          hintText: hint,
+          prefixIcon: Icon(
+            icon,
+            color: ThemeConstants.mainColor,
+            size: Get.width * 0.06,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(Get.width * 0.04),
+            borderSide: BorderSide.none,
+          ),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: Get.width * 0.04,
+            vertical: Get.height * 0.02,
+          ),
+          filled: true,
+          fillColor: Colors.white,
+        ),
+        keyboardType: keyboardType,
+        style: TextStyle(fontSize: Get.width * 0.04),
+        validator: validator,
       ),
     );
   }

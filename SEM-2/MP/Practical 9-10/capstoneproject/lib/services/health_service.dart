@@ -31,20 +31,40 @@ class HealthService extends GetxService {
   
   // Get today's health tracking for a user
   Future<HealthTrackingModel?> getUserHealthTracking(String userId, {String userType = 'patient'}) async {
+    if (userId.isEmpty) {
+      dev.log('HealthService: Cannot get health tracking - userId is empty');
+      return null;
+    }
+    
     try {
+      dev.log('HealthService: Getting health tracking for $userId with userType: $userType');
+      
       final response = await _dio.get(
         '${ApiService.baseUrl}/api/health/tracking/$userId',
         queryParameters: {'userType': userType},
       );
       
       if (response.statusCode == 200 && response.data['success'] == true) {
-        return HealthTrackingModel.fromJson(response.data['data']);
+        final data = response.data['data'];
+        if (data == null) {
+          dev.log('HealthService: Server returned null data for health tracking');
+          return null;
+        }
+        
+        // Validate trackingId
+        if (data['_id'] == null) {
+          dev.log('HealthService: Warning - Server returned health tracking without trackingId');
+        } else {
+          dev.log('HealthService: Successfully received health tracking with ID: ${data['_id']}');
+        }
+        
+        return HealthTrackingModel.fromJson(data);
       } else {
-        dev.log('Error getting health tracking: ${response.data}');
+        dev.log('HealthService: Error getting health tracking: ${response.data}');
         return null;
       }
     } catch (e) {
-      dev.log('Exception getting health tracking: $e');
+      dev.log('HealthService: Exception getting health tracking: $e');
       return null;
     }
   }

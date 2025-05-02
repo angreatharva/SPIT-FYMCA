@@ -135,7 +135,7 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: ThemeConstants.backgroundColor,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),

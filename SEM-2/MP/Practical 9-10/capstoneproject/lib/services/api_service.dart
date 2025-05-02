@@ -1,15 +1,22 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:developer' as dev;
+import '../routes/app_routes.dart';
+import 'auth_service.dart';
 
 class ApiService extends GetxService {
   // Base URL for the API server
-  static const String baseUrl = 'https://50b2-202-134-190-225.ngrok-free.app';
+  static const String baseUrl = 'https://ea8d-202-134-190-222.ngrok-free.app';
   
   // Singleton instance
   static ApiService get instance => Get.find<ApiService>();
   
   // Dio instance
   late final Dio dio;
+  
+  // Flag to prevent multiple redirects
+  static bool _isRedirectingToLogin = false;
   
   // Getter for the Dio instance
   Dio get client => dio;
@@ -33,23 +40,64 @@ class ApiService extends GetxService {
       ),
     );
     
-    // Add interceptors for logging
+    // Add auth token interceptor
     dio.interceptors.add(
       InterceptorsWrapper(
-        onRequest: (options, handler) {
-          print('REQUEST[${options.method}] => PATH: ${options.path}');
+        onRequest: (options, handler) async {
+          // Get token from AuthService
+          final token = await AuthService().getToken();
+          if (token != null && token.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          dev.log('REQUEST[${options.method}] => PATH: ${options.path}');
           return handler.next(options);
         },
         onResponse: (response, handler) {
-          print('RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}');
+          dev.log('RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}');
           return handler.next(response);
         },
         onError: (DioException e, handler) {
-          print('ERROR[${e.response?.statusCode}] => PATH: ${e.requestOptions.path}');
+          dev.log('ERROR[${e.response?.statusCode}] => PATH: ${e.requestOptions.path}');
+          
+          // Handle authentication errors (401)
+          if (e.response?.statusCode == 401) {
+            _handleTokenExpiration();
+          }
+          
           return handler.next(e);
         },
       ),
     );
+  }
+  
+  // Handle token expiration and redirect to login page
+  void _handleTokenExpiration() {
+    if (_isRedirectingToLogin) return; // Prevent multiple redirects
+    
+    _isRedirectingToLogin = true;
+    
+    // Logout user if token is invalid
+    AuthService().logout().then((_) {
+      // Show message about session expiration
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        const SnackBar(
+          content: Text('Your session has expired. Please log in again.'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+        ),
+      );
+      
+      // Redirect to login page after a short delay to allow snackbar to be shown
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Get.offAllNamed(AppRoutes.login);
+        _isRedirectingToLogin = false; // Reset flag after redirection
+      });
+    }).catchError((error) {
+      dev.log('Error during logout: $error');
+      // Still redirect to login even if logout fails
+      Get.offAllNamed(AppRoutes.login);
+      _isRedirectingToLogin = false;
+    });
   }
   
   // Initialize method for GetX service

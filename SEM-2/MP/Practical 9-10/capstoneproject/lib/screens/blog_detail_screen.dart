@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../models/blog_model.dart';
 import '../services/blog_service.dart';
 import '../services/storage_service.dart';
@@ -28,18 +29,36 @@ class BlogDetailScreen extends StatelessWidget {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Blog'),
-        content: const Text('Are you sure you want to delete this blog?'),
+        title: Text(
+          'Delete Blog',
+          style: TextStyle(
+            fontSize: Get.width * 0.045,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Text(
+          'Are you sure you want to delete this blog?',
+          style: TextStyle(fontSize: Get.width * 0.04),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Get.width * 0.06),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(
+              'Cancel',
+              style: TextStyle(fontSize: Get.width * 0.035),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text(
+            child: Text(
               'Delete',
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: Get.width * 0.035,
+              ),
             ),
           ),
         ],
@@ -91,22 +110,27 @@ class BlogDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ThemeConstants.backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        elevation: 0,
+        backgroundColor: ThemeConstants.backgroundColor,
+        toolbarHeight: Get.height * 0.08,
         title: Text(
-          blog.title,
-          style: const TextStyle(
-            color: ThemeConstants.accentColor,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
+          'Blog Details',
+          style: TextStyle(
+            color: ThemeConstants.mainColor,
+            fontSize: Get.width * 0.06,
+            fontWeight: FontWeight.bold,
           ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
         ),
         actions: [
           if (isOwner)
             IconButton(
-              icon: const Icon(Icons.delete, color: Colors.red),
+              icon: Icon(
+                Icons.delete, 
+                color: Colors.red,
+                size: Get.width * 0.06,
+              ),
               onPressed: () => _confirmDelete(context),
             ),
         ],
@@ -117,118 +141,178 @@ class BlogDetailScreen extends StatelessWidget {
           children: [
             // Blog image
             if (blog.imageUrl != null && blog.imageUrl!.isNotEmpty)
-              SizedBox(
-                height: 200,
+              Container(
+                height: Get.height * 0.25,
                 width: double.infinity,
-                child: Image.network(
-                  blog.imageUrl!,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    height: 200,
-                    width: double.infinity,
-                    color: ThemeConstants.primaryColor.withOpacity(0.2),
-                    child: const Icon(
-                      Icons.image_not_supported,
-                      color: ThemeConstants.primaryColor,
-                      size: 50,
+                margin: EdgeInsets.symmetric(horizontal: Get.width * 0.04),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Get.width * 0.06),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(Get.width * 0.06),
+                  child: Image.network(
+                    blog.imageUrl!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      height: Get.height * 0.25,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: const Color(0XFFC3DEA9),
+                        borderRadius: BorderRadius.circular(Get.width * 0.06),
+                      ),
+                      child: Icon(
+                        Icons.image_not_supported,
+                        color: Colors.white,
+                        size: Get.width * 0.125,
+                      ),
                     ),
                   ),
                 ),
               ),
             
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(Get.width * 0.06),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Title
                   Text(
                     blog.title,
-                    style: const TextStyle(
-                      fontSize: 24,
+                    style: TextStyle(
+                      fontSize: Get.width * 0.06,
                       fontWeight: FontWeight.bold,
-                      color: ThemeConstants.primaryColor,
+                      color: Color(0xFF284C1C),
                     ),
                   ),
                   
-                  const SizedBox(height: 8),
+                  SizedBox(height: Get.height * 0.02),
                   
                   // Author and date
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.person,
-                        size: 16,
-                        color: ThemeConstants.accentColor,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        blog.authorName,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: ThemeConstants.accentColor,
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Get.width * 0.04, 
+                      vertical: Get.height * 0.015
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.7),
+                      borderRadius: BorderRadius.circular(Get.width * 0.04),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.person,
+                          size: Get.width * 0.04,
+                          color: Color(0xFF284C1C),
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                      const Icon(
-                        Icons.calendar_today,
-                        size: 16,
-                        color: Colors.grey,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        _formatDate(blog.createdAt),
-                        style: const TextStyle(
-                          fontSize: 14,
+                        SizedBox(width: Get.width * 0.02),
+                        Text(
+                          'Dr. ${blog.authorName}',
+                          style: TextStyle(
+                            fontSize: Get.width * 0.035,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF284C1C),
+                          ),
+                        ),
+                        SizedBox(width: Get.width * 0.04),
+                        Icon(
+                          Icons.calendar_today,
+                          size: Get.width * 0.04,
                           color: Colors.grey,
                         ),
-                      ),
-                    ],
+                        SizedBox(width: Get.width * 0.02),
+                        Text(
+                          _formatDate(blog.createdAt),
+                          style: TextStyle(
+                            fontSize: Get.width * 0.035,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   
                   // Tags
                   if (blog.tags.isNotEmpty)
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      padding: EdgeInsets.symmetric(vertical: Get.height * 0.02),
                       child: Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: blog.tags.map((tag) => Chip(
-                          label: Text(tag),
-                          backgroundColor: ThemeConstants.primaryColor.withOpacity(0.2),
+                        spacing: Get.width * 0.02,
+                        runSpacing: Get.width * 0.02,
+                        children: blog.tags.map((tag) => Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Get.width * 0.03, 
+                            vertical: Get.height * 0.008
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0XFFC3DEA9),
+                            borderRadius: BorderRadius.circular(Get.width * 0.04),
+                          ),
+                          child: Text(
+                            tag,
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: Get.width * 0.03,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         )).toList(),
                       ),
                     ),
                   
-                  const Divider(),
+                  SizedBox(height: Get.height * 0.02),
                   
-                  // Description
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                  // Description - styled like a card
+                  Container(
+                    padding: EdgeInsets.all(Get.width * 0.04),
+                    decoration: BoxDecoration(
+                      color: const Color(0XFFC3DEA9),
+                      borderRadius: BorderRadius.circular(Get.width * 0.06),
+                    ),
                     child: Text(
                       blog.description,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: Get.width * 0.04,
                         fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade800,
+                        color: Colors.black87,
                         fontStyle: FontStyle.italic,
                       ),
                     ),
                   ),
                   
-                  const SizedBox(height: 16),
+                  SizedBox(height: Get.height * 0.03),
                   
                   // Content
-                  Text(
-                    blog.content,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      height: 1.5,
+                  Container(
+                    padding: EdgeInsets.all(Get.width * 0.04),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(Get.width * 0.06),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      blog.content,
+                      style: TextStyle(
+                        fontSize: Get.width * 0.04,
+                        height: 1.5,
+                        color: Colors.black87,
+                      ),
                     ),
                   ),
                   
-                  const SizedBox(height: 40),
+                  SizedBox(height: Get.height * 0.05),
                 ],
               ),
             ),

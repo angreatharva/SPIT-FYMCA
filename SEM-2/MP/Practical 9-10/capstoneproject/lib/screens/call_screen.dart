@@ -529,333 +529,332 @@ class _CallScreenState extends State<CallScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final roleText = widget.isDoctor ? "Doctor" : "Patient";
-
-    return Scaffold(
-      backgroundColor: _backgroundColor,
-      appBar: AppBar(
-        backgroundColor: _primaryColor,
-        elevation: 0,
-        title: Row(
-          children: [
-            Icon(
-              widget.isDoctor ? Icons.medical_services : Icons.person,
-              color: Colors.white,
-              size: 20,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              "Teleconsultation",
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 16),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.timer, color: Colors.white, size: 16),
-                const SizedBox(width: 4),
-                Text(
-                  _callDuration,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Stack(children: [
-                // Remote video as main content
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black87,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: RTCVideoView(
-                    _remoteRTCVideoRenderer,
-                    objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
-                  ),
-                ),
-
-                // Connection status indicator
-                Positioned(
-                  top: 16,
-                  left: 0,
-                  right: 0,
-                  child: !_isConnected
-                      ? Center(
+    return WillPopScope(
+      onWillPop: () async {
+        _leaveCall();
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: _backgroundColor,
+        body: SafeArea(
+          child: Stack(
+            children: [
+              // Main content - remote video and local video
+              Column(
+                children: [
+                  // Remote Video
+                  Expanded(
+                    flex: 5,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
+                      width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.black87,
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
+                        borderRadius: BorderRadius.vertical(
+                          bottom: Radius.circular(getx.Get.width * 0.04),
+                        ),
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                      child: Stack(
                         children: [
-                          SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  _primaryColor),
+                          // Main remote video
+                          Center(
+                            child: RTCVideoView(
+                              _remoteRTCVideoRenderer,
+                              objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
+                              mirror: false,
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          const Text(
-                            "Establishing secure connection...",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
+                          
+                          // Status indicator overlay
+                          if (!_isConnected)
+                            Container(
+                              color: Colors.black54,
+                              child: Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(
+                                      width: getx.Get.width * 0.14,
+                                      height: getx.Get.width * 0.14,
+                                      child: CircularProgressIndicator(
+                                        color: _primaryColor,
+                                        strokeWidth: getx.Get.width * 0.01,
+                                      ),
+                                    ),
+                                    SizedBox(height: getx.Get.height * 0.02),
+                                    Text(
+                                      'Connecting to the call...',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: getx.Get.width * 0.045,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            
+                          // Call duration and user name header
+                          Positioned(
+                            top: getx.Get.height * 0.02,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: getx.Get.width * 0.04,
+                                vertical: getx.Get.height * 0.01,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: getx.Get.width * 0.03, 
+                                      vertical: getx.Get.height * 0.005
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black45,
+                                      borderRadius: BorderRadius.circular(getx.Get.width * 0.04),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.timer,
+                                          color: Colors.white,
+                                          size: getx.Get.width * 0.04,
+                                        ),
+                                        SizedBox(width: getx.Get.width * 0.01),
+                                        Text(
+                                          _callDuration,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: getx.Get.width * 0.035,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: getx.Get.width * 0.03, 
+                                      vertical: getx.Get.height * 0.005
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black45,
+                                      borderRadius: BorderRadius.circular(getx.Get.width * 0.04),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          widget.isDoctor ? Icons.person : Icons.medical_services,
+                                          color: _primaryColor,
+                                          size: getx.Get.width * 0.04,
+                                        ),
+                                        SizedBox(width: getx.Get.width * 0.01),
+                                        Text(
+                                          widget.isDoctor ? 'Patient' : 'Doctor',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: getx.Get.width * 0.035,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  )
-                      : Center(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: _secondaryColor,
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.shield,
-                            color: Colors.white,
-                            size: 16,
-                          ),
-                          const SizedBox(width: 8),
-                          const Text(
-                            "Secure Connection Established",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
+                          
+                          // Local video thumbnail
+                          Positioned(
+                            right: getx.Get.width * 0.03,
+                            bottom: getx.Get.height * 0.02,
+                            child: Container(
+                              width: getx.Get.width * 0.3,
+                              height: getx.Get.height * 0.18,
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(getx.Get.width * 0.03),
+                                border: Border.all(color: _primaryColor, width: 2),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.3),
+                                    blurRadius: 10,
+                                    spreadRadius: 1,
+                                  ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(getx.Get.width * 0.03),
+                                child: isVideoOn
+                                    ? RTCVideoView(
+                                        _localRTCVideoRenderer,
+                                        mirror: isFrontCameraSelected,
+                                        objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
+                                      )
+                                    : Center(
+                                        child: Icon(
+                                          Icons.videocam_off,
+                                          color: Colors.white,
+                                          size: getx.Get.width * 0.08,
+                                        ),
+                                      ),
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                ),
-
-                // Local video feed with elegant design
-                Positioned(
-                  right: 16,
-                  bottom: 20,
-                  child: Container(
-                    height: 180,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.white, width: 2),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: RTCVideoView(
-                        _localRTCVideoRenderer,
-                        mirror: isFrontCameraSelected,
-                        objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
-                      ),
-                    ),
-                  ),
-                ),
-
-                // Role indicator
-                Positioned(
-                  left: 16,
-                  bottom: 16,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: widget.isDoctor ? _accentColor : _secondaryColor,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          widget.isDoctor ? Icons.medical_services : Icons.person,
-                          color: Colors.white,
-                          size: 14,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          roleText,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // Transcription display
-                if (_recognizedText.isNotEmpty)
-                  Positioned(
-                    top: 70,
-                    left: 16,
-                    right: 16,
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
+                  
+                  // Speech recognition display
+                  if (_isSpeechEnabled)
+                    Container(
+                      padding: EdgeInsets.all(getx.Get.width * 0.04),
+                      color: Colors.white,
+                      width: double.infinity,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Icon(
-                                _isTranscribing ? Icons.mic : Icons.mic_none,
-                                color: _isTranscribing ? _secondaryColor : _primaryColor,
-                                size: 16,
-                              ),
-                              const SizedBox(width: 6),
                               Text(
-                                _isTranscribing ? 'Live Transcription' : 'Transcription',
+                                'Transcription',
                                 style: TextStyle(
-                                  color: _isTranscribing ? _secondaryColor : _primaryColor,
+                                  fontSize: getx.Get.width * 0.04,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 14,
+                                  color: _primaryColor,
                                 ),
                               ),
-                              const Spacer(),
-                              GestureDetector(
-                                onTap: _clearTranscription,
-                                child: Icon(Icons.close, color: Colors.grey, size: 16),
+                              Row(
+                                children: [
+                                  Text(
+                                    _isTranscribing ? 'Recording' : 'Paused',
+                                    style: TextStyle(
+                                      fontSize: getx.Get.width * 0.035,
+                                      color: _isTranscribing ? _secondaryColor : Colors.grey,
+                                    ),
+                                  ),
+                                  SizedBox(width: getx.Get.width * 0.01),
+                                  Icon(
+                                    _isTranscribing ? Icons.mic : Icons.mic_off,
+                                    color: _isTranscribing ? _secondaryColor : Colors.grey,
+                                    size: getx.Get.width * 0.05,
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            _recognizedText,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.black87,
+                          SizedBox(height: getx.Get.height * 0.01),
+                          Container(
+                            padding: EdgeInsets.all(getx.Get.width * 0.03),
+                            decoration: BoxDecoration(
+                              color: _backgroundColor,
+                              borderRadius: BorderRadius.circular(getx.Get.width * 0.03),
+                              border: Border.all(
+                                color: Colors.grey.shade300,
+                              ),
+                            ),
+                            constraints: BoxConstraints(
+                              minHeight: getx.Get.height * 0.08,
+                              maxHeight: getx.Get.height * 0.15,
+                            ),
+                            child: SingleChildScrollView(
+                              child: Text(
+                                _recognizedText.isEmpty
+                                    ? _isTranscribing
+                                        ? 'Listening...'
+                                        : 'Transcription will appear here'
+                                    : _recognizedText,
+                                style: TextStyle(
+                                  fontSize: getx.Get.width * 0.035,
+                                  color: _recognizedText.isEmpty
+                                      ? Colors.grey
+                                      : Colors.black87,
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
+                ],
+              ),
+              
+              // Call controls section
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  padding: EdgeInsets.all(getx.Get.width * 0.04),
+                  margin: EdgeInsets.only(
+                    bottom: getx.Get.height * 0.03, 
+                    left: getx.Get.width * 0.03, 
+                    right: getx.Get.width * 0.03
                   ),
-              ]),
-            ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(getx.Get.width * 0.08),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // Mic toggle
+                      _buildControlButton(
+                        icon: isAudioOn ? Icons.mic : Icons.mic_off,
+                        color: isAudioOn ? _primaryColor : Colors.grey,
+                        onPressed: _toggleMic,
+                        tooltip: isAudioOn ? 'Mute Microphone' : 'Unmute Microphone',
+                      ),
+                      
+                      // Camera toggle
+                      _buildControlButton(
+                        icon: isVideoOn ? Icons.videocam : Icons.videocam_off,
+                        color: isVideoOn ? _primaryColor : Colors.grey,
+                        onPressed: _toggleCamera,
+                        tooltip: isVideoOn ? 'Turn Off Camera' : 'Turn On Camera',
+                      ),
+                      
+                      // Camera flip
+                      _buildControlButton(
+                        icon: Icons.switch_camera,
+                        color: _primaryColor,
+                        onPressed: _switchCamera,
+                        tooltip: 'Switch Camera',
+                      ),
 
-            // Call controls with enhanced design
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
+                      // Transcription toggle
+                      _buildControlButton(
+                        icon: _isTranscribing ? Icons.record_voice_over : Icons.voice_over_off,
+                        color: _isTranscribing ? _secondaryColor : Colors.grey,
+                        onPressed: _toggleTranscription,
+                        tooltip: _isTranscribing ? 'Stop Transcription' : 'Start Transcription',
+                      ),
+                      
+                      // End call
+                      _buildControlButton(
+                        icon: Icons.call_end,
+                        color: _dangerColor,
+                        onPressed: _leaveCall,
+                        tooltip: 'End Call',
+                        isEndCall: true,
+                      ),
+                    ],
+                  ),
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, -2),
-                  ),
-                ],
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildControlButton(
-                    icon: isAudioOn ? Icons.mic : Icons.mic_off,
-                    label: isAudioOn ? "Mute" : "Unmute",
-                    color: isAudioOn ? _primaryColor : Colors.grey,
-                    onPressed: _toggleMic,
-                  ),
-                  _buildControlButton(
-                    icon: Icons.call_end,
-                    label: "End",
-                    color: _dangerColor,
-                    onPressed: _leaveCall,
-                    isEndCall: true,
-                  ),
-                  _buildControlButton(
-                    icon: Icons.cameraswitch,
-                    label: "Switch",
-                    color: _primaryColor,
-                    onPressed: _switchCamera,
-                  ),
-                  _buildControlButton(
-                    icon: isVideoOn ? Icons.videocam : Icons.videocam_off,
-                    label: isVideoOn ? "Hide" : "Show",
-                    color: isVideoOn ? _primaryColor : Colors.grey,
-                    onPressed: _toggleCamera,
-                  ),
-                  _buildControlButton(
-                    icon: _isTranscribing ? Icons.record_voice_over : Icons.voice_over_off,
-                    label: _isTranscribing ? "Stop" : "Transcribe",
-                    color: _isTranscribing ? _secondaryColor : (_isSpeechEnabled ? _primaryColor : Colors.grey),
-                    onPressed: _toggleTranscription,
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -863,47 +862,28 @@ class _CallScreenState extends State<CallScreen> with WidgetsBindingObserver {
 
   Widget _buildControlButton({
     required IconData icon,
-    required String label,
     required Color color,
     required VoidCallback onPressed,
+    required String tooltip,
     bool isEndCall = false,
   }) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
-            color: isEndCall ? color : color.withOpacity(0.1),
-            shape: BoxShape.circle,
-            boxShadow: isEndCall
-                ? [
-              BoxShadow(
-                color: color.withOpacity(0.3),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ]
-                : null,
-          ),
-          child: IconButton(
-            icon: Icon(icon),
-            color: isEndCall ? Colors.white : color,
-            iconSize: isEndCall ? 26 : 22,
-            onPressed: onPressed,
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: isEndCall ? color : color.withOpacity(0.1),
+      ),
+      child: IconButton(
+        icon: Icon(icon),
+        color: isEndCall ? Colors.white : color,
+        iconSize: getx.Get.width * 0.06,
+        tooltip: tooltip,
+        onPressed: onPressed,
+        padding: EdgeInsets.all(getx.Get.width * 0.03),
+        constraints: BoxConstraints(
+          minWidth: getx.Get.width * 0.12,
+          minHeight: getx.Get.width * 0.12,
         ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            color: isEndCall ? color : Colors.black87,
-            fontWeight: isEndCall ? FontWeight.bold : FontWeight.normal,
-            fontSize: 11,
-          ),
-        ),
-      ],
+      ),
     );
   }
 

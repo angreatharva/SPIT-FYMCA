@@ -56,21 +56,21 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline, color: Colors.red[400], size: 64),
-            const SizedBox(height: 16),
-            const Text(
+            Icon(Icons.error_outline, color: Colors.red[400], size: Get.width * 0.15),
+            SizedBox(height: Get.height * 0.02),
+            Text(
               'Health tracking is not available',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: Get.width * 0.045,
                 fontWeight: FontWeight.w500,
                 color: Colors.red,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: Get.height * 0.01),
             Text(
               'Please try again later or contact support',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: Get.width * 0.035,
                 color: Colors.grey[700],
               ),
             ),
@@ -87,11 +87,11 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircularProgressIndicator(color: widget.primaryColor),
-              const SizedBox(height: 16),
+              SizedBox(height: Get.height * 0.02),
               Text(
                 'Loading your daily health tasks...',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: Get.width * 0.04,
                   color: Colors.grey[700],
                 ),
               ),
@@ -101,14 +101,14 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
       }
       
       return Container(
-        padding: const EdgeInsets.only(top: 16),
+        padding: EdgeInsets.only(top: Get.height * 0.02),
         child: Column(
           mainAxisSize: MainAxisSize.min, 
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: EdgeInsets.symmetric(horizontal: Get.width * 0.06),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -116,7 +116,7 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
                     child: Text(
                       'Daily Health Check',
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: Get.width * 0.06,
                         fontWeight: FontWeight.bold,
                         color: widget.accentColor,
                       ),
@@ -128,22 +128,22 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
             
             // Description
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: EdgeInsets.symmetric(horizontal: Get.width * 0.06),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Track your daily health habits to stay healthy and fit',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: Get.width * 0.04,
                       color: Colors.grey[700],
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: Get.height * 0.005),
                   Text(
                     'Tasks are refreshed at midnight.',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: Get.width * 0.03,
                       fontStyle: FontStyle.italic,
                       color: Colors.grey[600],
                     ),
@@ -152,7 +152,7 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
               ),
             ),
             
-            const SizedBox(height: 16),
+            SizedBox(height: Get.height * 0.02),
             
             // Questions - Always show since we're in a tab now
             Expanded(
@@ -167,26 +167,26 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline, color: Colors.orange[400], size: 64),
-            const SizedBox(height: 16),
+            Icon(Icons.error_outline, color: Colors.orange[400], size: Get.width * 0.15),
+            SizedBox(height: Get.height * 0.02),
             Text(
               'Something went wrong',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: Get.width * 0.045,
                 fontWeight: FontWeight.w500,
                 color: Colors.orange[800],
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: Get.height * 0.01),
             Text(
               e.toString(),
               style: TextStyle(
-                fontSize: 14,
+                fontSize: Get.width * 0.035,
                 color: Colors.grey[700],
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: Get.height * 0.03),
             ElevatedButton(
               onPressed: () {
                 setState(() {}); // Force rebuild
@@ -194,9 +194,15 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: widget.primaryColor,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: EdgeInsets.symmetric(
+                  horizontal: Get.width * 0.06, 
+                  vertical: Get.height * 0.015
+                ),
               ),
-              child: const Text('Try Again'),
+              child: Text(
+                'Try Again',
+                style: TextStyle(fontSize: Get.width * 0.04),
+              ),
             ),
           ],
         ),
@@ -210,17 +216,17 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.task_alt, color: Colors.grey[400], size: 64),
-            const SizedBox(height: 16),
+            Icon(Icons.task_alt, color: Colors.grey[400], size: Get.width * 0.15),
+            SizedBox(height: Get.height * 0.02),
             Text(
               'No health tasks available',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: Get.width * 0.045,
                 fontWeight: FontWeight.w500,
                 color: Colors.grey[600],
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: Get.height * 0.03),
             ElevatedButton(
               onPressed: () async {
                 try {
@@ -238,9 +244,15 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: widget.primaryColor,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: EdgeInsets.symmetric(
+                  horizontal: Get.width * 0.06, 
+                  vertical: Get.height * 0.015
+                ),
               ),
-              child: const Text('Refresh Tasks'),
+              child: Text(
+                'Refresh Tasks',
+                style: TextStyle(fontSize: Get.width * 0.04),
+              ),
             ),
           ],
         ),
@@ -248,7 +260,7 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
     }
     
     return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: Get.width * 0.04),
       children: healthController.healthTracking.value.questions
           .map((question) => _buildQuestionItem(question))
           .toList(),
@@ -258,24 +270,27 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
   Widget _buildQuestionItem(HealthQuestionModel question) {
     return Card(
       elevation: 3,
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      margin: EdgeInsets.symmetric(
+        horizontal: Get.width * 0.02, 
+        vertical: Get.height * 0.01
+      ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: BorderRadius.circular(Get.width * 0.06),
       ),
       // Use different background color for completed tasks
       color: question.response ? Colors.green.shade50 : Color(0XFFC3DEA9),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(Get.width * 0.04),
         child: Row(
           children: [
             // Completed icon for completed tasks
             if (question.response)
               Padding(
-                padding: const EdgeInsets.only(right: 12),
+                padding: EdgeInsets.only(right: Get.width * 0.03),
                 child: Icon(
                   Icons.check_circle,
                   color: Colors.green,
-                  size: 24,
+                  size: Get.width * 0.06,
                 ),
               ),
               
@@ -283,7 +298,7 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
               child: Text(
                 question.question,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: Get.width * 0.045,
                   fontWeight: FontWeight.w500,
                   // Use slightly different text style for completed tasks
                   color: question.response ? Colors.green.shade800 : Colors.black87,
@@ -299,7 +314,7 @@ class _HealthTrackingCardState extends State<HealthTrackingCard> {
                   style: TextStyle(
                     color: Colors.green.shade800,
                     fontWeight: FontWeight.w500,
-                    fontSize: 14,
+                    fontSize: Get.width * 0.035,
                   ),
                 )
               : Switch(

@@ -65,8 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: ThemeConstants.backgroundColor,
         elevation: 0,
+        toolbarHeight: Get.height * 0.08,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -74,15 +75,15 @@ class _HomeScreenState extends State<HomeScreen> {
               'Welcome ${userController.isDoctor ? "Dr." : ""} ${userController.userName}',
               style: TextStyle(
                 color: ThemeConstants.accentColor,
-                fontSize: 16,
+                fontSize: Get.width * 0.04,
                 fontWeight: FontWeight.w500,
               ),
             )),
-            const Text(
+            Text(
               'Health Dashboard',
               style: TextStyle(
-                color: Colors.black87,
-                fontSize: 20,
+                color: ThemeConstants.mainColor,
+                fontSize: Get.width * 0.05,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -90,17 +91,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+        padding: EdgeInsets.only(top: Get.height * 0.01, bottom: Get.height * 0.01),
         child: Column(
           children: [
             // Tab chips
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: EdgeInsets.symmetric(
+                horizontal: Get.width * 0.04, 
+                vertical: Get.height * 0.01
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   _buildTabChip(0, 'Health Tracking'),
-                  const SizedBox(width: 12),
+                  SizedBox(width: Get.width * 0.03),
                   _buildTabChip(1, 'Health Monitor'),
                 ],
               ),
@@ -137,10 +141,13 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: EdgeInsets.symmetric(
+          horizontal: Get.width * 0.04, 
+          vertical: Get.height * 0.01
+        ),
         decoration: BoxDecoration(
           color: isSelected ? ThemeConstants.mainColor : ThemeConstants.greyInActive,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(Get.width * 0.05),
           border: Border.all(
             color: isSelected ? ThemeConstants.mainColor : ThemeConstants.greyInActive,
           ),
@@ -160,6 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(
             color: isSelected ? Colors.white : Colors.grey[700],
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            fontSize: Get.width * 0.035,
           ),
         ),
       ),

@@ -10,11 +10,14 @@ class CustomBottomNav extends GetView<NavigationController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      height: Get.height * 0.085,
+      margin: EdgeInsets.symmetric(
+        horizontal: Get.width * 0.04, 
+        vertical: Get.height * 0.012
+      ),
       decoration: BoxDecoration(
         color: Color(0XFF284C1C),
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(Get.width * 0.12),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -34,27 +37,31 @@ class CustomBottomNav extends GetView<NavigationController> {
                 index: NavigationController.HOME_INDEX,
                 icon: Icons.home,
                 label: 'Home',
-                lottieAsset: 'assets/lottie/Home.json',
+                activeLottie: 'assets/lottie/Home-Active.json',
+                inactiveLottie: 'assets/lottie/Home-Inactive.json',
               ),
               // Video call
               _buildNavItem(
                 index: NavigationController.VIDEO_CALL_INDEX,
                 icon: Icons.videocam,
                 label: 'Video Call',
-                lottieAsset: 'assets/lottie/VideoCall.json',
+                activeLottie: 'assets/lottie/VideoCall-Active.json',
+                inactiveLottie: 'assets/lottie/VideoCall-Inactive.json',
               ),
               _buildNavItem(
                 index: NavigationController.BLOGS_INDEX,
                 icon: Icons.message_outlined,
                 label: 'Blogs',
-                lottieAsset: 'assets/lottie/Blog.json',
+                activeLottie: 'assets/lottie/Blogs-Active.json',
+                inactiveLottie: 'assets/lottie/Blogs-Inactive.json',
               ),
               // Profile
               _buildNavItem(
                 index: NavigationController.PROFILE_INDEX,
                 icon: Icons.person,
                 label: 'Profile',
-                lottieAsset: 'assets/lottie/Profile.json',
+                activeLottie: 'assets/lottie/Profile-Active.json',
+                inactiveLottie: 'assets/lottie/Profile-Inactive.json',
               ),
             ],
           ),
@@ -67,24 +74,25 @@ class CustomBottomNav extends GetView<NavigationController> {
     required int index,
     required IconData icon,
     required String label,
-    required String lottieAsset,
+    required String activeLottie,
+    required String inactiveLottie,
   }) {
     return Obx(() {
       final bool isSelected = controller.currentIndex.value == index;
       return InkWell(
         onTap: () => controller.changeTab(index),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(Get.width * 0.05),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+          padding: EdgeInsets.zero,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: 60,
-                width: 60,
+                height: Get.width * 0.15,
+                width: Get.width * 0.15,
                 decoration: BoxDecoration(
                   color: isSelected ? ThemeConstants.white : ThemeConstants.mainColorInActive,
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius: BorderRadius.circular(Get.width * 0.12),
                   boxShadow: isSelected ? [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.1),
@@ -93,9 +101,9 @@ class CustomBottomNav extends GetView<NavigationController> {
                     ),
                   ] : null,
                 ),
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(Get.width * 0.025),
                 child: Lottie.asset(
-                  lottieAsset,
+                  isSelected ? activeLottie : inactiveLottie,
                   fit: BoxFit.contain,
                 ),
               ),

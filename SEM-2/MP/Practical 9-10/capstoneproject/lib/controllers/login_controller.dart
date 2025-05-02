@@ -8,25 +8,50 @@ import '../routes/app_routes.dart';
 import '../services/auth_service.dart';
 import '../services/storage_service.dart';
 import '../controllers/user_controller.dart';
+import '../controllers/health_controller.dart';
 
 class LoginController extends GetxController {
-  // Change from final to a regular variable that can be updated
   GlobalKey<FormState>? formKey;
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
   final isLoading = false.obs;
   final String selfCallerId;
+  
+  // Track whether controllers are disposed
+  bool _controllersDisposed = false;
   
   LoginController({required this.selfCallerId});
 
   @override
   void onInit() {
     super.onInit();
+    // Initialize controllers here to avoid reusing disposed controllers
+    _createControllers();
+    
     // Create a default formKey if none is provided
     formKey ??= GlobalKey<FormState>();
-    // Clear form fields on init to avoid stale data
-    emailController.clear();
-    passwordController.clear();
+  }
+  
+  // Create fresh controllers
+  void _createControllers() {
+    // Create new controllers
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    _controllersDisposed = false;
+  }
+  
+  // Safely dispose controllers
+  void _disposeControllersSafely() {
+    try {
+      if (!_controllersDisposed) {
+        emailController.dispose();
+        passwordController.dispose();
+        _controllersDisposed = true;
+      }
+    } catch (e) {
+      // Ignore errors from already disposed controllers
+      dev.log('Warning: Error disposing controllers: $e');
+    }
   }
 
   // Set the form key from outside
@@ -90,11 +115,28 @@ class LoginController extends GetxController {
         try {
           final userController = Get.find<UserController>();
           userController.loadUserData();
+          
+          // Reload health data for the new user
+          if (Get.isRegistered<HealthController>()) {
+            final healthController = Get.find<HealthController>();
+            // Reset the data first to avoid showing previous user's data
+            healthController.healthTracking.value = healthController.createEmptyHealthTracking();
+            healthController.trackingId.value = '';
+            
+            // Reinitialize the userId in the health controller
+            healthController.userId = userId;
+            
+            // Wait longer to ensure user data is fully loaded before fetching health data
+            Future.delayed(Duration(milliseconds: 300), () {
+              healthController.loadHealthData();
+              dev.log('Reloaded health data for new user login');
+            });
+          }
         } catch (e) {
           dev.log('Error updating UserController: $e');
         }
         
-        // Reset loading state and navigate to home
+        // Reset loading state before navigation
         isLoading.value = false;
         
         // Use a safer navigation approach with a delay
@@ -134,8 +176,8 @@ class LoginController extends GetxController {
 
   @override
   void onClose() {
-    emailController.dispose();
-    passwordController.dispose();
+    // Safely dispose controllers
+    _disposeControllersSafely();
     super.onClose();
   }
 } 

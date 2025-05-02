@@ -118,37 +118,43 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline, color: Colors.orange[400], size: 64),
-            const SizedBox(height: 16),
+            Icon(Icons.error_outline, color: Colors.orange[400], size: Get.width * 0.15),
+            SizedBox(height: Get.height * 0.02),
             Text(
               'Could not load health calendar',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: Get.width * 0.045,
                 fontWeight: FontWeight.w500,
                 color: Colors.orange[800],
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: Get.height * 0.01),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              padding: EdgeInsets.symmetric(horizontal: Get.width * 0.06),
               child: Text(
                 'Calendar data is still being prepared for your account.',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: Get.width * 0.035,
                   color: Colors.grey[700],
                 ),
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: Get.height * 0.03),
             ElevatedButton(
               onPressed: _loadHeatmapData,
               style: ElevatedButton.styleFrom(
                 backgroundColor: widget.primaryColor,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: EdgeInsets.symmetric(
+                  horizontal: Get.width * 0.06, 
+                  vertical: Get.height * 0.015
+                ),
               ),
-              child: const Text('Try Again'),
+              child: Text(
+                'Try Again',
+                style: TextStyle(fontSize: Get.width * 0.04),
+              ),
             ),
           ],
         ),
@@ -161,21 +167,21 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.calendar_today, color: Colors.grey[400], size: 64),
-            const SizedBox(height: 16),
+            Icon(Icons.calendar_today, color: Colors.grey[400], size: Get.width * 0.15),
+            SizedBox(height: Get.height * 0.02),
             Text(
               'No health activity recorded yet',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: Get.width * 0.045,
                 fontWeight: FontWeight.w500,
                 color: Colors.grey[600],
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: Get.height * 0.01),
             Text(
               'Complete your daily health tasks to see activity in your calendar',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: Get.width * 0.035,
                 color: Colors.grey[700],
               ),
               textAlign: TextAlign.center,
@@ -218,20 +224,20 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
         outsideDaysVisible: false,
         weekendTextStyle: const TextStyle().copyWith(color: Colors.red),
         // Make calendar more compact
-        cellMargin: const EdgeInsets.all(2),
+        cellMargin: EdgeInsets.all(Get.width * 0.005),
         cellPadding: EdgeInsets.zero,
       ),
-      daysOfWeekHeight: 20, // Smaller days of week header
-      rowHeight: 40, // Smaller rows
+      daysOfWeekHeight: Get.height * 0.025, // Smaller days of week header
+      rowHeight: Get.height * 0.05, // Smaller rows
       headerStyle: HeaderStyle(
         formatButtonVisible: false,
         titleCentered: true,
         titleTextStyle: TextStyle(
           color: widget.accentColor,
           fontWeight: FontWeight.bold,
-          fontSize: 16, // Smaller header text
+          fontSize: Get.width * 0.04, // Smaller header text
         ),
-        headerPadding: const EdgeInsets.symmetric(vertical: 8),
+        headerPadding: EdgeInsets.symmetric(vertical: Get.height * 0.01),
         headerMargin: EdgeInsets.zero,
       ),
       calendarBuilders: CalendarBuilders(
@@ -239,7 +245,7 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
           final score = _heatmapData[DateTime(date.year, date.month, date.day)] ?? 0;
           
           return Container(
-            margin: const EdgeInsets.all(2),
+            margin: EdgeInsets.all(Get.width * 0.005),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: _getColorForScore(score),
@@ -248,7 +254,7 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
               child: Text(
                 '${date.day}',
                 style: TextStyle(
-                  fontSize: 12, // Smaller font size
+                  fontSize: Get.width * 0.03, // Smaller font size
                   color: score > 50 ? Colors.white : Colors.black87,
                 ),
               ),
@@ -261,11 +267,14 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
   
   Widget _buildLegend() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      padding: EdgeInsets.symmetric(
+        horizontal: Get.width * 0.04, 
+        vertical: Get.height * 0.005
+      ),
       child: Wrap(
         alignment: WrapAlignment.center,
-        spacing: 4,
-        runSpacing: 4,
+        spacing: Get.width * 0.01,
+        runSpacing: Get.width * 0.01,
         children: [
           _legendItem('None', _getColorForScore(0)),
           _legendItem('1-25%', _getColorForScore(10)),
@@ -282,22 +291,22 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 10,
-          height: 10,
+          width: Get.width * 0.025,
+          height: Get.width * 0.025,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: color,
           ),
         ),
-        const SizedBox(width: 2),
+        SizedBox(width: Get.width * 0.005),
         Text(
           label,
           style: TextStyle(
-            fontSize: 10,
+            fontSize: Get.width * 0.025,
             color: Colors.grey[600],
           ),
         ),
-        const SizedBox(width: 4),
+        SizedBox(width: Get.width * 0.01),
       ],
     );
   }
@@ -309,11 +318,11 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
     final score = _heatmapData[DateTime(_selectedDay!.year, _selectedDay!.month, _selectedDay!.day)] ?? 0;
     
     return Container(
-      margin: const EdgeInsets.all(12.0),
-      padding: const EdgeInsets.all(12.0),
+      margin: EdgeInsets.all(Get.width * 0.03),
+      padding: EdgeInsets.all(Get.width * 0.03),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(Get.width * 0.03),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.2),
@@ -329,17 +338,17 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
         children: [
           Text(
             formattedDate,
-            style: const TextStyle(
-              fontSize: 14,
+            style: TextStyle(
+              fontSize: Get.width * 0.035,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: Get.height * 0.008),
           Row(
             children: [
               SizedBox(
-                height: 30,
-                width: 30,
+                height: Get.width * 0.075,
+                width: Get.width * 0.075,
                 child: CircularProgressIndicator(
                   value: score / 100,
                   backgroundColor: Colors.grey[300],
@@ -347,15 +356,15 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
                   strokeWidth: 5,
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: Get.width * 0.03),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Completion: $score%',
-                      style: const TextStyle(
-                        fontSize: 13,
+                      style: TextStyle(
+                        fontSize: Get.width * 0.032,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -364,7 +373,7 @@ class _HealthHeatmapWidgetState extends State<HealthHeatmapWidget> {
                           ? 'Good job on completing your health tasks!' 
                           : 'No health tasks completed on this day.',
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: Get.width * 0.028,
                         color: Colors.grey[600],
                       ),
                     ),

@@ -6,8 +6,8 @@ import '../services/signalling.service.dart';
 class CallingController extends GetxController {
   static CallingController get to => Get.find<CallingController>();
   
-  final Dio _dio = Dio();
-  final _baseUrl = ApiService.baseUrl;
+  // Use ApiService's Dio instance that has the token interceptor
+  final Dio _dio = ApiService.instance.client;
   
   // Observable states
   final RxBool isLoading = false.obs;
@@ -20,12 +20,6 @@ class CallingController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    
-    // Configure dio
-    _dio.options.headers['Content-Type'] = 'application/json';
-    _dio.options.validateStatus = (status) {
-      return status! < 500; // Accept all status codes less than 500
-    };
     
     // Set up socket connection for incoming calls
     _setupSocketListeners();
@@ -53,9 +47,7 @@ class CallingController extends GetxController {
     error.value = '';
     
     try {
-      final response = await _dio.get(
-        '$_baseUrl/api/video-call/active-doctors',
-      );
+      final response = await _dio.get('/api/video-call/active-doctors');
       
       if (response.statusCode == 200 && response.data['success'] == true) {
         activeDoctors.value = response.data['data'];
@@ -83,7 +75,7 @@ class CallingController extends GetxController {
     
     try {
       final response = await _dio.post(
-        '$_baseUrl/api/video-call/request-call',
+        '/api/video-call/request-call',
         data: {
           'patientId': patientId,
           'doctorId': doctorId,
@@ -112,9 +104,7 @@ class CallingController extends GetxController {
     this.doctorId.value = doctorId;
     
     try {
-      final response = await _dio.get(
-        '$_baseUrl/api/video-call/pending-requests/$doctorId',
-      );
+      final response = await _dio.get('/api/video-call/pending-requests/$doctorId');
       
       if (response.statusCode == 200 && response.data['success'] == true) {
         // Get the pending requests data
@@ -149,7 +139,7 @@ class CallingController extends GetxController {
     
     try {
       final response = await _dio.patch(
-        '$_baseUrl/api/video-call/request/$requestId',
+        '/api/video-call/request/$requestId',
         data: {
           'status': status,
         },

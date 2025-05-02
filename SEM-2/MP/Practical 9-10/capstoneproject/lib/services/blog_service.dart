@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:dio/dio.dart';
 import '../models/blog_model.dart';
 import 'api_service.dart';
 import 'storage_service.dart';
@@ -14,27 +13,29 @@ class BlogService {
   BlogService._internal();
 
   static BlogService get instance => _instance;
+  
+  // Use ApiService's Dio instance for all calls
+  final Dio _dio = ApiService.instance.client;
 
   // Get all blogs with pagination
   Future<Map<String, dynamic>> getAllBlogs({int page = 1, int limit = 10}) async {
     try {
-      final response = await http.get(
-        Uri.parse('${ApiService.baseUrl}/api/blogs?page=$page&limit=$limit'),
-        headers: {'Content-Type': 'application/json'},
+      final response = await _dio.get(
+        '/api/blogs',
+        queryParameters: {'page': page, 'limit': limit},
       );
 
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
-        final List<dynamic> blogsJson = jsonResponse['data'] ?? [];
+        final List<dynamic> blogsJson = response.data['data'] ?? [];
         final List<BlogModel> blogs = blogsJson.map((json) => BlogModel.fromJson(json)).toList();
         
         return {
           'success': true,
           'blogs': blogs,
-          'pagination': jsonResponse['pagination'],
+          'pagination': response.data['pagination'],
         };
       } else {
-        throw Exception(jsonDecode(response.body)['message']);
+        throw Exception(response.data['message']);
       }
     } catch (e) {
       debugPrint('Error fetching blogs: $e');
@@ -48,21 +49,17 @@ class BlogService {
   // Get a single blog by ID
   Future<Map<String, dynamic>> getBlogById(String id) async {
     try {
-      final response = await http.get(
-        Uri.parse('${ApiService.baseUrl}/api/blogs/$id'),
-        headers: {'Content-Type': 'application/json'},
-      );
+      final response = await _dio.get('/api/blogs/$id');
 
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
-        final blog = BlogModel.fromJson(jsonResponse['data']);
+        final blog = BlogModel.fromJson(response.data['data']);
         
         return {
           'success': true,
           'blog': blog,
         };
       } else {
-        throw Exception(jsonDecode(response.body)['message']);
+        throw Exception(response.data['message']);
       }
     } catch (e) {
       debugPrint('Error fetching blog: $e');
@@ -89,8 +86,6 @@ class BlogService {
       
       if (imageFile != null) {
         // Upload with image file
-        final dio = Dio();
-        
         FormData formData = FormData.fromMap({
           'title': blog.title,
           'description': blog.description,
@@ -104,8 +99,8 @@ class BlogService {
           ),
         });
         
-        final response = await dio.post(
-          '${ApiService.baseUrl}/api/blogs',
+        final response = await _dio.post(
+          '/api/blogs',
           data: formData,
         );
         
@@ -121,15 +116,13 @@ class BlogService {
         }
       } else {
         // Upload without image
-        final response = await http.post(
-          Uri.parse('${ApiService.baseUrl}/api/blogs'),
-          headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(blog.toCreateJson(userId, createdByModel)),
+        final response = await _dio.post(
+          '/api/blogs',
+          data: blog.toCreateJson(userId, createdByModel),
         );
 
         if (response.statusCode == 201) {
-          final jsonResponse = jsonDecode(response.body);
-          final blog = BlogModel.fromJson(jsonResponse['data']);
+          final blog = BlogModel.fromJson(response.data['data']);
           
           return {
             'success': true,
@@ -137,7 +130,7 @@ class BlogService {
             'blog': blog,
           };
         } else {
-          throw Exception(jsonDecode(response.body)['message']);
+          throw Exception(response.data['message']);
         }
       }
     } catch (e) {
@@ -152,8 +145,6 @@ class BlogService {
   // Upload a blog image
   Future<Map<String, dynamic>> uploadBlogImage(File imageFile) async {
     try {
-      final dio = Dio();
-      
       FormData formData = FormData.fromMap({
         'image': await MultipartFile.fromFile(
           imageFile.path,
@@ -161,8 +152,8 @@ class BlogService {
         ),
       });
       
-      final response = await dio.post(
-        '${ApiService.baseUrl}/api/blogs/upload-image',
+      final response = await _dio.post(
+        '/api/blogs/upload-image',
         data: formData,
       );
       
@@ -198,23 +189,26 @@ class BlogService {
       final userId = user.id;
       final userType = user.isDoctor ? 'Doctor' : 'User';
       
-      final response = await http.get(
-        Uri.parse('${ApiService.baseUrl}/api/blogs/user/$userId?userType=$userType&page=$page&limit=$limit'),
-        headers: {'Content-Type': 'application/json'},
+      final response = await _dio.get(
+        '/api/blogs/user/$userId',
+        queryParameters: {
+          'userType': userType,
+          'page': page,
+          'limit': limit
+        },
       );
 
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
-        final List<dynamic> blogsJson = jsonResponse['data'] ?? [];
+        final List<dynamic> blogsJson = response.data['data'] ?? [];
         final List<BlogModel> blogs = blogsJson.map((json) => BlogModel.fromJson(json)).toList();
         
         return {
           'success': true,
           'blogs': blogs,
-          'pagination': jsonResponse['pagination'],
+          'pagination': response.data['pagination'],
         };
       } else {
-        throw Exception(jsonDecode(response.body)['message']);
+        throw Exception(response.data['message']);
       }
     } catch (e) {
       debugPrint('Error fetching user blogs: $e');
@@ -238,10 +232,9 @@ class BlogService {
 
       final userId = user.id;
       
-      final response = await http.delete(
-        Uri.parse('${ApiService.baseUrl}/api/blogs/$blogId'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'userId': userId}),
+      final response = await _dio.delete(
+        '/api/blogs/$blogId',
+        data: {'userId': userId},
       );
 
       if (response.statusCode == 200) {
@@ -250,7 +243,7 @@ class BlogService {
           'message': 'Blog deleted successfully',
         };
       } else {
-        throw Exception(jsonDecode(response.body)['message']);
+        throw Exception(response.data['message']);
       }
     } catch (e) {
       debugPrint('Error deleting blog: $e');

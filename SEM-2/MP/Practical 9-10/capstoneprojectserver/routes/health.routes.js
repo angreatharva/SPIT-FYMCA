@@ -1,26 +1,27 @@
 const express = require('express');
 const router = express.Router();
 const healthController = require('../controllers/health.controller');
+const { verifyToken } = require('../middleware/auth.middleware');
 
 // Get all health questions
-router.get('/questions', healthController.getAllQuestions);
+router.get('/questions', verifyToken, healthController.getAllQuestions);
 
 // Get questions by role (doctor, patient, or both)
-router.get('/questions/role/:role', healthController.getQuestionsByRole);
+router.get('/questions/role/:role', verifyToken, healthController.getQuestionsByRole);
 
 // Get today's health tracking for a user
 // userType query parameter can be 'doctor' or 'patient' (default: 'patient')
-router.get('/tracking/:userId', healthController.getUserHealthTracking);
+router.get('/tracking/:userId', verifyToken, healthController.getUserHealthTracking);
 
 // Complete a health question
-router.post('/tracking/:userId/:trackingId/complete/:questionId', healthController.completeHealthQuestion);
+router.post('/tracking/:userId/:trackingId/complete/:questionId', verifyToken, healthController.completeHealthQuestion);
 
 // Get health activity heatmap data for a user
-router.get('/heatmap/:userId', healthController.getHealthActivityHeatmap);
+router.get('/heatmap/:userId', verifyToken, healthController.getHealthActivityHeatmap);
 
 // Admin routes
 // Manually trigger a refresh of all health tracking records
-router.post('/admin/refresh', async (req, res) => {
+router.post('/admin/refresh', verifyToken, async (req, res) => {
   try {
     const result = await healthController.refreshAllHealthTracking();
     if (result.success) {
@@ -38,6 +39,6 @@ router.post('/admin/refresh', async (req, res) => {
 });
 
 // Backfill health activity data
-router.post('/admin/backfill', healthController.backfillHealthActivity);
+router.post('/admin/backfill', verifyToken, healthController.backfillHealthActivity);
 
 module.exports = router; 

@@ -25,6 +25,14 @@ class HealthController extends GetxController {
     loadHealthData();
   }
   
+  // Helper method to create an empty health tracking model
+  HealthTrackingModel createEmptyHealthTracking() {
+    return HealthTrackingModel(
+      questions: [],
+      date: DateTime.now(),
+    );
+  }
+  
   void _initializeUserId() {
     final StorageService storageService = StorageService.instance;
     final user = storageService.getUserData();
@@ -46,10 +54,8 @@ class HealthController extends GetxController {
       // If still empty after re-initialization, use default empty data
       if (userId.isEmpty) {
         dev.log('HealthController: Unable to load health data: User ID is still empty');
-        healthTracking.value = HealthTrackingModel(
-          questions: [],
-          date: DateTime.now(),
-        );
+        healthTracking.value = createEmptyHealthTracking();
+        trackingId.value = '';
         return;
       }
     }
@@ -64,13 +70,14 @@ class HealthController extends GetxController {
       // If user is null, we can't determine the type
       if (user == null) {
         dev.log('HealthController: User data is null, using default empty model');
-        healthTracking.value = HealthTrackingModel(
-          questions: [],
-          date: DateTime.now(),
-        );
+        healthTracking.value = createEmptyHealthTracking();
+        trackingId.value = '';
         isLoading.value = false;
         return;
       }
+      
+      // Reset trackingId when loading for new user/role to avoid using old value
+      trackingId.value = '';
       
       // Determine user type using the isDoctor property
       final String userType = user.isDoctor ? 'doctor' : 'patient';
@@ -84,11 +91,14 @@ class HealthController extends GetxController {
         if (healthTrackingData.trackingId != null) {
           trackingId.value = healthTrackingData.trackingId!;
           dev.log('HealthController: Updated trackingId to ${trackingId.value}');
+        } else {
+          dev.log('HealthController: Warning - received null trackingId from server');
         }
         dev.log('Health data loaded from server');
       } else {
         // Fall back to default data if server returns error
         healthTracking.value = HealthTrackingModel.createDefault(role: userType);
+        trackingId.value = '';
         dev.log('Server returned error, using default health data');
       }
     } catch (e) {
@@ -101,6 +111,7 @@ class HealthController extends GetxController {
       
       // Fall back to default data
       healthTracking.value = HealthTrackingModel.createDefault(role: userType);
+      trackingId.value = '';
     } finally {
       isLoading.value = false;
     }
@@ -160,15 +171,24 @@ class HealthController extends GetxController {
       );
       
       // Server update
-      if (userId.isEmpty || healthTracking.value.trackingId == null) {
-        dev.log('HealthController: Cannot update question: User ID or tracking ID is empty');
+      if (userId.isEmpty || healthTracking.value.trackingId == null || healthTracking.value.trackingId!.isEmpty) {
+        dev.log('HealthController: Cannot update question: User ID or tracking ID is empty/null');
         dev.log('HealthController: Current userId: $userId, trackingId: ${healthTracking.value.trackingId}');
         dev.log('HealthController: Attempting to reload health data to get trackingId');
+        
+        // Wait a moment to ensure any in-progress operations complete
+        await Future.delayed(Duration(milliseconds: 100));
         await loadHealthData();
         
         // Check if we now have a trackingId
-        if (healthTracking.value.trackingId == null) {
-          dev.log('HealthController: Reload failed, trackingId still null');
+        if (healthTracking.value.trackingId == null || healthTracking.value.trackingId!.isEmpty) {
+          dev.log('HealthController: Reload failed, trackingId still null/empty');
+          Get.snackbar(
+            'Action Not Saved', 
+            'Unable to save your action. Please try again later.',
+            duration: Duration(seconds: 3),
+            snackPosition: SnackPosition.BOTTOM,
+          );
           return;
         } else {
           dev.log('HealthController: Successfully retrieved trackingId: ${healthTracking.value.trackingId}');
@@ -177,6 +197,8 @@ class HealthController extends GetxController {
       
       try {
         dev.log('HealthController: Attempting to update question $questionId to $response');
+        dev.log('HealthController: Using trackingId: ${healthTracking.value.trackingId}');
+        
         final success = await _healthService.completeHealthQuestion(
           userId, 
           healthTracking.value.trackingId!, 

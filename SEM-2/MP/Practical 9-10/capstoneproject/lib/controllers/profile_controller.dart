@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import '../routes/app_routes.dart';
 import '../services/storage_service.dart';
+import '../controllers/health_controller.dart';
 import 'dart:developer' as dev;
 
 class ProfileController extends GetxController {
@@ -51,7 +52,22 @@ class ProfileController extends GetxController {
   // Method to log out the user
   void logout() {
     dev.log('User logging out');
+    
+    // Reset health controller data before logging out
+    try {
+      if (Get.isRegistered<HealthController>()) {
+        final healthController = Get.find<HealthController>();
+        healthController.healthTracking.value = healthController.createEmptyHealthTracking();
+        dev.log('Health controller data reset');
+      }
+    } catch (e) {
+      dev.log('Error resetting health controller: $e');
+    }
+    
+    // Clear storage data
     StorageService.instance.clearUserData();
+    StorageService.instance.clearHealthData();
+    
     Get.offAllNamed(AppRoutes.login);
   }
 }

@@ -75,29 +75,59 @@ class _PendingCallsScreenState extends State<PendingCallsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Accept Call Request'),
+        title: Text(
+          'Accept Call Request',
+          style: TextStyle(
+            fontSize: Get.width * 0.045,
+          ),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Accept call request from $patientName?'),
+            Text(
+              'Accept call request from $patientName?',
+              style: TextStyle(
+                fontSize: Get.width * 0.04,
+              ),
+            ),
           ],
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Get.width * 0.06),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                fontSize: Get.width * 0.035,
+              ),
+            ),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF2A7DE1),
+              backgroundColor: const Color(0xFF284C1C),
               foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(Get.width * 0.06),
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: Get.width * 0.04,
+                vertical: Get.height * 0.01,
+              ),
             ),
             onPressed: () {
               Navigator.pop(context);
               _updateRequestStatus(requestId, 'accepted');
             },
-            child: const Text('Accept & Start Call'),
+            child: Text(
+              'Accept & Start Call',
+              style: TextStyle(
+                fontSize: Get.width * 0.035,
+              ),
+            ),
           ),
         ],
       ),
@@ -127,230 +157,272 @@ class _PendingCallsScreenState extends State<PendingCallsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ThemeConstants.backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: const Text('Pending Call Requests',
+        elevation: 0,
+        backgroundColor: ThemeConstants.backgroundColor,
+        toolbarHeight: Get.height * 0.08,
+        title: Text(
+          'Pending Call Requests',
           style: TextStyle(
-          color: ThemeConstants.accentColor,
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-        ),),
+            color: ThemeConstants.mainColor,
+            fontSize: Get.width * 0.06,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
+            icon: Icon(
+              Icons.refresh, 
+              color: const Color(0xFF284C1C),
+              size: Get.width * 0.06,
+            ),
             onPressed: _fetchPendingRequests,
           ),
         ],
       ),
-      body: Stack(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Obx(() {
-            if (_callingController.isLoading.value) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (_callingController.error.value.isNotEmpty) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      _callingController.error.value,
-                      style: const TextStyle(color: Colors.red),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: _fetchPendingRequests,
-                      child: const Text('Retry'),
-                    ),
-                  ],
+          // Description text - similar to Health Dashboard
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: Get.width * 0.06),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Manage your patient call requests',
+                  style: TextStyle(
+                    fontSize: Get.width * 0.04,
+                    color: Colors.grey[700],
+                  ),
                 ),
-              );
-            } else if (_callingController.pendingRequests.isEmpty) {
-              return const Center(
-                child: Text(
-                  'No pending call requests',
-                  style: TextStyle(fontSize: 16),
-                ),
-              );
-            } else {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: _callingController.pendingRequests.length,
-                        itemBuilder: (context, index) {
-                          final request = _callingController.pendingRequests[index];
-                          final patient = request['patientId'];
-                          final patientName = patient['userName'] ?? 'Unknown Patient';
-                          final patientAge = patient['age']?.toString() ?? 'N/A';
-                          final patientGender = patient['gender'] ?? 'N/A';
-                          final patientCallerId = request['patientCallerId'] ?? '';
-                          final requestedAt = DateTime.parse(request['requestedAt']);
-                          final formattedTime = '${requestedAt.hour}:${requestedAt.minute.toString().padLeft(2, '0')}';
-
-                          return Card(
-                            color: Color(0XFFC3DEA9),
-                            elevation: 3,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
+                SizedBox(height: Get.height * 0.02),
+              ],
+            ),
+          ),
+          
+          // Main content
+          Expanded(
+            child: Stack(
+              children: [
+                Obx(() {
+                  if (_callingController.isLoading.value) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: const Color(0xFF284C1C),
+                      )
+                    );
+                  } else if (_callingController.error.value.isNotEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.error_outline,
+                            color: Colors.red,
+                            size: Get.width * 0.15,
+                          ),
+                          SizedBox(height: Get.height * 0.02),
+                          Text(
+                            _callingController.error.value,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: Get.width * 0.04,
                             ),
-                            margin: const EdgeInsets.only(bottom: 16),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      const CircleAvatar(
-                                        radius: 25,
-                                        child: Icon(Icons.person),
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: Get.height * 0.025),
+                          ElevatedButton(
+                            onPressed: _fetchPendingRequests,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF284C1C),
+                              foregroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: Get.width * 0.06, 
+                                vertical: Get.height * 0.015
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(Get.width * 0.06),
+                              ),
+                            ),
+                            child: Text(
+                              'Retry',
+                              style: TextStyle(
+                                fontSize: Get.width * 0.04,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else if (_callingController.pendingRequests.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.call_missed,
+                            color: const Color(0xFF284C1C),
+                            size: Get.width * 0.15,
+                          ),
+                          SizedBox(height: Get.height * 0.02),
+                          Text(
+                            'No pending call requests',
+                            style: TextStyle(
+                              fontSize: Get.width * 0.04,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Padding(
+                      padding: EdgeInsets.all(Get.width * 0.04),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: _callingController.pendingRequests.length,
+                              itemBuilder: (context, index) {
+                                final request = _callingController.pendingRequests[index];
+                                final patientName = request['patientName'] ?? 'Unknown Patient';
+                                final requestTime = request['createdAt'] != null 
+                                    ? DateTime.parse(request['createdAt'])
+                                    : DateTime.now();
+                                final formattedTime = "${requestTime.hour}:${requestTime.minute.toString().padLeft(2, '0')}";
+                                final requestId = request['_id'] ?? '';
+                                final patientCallerId = request['patientCallerId'] ?? '';
+                                final status = request['status'] ?? 'pending';
+                                
+                                // Skip requests that are not pending
+                                if (status != 'pending') return const SizedBox.shrink();
+                                
+                                return Card(
+                                  color: const Color(0XFFC3DEA9), // Light green color matching health tracking card
+                                  elevation: 3,
+                                  margin: EdgeInsets.only(bottom: Get.height * 0.02),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(Get.width * 0.06),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(Get.width * 0.04),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
                                           children: [
-                                            Text(
-                                              patientName,
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18,
+                                            // Patient image
+                                            CircleAvatar(
+                                              radius: Get.width * 0.075,
+                                              backgroundColor: const Color(0xFF284C1C),
+                                              child: Icon(
+                                                Icons.person,
+                                                size: Get.width * 0.08,
+                                                color: Colors.white,
                                               ),
                                             ),
-                                            Text(
-                                              '$patientAge years, $patientGender',
-                                              style: const TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 14,
+                                            SizedBox(width: Get.width * 0.04),
+                                            // Patient info
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    patientName,
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: Get.width * 0.045,
+                                                      color: Colors.black87,
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: Get.height * 0.005),
+                                                  Text(
+                                                    'Requested at $formattedTime',
+                                                    style: TextStyle(
+                                                      fontSize: Get.width * 0.035,
+                                                      color: Colors.black54,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                                        decoration: BoxDecoration(
-                                          color: Colors.orange.shade100,
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        child: Text(
-                                          'Requested at $formattedTime',
+                                        SizedBox(height: Get.height * 0.02),
+                                        Text(
+                                          'Patient is waiting for video consultation',
                                           style: TextStyle(
-                                            color: Colors.orange.shade800,
-                                            fontSize: 12,
+                                            fontSize: Get.width * 0.035,
+                                            color: Colors.black87,
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(height: Get.height * 0.02),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            // Reject button
+                                            OutlinedButton(
+                                              onPressed: () => _updateRequestStatus(requestId, 'rejected'),
+                                              style: OutlinedButton.styleFrom(
+                                                foregroundColor: Colors.red,
+                                                side: BorderSide(color: Colors.red),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(Get.width * 0.04),
+                                                ),
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: Get.width * 0.04,
+                                                  vertical: Get.height * 0.01
+                                                ),
+                                              ),
+                                              child: Text(
+                                                'Reject',
+                                                style: TextStyle(
+                                                  fontSize: Get.width * 0.035,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width: Get.width * 0.03),
+                                            // Accept button
+                                            ElevatedButton(
+                                              onPressed: () => _showAcceptDialog(requestId, patientCallerId, patientName),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: const Color(0xFF284C1C),
+                                                foregroundColor: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(Get.width * 0.04),
+                                                ),
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: Get.width * 0.04,
+                                                  vertical: Get.height * 0.01
+                                                ),
+                                              ),
+                                              child: Text(
+                                                'Accept',
+                                                style: TextStyle(
+                                                  fontSize: Get.width * 0.035,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  const Divider(),
-                                  const SizedBox(height: 8),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: () => _updateRequestStatus(request['_id'], 'rejected'),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: ThemeConstants.dangerColor,
-                                          foregroundColor: Colors.white,
-                                        ),
-                                        child: const Text('Reject'),
-                                      ),
-                                      const SizedBox(width: 12),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: ThemeConstants.primaryColor,
-                                          foregroundColor: Colors.white,
-                                        ),
-                                        onPressed: () => _showAcceptDialog(
-                                          request['_id'],
-                                          patientCallerId,
-                                          patientName,
-                                        ),
-                                        child: const Text('Accept'),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }
-          }),
-          
-          // Incoming call overlay
-          Obx(() {
-            final incomingOffer = _callingController.incomingSDPOffer.value;
-            if (incomingOffer != null) {
-              return Positioned(
-                top: 16,
-                left: 16,
-                right: 16,
-                child: Material(
-                  elevation: 5,
-                  borderRadius: BorderRadius.circular(12),
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: const Color(0xFF2A7DE1), width: 2),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          "Incoming Call from ${incomingOffer["callerId"]}",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.call_end),
-                              color: Colors.redAccent,
-                              onPressed: () {
-                                _callingController.clearIncomingCall();
-                              },
-                            ),
-                            const SizedBox(width: 16),
-                            IconButton(
-                              icon: const Icon(Icons.call),
-                              color: Colors.greenAccent,
-                              onPressed: () {
-                                _joinCall(
-                                  callerId: incomingOffer["callerId"]!,
-                                  calleeId: widget.selfCallerId,
-                                  offer: incomingOffer["sdpOffer"],
-                                  requestId: incomingOffer["_id"],
                                 );
                               },
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }
-            return const SizedBox.shrink();
-          }),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                }),
+              ],
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: const CustomBottomNav(),

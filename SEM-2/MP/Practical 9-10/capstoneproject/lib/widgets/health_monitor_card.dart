@@ -20,14 +20,14 @@ class HealthMonitorCard extends StatelessWidget {
     final healthController = Get.find<HealthController>();
     
     return Container(
-      margin: const EdgeInsets.only(top: 8),
+      margin: EdgeInsets.only(top: Get.height * 0.01),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: Get.width * 0.06),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -35,7 +35,7 @@ class HealthMonitorCard extends StatelessWidget {
                   child: Text(
                     'Activity Calendar',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: Get.width * 0.05,
                       fontWeight: FontWeight.bold,
                       color: accentColor,
                     ),
@@ -47,11 +47,11 @@ class HealthMonitorCard extends StatelessWidget {
           
           // Description
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: Get.width * 0.06),
             child: Text(
               'Monitor your health habits over time with this calendar view',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: Get.width * 0.035,
                 color: Colors.grey[700],
               ),
             ),
@@ -60,7 +60,7 @@ class HealthMonitorCard extends StatelessWidget {
           // Health heatmap - Use direct widget without Obx
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(top: 8),
+              padding: EdgeInsets.only(top: Get.height * 0.01),
               child: HealthHeatmapWidget(
                 primaryColor: primaryColor,
                 accentColor: accentColor,
