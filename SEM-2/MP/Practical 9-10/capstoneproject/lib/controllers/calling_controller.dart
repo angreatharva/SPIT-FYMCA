@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'dart:developer' as dev;
 import '../services/api_service.dart';
 import '../services/signalling.service.dart';
+import '../controllers/user_controller.dart';
 
 class CallingController extends GetxController {
   static CallingController get to => Get.find<CallingController>();
@@ -17,11 +19,14 @@ class CallingController extends GetxController {
   final Rx<dynamic> incomingSDPOffer = Rx<dynamic>(null);
   final RxString doctorId = ''.obs;
   
+  // For storing doctor details
+  final Rx<Map<String, dynamic>?> currentDoctorDetails = Rx<Map<String, dynamic>?>(null);
+  
   @override
   void onInit() {
     super.onInit();
     
-    // Set up socket connection for incoming calls
+    // Set up socket connection for incoming calls and updates
     _setupSocketListeners();
   }
   
@@ -32,6 +37,49 @@ class CallingController extends GetxController {
       // Listen for incoming calls
       socket.on("newCall", (data) {
         incomingSDPOffer.value = data;
+        // Fetch doctor details when receiving a call
+        if (data != null && data["callerId"] != null) {
+          fetchDoctorDetails(data["callerId"]);
+        }
+      });
+      
+      // Listen for doctor status changes
+      socket.on("doctorStatusChanged", (data) {
+        dev.log("Doctor status changed event received: $data");
+        // Update active doctors list if we've already loaded it
+        if (activeDoctors.isNotEmpty) {
+          fetchActiveDoctors(silent: true);
+        }
+      });
+      
+      // Listen for new call requests
+      socket.on("newCallRequest", (data) {
+        dev.log("New call request event received: $data");
+        
+        // If we're a doctor and have our ID set, update pending requests immediately
+        final userController = Get.find<UserController>();
+        if (userController.isDoctor && 
+            userController.userId.isNotEmpty &&
+            data != null && 
+            data["doctorId"] == userController.userId) {
+          
+          dev.log("New call request is for this doctor: ${userController.userId}");
+          
+          // Update pending requests without showing a loading indicator
+          fetchPendingRequests(userController.userId, silent: true);
+        }
+      });
+      
+      // Listen for call request status updates
+      socket.on("callRequestStatusUpdated", (data) {
+        dev.log("Call request status updated: $data");
+        
+        // If we're a doctor and have our ID set, update pending requests immediately
+        final userController = Get.find<UserController>();
+        if (userController.isDoctor && userController.userId.isNotEmpty) {
+          dev.log("Updating pending requests for doctor: ${userController.userId}");
+          fetchPendingRequests(userController.userId, silent: true);
+        }
       });
     }
   }
@@ -39,28 +87,61 @@ class CallingController extends GetxController {
   // Clear incoming call offer
   void clearIncomingCall() {
     incomingSDPOffer.value = null;
+    currentDoctorDetails.value = null;
+  }
+  
+  // Fetch doctor details by ID
+  Future<void> fetchDoctorDetails(String doctorId) async {
+    try {
+      dev.log('Fetching doctor details for ID: $doctorId');
+      final response = await _dio.get('/api/doctors/$doctorId');
+      
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        currentDoctorDetails.value = response.data['data'];
+        dev.log('Doctor details fetched successfully: ${currentDoctorDetails.value?['doctorName']}');
+      } else {
+        dev.log('Failed to fetch doctor details: ${response.data['message']}');
+      }
+    } catch (e) {
+      dev.log('Error fetching doctor details: $e');
+    }
   }
   
   // Fetch all active doctors
-  Future<bool> fetchActiveDoctors() async {
-    isLoading.value = true;
-    error.value = '';
+  Future<bool> fetchActiveDoctors({bool silent = false}) async {
+    if (!silent) {
+      isLoading.value = true;
+      error.value = '';
+    }
     
     try {
       final response = await _dio.get('/api/video-call/active-doctors');
       
       if (response.statusCode == 200 && response.data['success'] == true) {
         activeDoctors.value = response.data['data'];
+        if (activeDoctors.isNotEmpty) {
+          dev.log('Fetched ${activeDoctors.length} active doctors');
+        } else {
+          dev.log('No active doctors found');
+        }
         return true;
       } else {
-        error.value = response.data['message'] ?? 'Failed to fetch active doctors';
+        if (!silent) {
+          error.value = response.data['message'] ?? 'Failed to fetch active doctors';
+        }
+        dev.log('Failed to fetch active doctors: ${response.data['message']}');
         return false;
       }
     } catch (e) {
-      error.value = 'Network error: $e';
+      if (!silent) {
+        error.value = 'Network error: $e';
+      }
+      dev.log('Error fetching active doctors: $e');
       return false;
     } finally {
-      isLoading.value = false;
+      if (!silent) {
+        isLoading.value = false;
+      }
     }
   }
   
@@ -98,9 +179,12 @@ class CallingController extends GetxController {
   }
   
   // Fetch pending call requests for a doctor
-  Future<bool> fetchPendingRequests(String doctorId) async {
-    isLoading.value = true;
-    error.value = '';
+  Future<bool> fetchPendingRequests(String doctorId, {bool silent = false}) async {
+    if (!silent) {
+      isLoading.value = true;
+      error.value = '';
+    }
+    
     this.doctorId.value = doctorId;
     
     try {
@@ -119,16 +203,31 @@ class CallingController extends GetxController {
         
         // Update the observable list
         pendingRequests.value = requestsList;
+        
+        if (pendingRequests.isNotEmpty) {
+          dev.log('Fetched ${pendingRequests.length} pending requests');
+        } else {
+          dev.log('No pending requests found');
+        }
+        
         return true;
       } else {
-        error.value = response.data['message'] ?? 'Failed to fetch pending requests';
+        if (!silent) {
+          error.value = response.data['message'] ?? 'Failed to fetch pending requests';
+        }
+        dev.log('Failed to fetch pending requests: ${response.data['message']}');
         return false;
       }
     } catch (e) {
-      error.value = 'Network error: $e';
+      if (!silent) {
+        error.value = 'Network error: $e';
+      }
+      dev.log('Error fetching pending requests: $e');
       return false;
     } finally {
-      isLoading.value = false;
+      if (!silent) {
+        isLoading.value = false;
+      }
     }
   }
   
@@ -157,5 +256,17 @@ class CallingController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+  
+  @override
+  void onClose() {
+    // Clean up socket listeners when controller is closed
+    final socket = SignallingService.instance.socket;
+    if (socket != null) {
+      socket.off("doctorStatusChanged");
+      socket.off("newCallRequest");
+      socket.off("callRequestStatusUpdated");
+    }
+    super.onClose();
   }
 } 

@@ -1,6 +1,7 @@
 const DoctorModel = require('../models/doctor.model');
 const UserModel = require('../models/user.model');
 const CallRequestModel = require('../models/callRequest.model');
+const socketService = require('../services/socket.service');
 
 // Get all active doctors
 const getActiveDoctors = async (req, res) => {
@@ -66,6 +67,9 @@ const requestVideoCall = async (req, res) => {
     });
 
     await callRequest.save();
+    
+    // Emit socket event for new call request
+    socketService.emitNewCallRequest(doctorId, patientId, callRequest._id.toString());
 
     res.status(201).json({
       success: true,
@@ -136,6 +140,14 @@ const updateCallRequestStatus = async (req, res) => {
     }
 
     await callRequest.save();
+    
+    // Emit socket event for call request status update
+    socketService.emitCallRequestStatusUpdate(
+      callRequest.doctorId.toString(),
+      callRequest.patientId.toString(), 
+      requestId,
+      status
+    );
 
     res.status(200).json({
       success: true,

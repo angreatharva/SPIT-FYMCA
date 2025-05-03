@@ -30,6 +30,26 @@ class UserService {
       throw e;
     }
   };
+  
+  static getUserById = async (userId) => {
+    try {
+      // Find user by ID
+      const user = await UserModel.findById(userId);
+      
+      if (!user) {
+        throw new Error('User not found');
+      }
+      
+      // Return user without the password field
+      const userObject = user.toObject();
+      delete userObject.password;
+      
+      return userObject;
+    } catch (e) {
+      console.error('Error fetching user by ID:', e);
+      throw e;
+    }
+  };
 }
 
 module.exports = UserService;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:developer' as dev;
 import '../utils/theme_constants.dart';
 import '../widgets/custom_bottom_nav.dart';
 import '../controllers/user_controller.dart';
@@ -15,20 +16,65 @@ class PendingCallsScreen extends StatefulWidget {
   State<PendingCallsScreen> createState() => _PendingCallsScreenState();
 }
 
-class _PendingCallsScreenState extends State<PendingCallsScreen> {
+class _PendingCallsScreenState extends State<PendingCallsScreen> with WidgetsBindingObserver {
   final CallingController _callingController = Get.find<CallingController>();
   final UserController _userController = Get.find<UserController>();
   String? _selectedPatientCallerId;
   String? _selectedRequestId;
+  
+  // Add a worker to listen for changes
+  late Worker _pendingRequestsWorker;
 
   @override
   void initState() {
     super.initState();
+    
+    // Add observer to detect when the screen comes back into view
+    WidgetsBinding.instance.addObserver(this);
+    
+    // Fetch requests immediately
     _fetchPendingRequests();
+    
+    // Set up a worker for real-time updates
+    _setupRealTimeUpdates();
+    
+    dev.log('PendingCallsScreen initialized');
+  }
+  
+  void _setupRealTimeUpdates() {
+    // Create a worker to watch for changes in the pendingRequests list
+    _pendingRequestsWorker = ever(_callingController.pendingRequests, (requests) {
+      dev.log('Pending requests updated in real-time, count: ${requests.length}');
+      // No need to do anything else, GetX will automatically update the UI
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // When the app resumes, refresh the pending requests
+    if (state == AppLifecycleState.resumed) {
+      dev.log('PendingCallsScreen resumed, refreshing data');
+      _fetchPendingRequests();
+    }
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the worker when the screen is disposed
+    _pendingRequestsWorker.dispose();
+    
+    // Remove observer
+    WidgetsBinding.instance.removeObserver(this);
+    
+    dev.log('PendingCallsScreen disposed');
+    super.dispose();
   }
 
   Future<void> _fetchPendingRequests() async {
+    dev.log('Fetching pending requests for doctor: ${_userController.userId}');
     await _callingController.fetchPendingRequests(_userController.userId);
+    dev.log('Pending requests fetched, count: ${_callingController.pendingRequests.length}');
   }
 
   Future<void> _updateRequestStatus(String requestId, String status) async {
@@ -156,6 +202,12 @@ class _PendingCallsScreenState extends State<PendingCallsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Refresh when the screen becomes visible
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      dev.log('PendingCallsScreen is now visible, refreshing data');
+      _fetchPendingRequests();
+    });
+    
     return Scaffold(
       backgroundColor: ThemeConstants.backgroundColor,
       appBar: AppBar(

@@ -16,4 +16,7 @@ router.post('/register/doctor', doctorController.registerDoctor);
 // Get registered users - protected route example
 router.get('/users', verifyToken, userController.getRegisteredUsers);
 
+// Get user details by ID - protected route
+router.get('/user/:id', verifyToken, userController.getUserById);
+
 module.exports = router; 

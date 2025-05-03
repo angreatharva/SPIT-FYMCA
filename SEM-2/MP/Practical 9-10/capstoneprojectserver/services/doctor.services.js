@@ -23,6 +23,34 @@ const registerDoctor = async (doctorData) => {
   }
 };
 
+// Service for getting doctor details by ID
+const getDoctorById = async (doctorId) => {
+  try {
+    // Find doctor by ID
+    const doctor = await Doctor.findById(doctorId);
+    
+    if (!doctor) {
+      throw new Error('Doctor not found');
+    }
+    
+    // Convert to plain object and remove sensitive data
+    const doctorObject = doctor.toObject();
+    delete doctorObject.password;
+    
+    // Convert image buffer to base64 if it exists
+    if (doctorObject.image) {
+      doctorObject.imageBase64 = doctorObject.image.toString('base64');
+      delete doctorObject.image; // Remove the buffer to avoid sending large binary data
+    }
+    
+    return doctorObject;
+  } catch (error) {
+    console.error('Error fetching doctor by ID:', error);
+    throw error;
+  }
+};
+
 module.exports = {
   registerDoctor,
+  getDoctorById
 };

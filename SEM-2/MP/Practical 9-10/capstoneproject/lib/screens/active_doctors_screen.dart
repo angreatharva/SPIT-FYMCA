@@ -25,6 +25,31 @@ class _ActiveDoctorsScreenState extends State<ActiveDoctorsScreen> {
   void initState() {
     super.initState();
     _fetchActiveDoctors();
+    
+    // Set up listeners for real-time updates
+    _setupRealTimeUpdates();
+  }
+
+  void _setupRealTimeUpdates() {
+    // Listen for changes to the active doctors list
+    ever(_callingController.activeDoctors, (_) {
+      // This will be triggered whenever the activeDoctors list changes
+      // GetX will automatically update the UI
+      log("Active doctors list updated in real-time");
+    });
+    
+    // Listen for incoming calls
+    ever(_callingController.incomingSDPOffer, (incomingOffer) {
+      if (incomingOffer != null) {
+        log("Incoming call detected in real-time: ${incomingOffer["callerId"]}");
+      }
+    });
+  }
+  
+  @override
+  void dispose() {
+    // Clean up if needed
+    super.dispose();
   }
 
   Future<void> _fetchActiveDoctors() async {
@@ -346,6 +371,8 @@ class _ActiveDoctorsScreenState extends State<ActiveDoctorsScreen> {
                 Obx(() {
                   final incomingOffer = _callingController.incomingSDPOffer.value;
                   if (incomingOffer != null) {
+                    final doctorDetails = _callingController.currentDoctorDetails.value;
+                    
                     return Positioned(
                       top: Get.height * 0.02,
                       left: Get.width * 0.04,
@@ -364,14 +391,56 @@ class _ActiveDoctorsScreenState extends State<ActiveDoctorsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(
-                                "Incoming Call from ${incomingOffer["callerId"]}",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: Get.width * 0.04,
-                                  color: const Color(0xFF284C1C),
-                                ),
-                              ),
+                              doctorDetails != null
+                                  ? Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Incoming Call",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Get.width * 0.04,
+                                            color: const Color(0xFF284C1C),
+                                          ),
+                                        ),
+                                        SizedBox(height: Get.height * 0.01),
+                                        Text(
+                                          "Dr. ${doctorDetails['doctorName'] ?? 'Unknown'}",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Get.width * 0.045,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                        SizedBox(height: Get.height * 0.005),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: Get.width * 0.025, 
+                                            vertical: Get.height * 0.005
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.2),
+                                            borderRadius: BorderRadius.circular(Get.width * 0.04),
+                                          ),
+                                          child: Text(
+                                            doctorDetails['specialization'] ?? 'General Practitioner',
+                                            style: TextStyle(
+                                              fontSize: Get.width * 0.035,
+                                              color: Colors.black87,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Text(
+                                      "Incoming Call from ${incomingOffer["callerId"]}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: Get.width * 0.04,
+                                        color: const Color(0xFF284C1C),
+                                      ),
+                                    ),
                               SizedBox(height: Get.height * 0.02),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,

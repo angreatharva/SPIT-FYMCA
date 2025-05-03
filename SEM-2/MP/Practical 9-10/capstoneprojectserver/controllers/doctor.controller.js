@@ -1,5 +1,6 @@
 const Doctor = require('../models/doctor.model');
 const doctorService = require("../services/doctor.services");
+const socketService = require("../services/socket.service");
 
 const doctorController = {
   // Get all available doctors
@@ -48,6 +49,45 @@ const doctorController = {
     }
   },
 
+  // Get doctor details by ID
+  getDoctorById: async (req, res) => {
+    try {
+      const doctorId = req.params.id;
+      
+      if (!doctorId) {
+        return res.status(400).json({
+          success: false,
+          message: "Doctor ID is required"
+        });
+      }
+      
+      const doctor = await doctorService.getDoctorById(doctorId);
+      
+      res.status(200).json({
+        success: true,
+        data: doctor,
+        message: "Doctor details fetched successfully"
+      });
+    } catch (error) {
+      console.error("Error fetching doctor details:", error);
+      
+      // Check if it's a "Doctor not found" error
+      if (error.message === 'Doctor not found') {
+        return res.status(404).json({
+          success: false,
+          message: "Doctor not found"
+        });
+      }
+      
+      // For other errors
+      res.status(500).json({
+        success: false,
+        message: "Error fetching doctor details",
+        error: error.message
+      });
+    }
+  },
+
   // Toggle doctor's active status
   toggleDoctorStatus: async (req, res) => {
     try {
@@ -72,6 +112,10 @@ const doctorController = {
       );
 
       console.log('Doctor status updated to:', updatedDoctor.isActive);
+      
+      // Emit socket event to notify clients of status change
+      socketService.emitDoctorStatusChange(doctorId, updatedDoctor.isActive);
+      
       res.json({
         success: true,
         isActive: updatedDoctor.isActive,

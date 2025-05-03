@@ -1,0 +1,14 @@
+flutter_native_splash:
+  # This will remove the default Flutter splash screen and replace it with your custom splash screen
+  color: "#284C1C"  # Match the background color from your custom splash screen
+  # No image specified since we don't have a suitable image file
+  
+  # Android 12 specific settings
+  android_12:
+    color: "#284C1C"
+    
+  # iOS specific settings  
+  ios: true
+  
+  # Web specific settings
+  web: false 
