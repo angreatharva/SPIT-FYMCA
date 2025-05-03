@@ -288,9 +288,9 @@ class _PendingCallsScreenState extends State<PendingCallsScreen> {
                               itemCount: _callingController.pendingRequests.length,
                               itemBuilder: (context, index) {
                                 final request = _callingController.pendingRequests[index];
-                                final patientName = request['patientName'] ?? 'Unknown Patient';
-                                final requestTime = request['createdAt'] != null 
-                                    ? DateTime.parse(request['createdAt'])
+                                final patientName = request['patientId']['userName'] ?? 'Unknown Patient';
+                                final requestTime = request['requestedAt'] != null
+                                    ? DateTime.parse(request['requestedAt'])
                                     : DateTime.now();
                                 final formattedTime = "${requestTime.hour}:${requestTime.minute.toString().padLeft(2, '0')}";
                                 final requestId = request['_id'] ?? '';
@@ -301,7 +301,7 @@ class _PendingCallsScreenState extends State<PendingCallsScreen> {
                                 if (status != 'pending') return const SizedBox.shrink();
                                 
                                 return Card(
-                                  color: const Color(0XFFC3DEA9), // Light green color matching health tracking card
+                                  color: const Color(0XFFC3DEA9),
                                   elevation: 3,
                                   margin: EdgeInsets.only(bottom: Get.height * 0.02),
                                   shape: RoundedRectangleBorder(

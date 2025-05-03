@@ -44,8 +44,8 @@ class LoginController extends GetxController {
   void _disposeControllersSafely() {
     try {
       if (!_controllersDisposed) {
-        emailController.dispose();
-        passwordController.dispose();
+        // emailController.dispose();
+        // passwordController.dispose();
         _controllersDisposed = true;
       }
     } catch (e) {

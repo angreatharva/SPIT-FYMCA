@@ -7,6 +7,7 @@ import '../controllers/user_controller.dart';
 import '../services/signalling.service.dart';
 import '../services/native_speech_service.dart';
 import '../controllers/calling_controller.dart';
+import '../utils/theme_constants.dart';
 
 class CallScreen extends StatefulWidget {
   final String callerId;
@@ -671,10 +672,10 @@ class _CallScreenState extends State<CallScreen> with WidgetsBindingObserver {
                           // Local video thumbnail
                           Positioned(
                             right: getx.Get.width * 0.03,
-                            bottom: getx.Get.height * 0.02,
+                            bottom: getx.Get.height * 0.15,
                             child: Container(
-                              width: getx.Get.width * 0.3,
-                              height: getx.Get.height * 0.18,
+                              width: getx.Get.width * 0.35,
+                              height: getx.Get.height * 0.25,
                               decoration: BoxDecoration(
                                 color: Colors.black,
                                 borderRadius: BorderRadius.circular(getx.Get.width * 0.03),
@@ -796,8 +797,8 @@ class _CallScreenState extends State<CallScreen> with WidgetsBindingObserver {
                     right: getx.Get.width * 0.03
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(getx.Get.width * 0.08),
+                    color: ThemeConstants.mainColor,
+                    borderRadius: BorderRadius.circular(getx.Get.width * 0.5),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
@@ -812,7 +813,7 @@ class _CallScreenState extends State<CallScreen> with WidgetsBindingObserver {
                       // Mic toggle
                       _buildControlButton(
                         icon: isAudioOn ? Icons.mic : Icons.mic_off,
-                        color: isAudioOn ? _primaryColor : Colors.grey,
+                        color: isAudioOn ?  ThemeConstants.mainColor : Color(0XFF9A9D9A),
                         onPressed: _toggleMic,
                         tooltip: isAudioOn ? 'Mute Microphone' : 'Unmute Microphone',
                       ),
@@ -820,7 +821,7 @@ class _CallScreenState extends State<CallScreen> with WidgetsBindingObserver {
                       // Camera toggle
                       _buildControlButton(
                         icon: isVideoOn ? Icons.videocam : Icons.videocam_off,
-                        color: isVideoOn ? _primaryColor : Colors.grey,
+                        color: isVideoOn ? ThemeConstants.mainColor : Color(0XFF9A9D9A),
                         onPressed: _toggleCamera,
                         tooltip: isVideoOn ? 'Turn Off Camera' : 'Turn On Camera',
                       ),
@@ -828,7 +829,7 @@ class _CallScreenState extends State<CallScreen> with WidgetsBindingObserver {
                       // Camera flip
                       _buildControlButton(
                         icon: Icons.switch_camera,
-                        color: _primaryColor,
+                        color: ThemeConstants.mainColor,
                         onPressed: _switchCamera,
                         tooltip: 'Switch Camera',
                       ),
@@ -836,7 +837,7 @@ class _CallScreenState extends State<CallScreen> with WidgetsBindingObserver {
                       // Transcription toggle
                       _buildControlButton(
                         icon: _isTranscribing ? Icons.record_voice_over : Icons.voice_over_off,
-                        color: _isTranscribing ? _secondaryColor : Colors.grey,
+                        color: _isTranscribing ? ThemeConstants.mainColor : Color(0XFF9A9D9A),
                         onPressed: _toggleTranscription,
                         tooltip: _isTranscribing ? 'Stop Transcription' : 'Start Transcription',
                       ),
@@ -867,21 +868,28 @@ class _CallScreenState extends State<CallScreen> with WidgetsBindingObserver {
     required String tooltip,
     bool isEndCall = false,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: isEndCall ? color : color.withOpacity(0.1),
-      ),
-      child: IconButton(
-        icon: Icon(icon),
-        color: isEndCall ? Colors.white : color,
-        iconSize: getx.Get.width * 0.06,
-        tooltip: tooltip,
-        onPressed: onPressed,
-        padding: EdgeInsets.all(getx.Get.width * 0.03),
-        constraints: BoxConstraints(
-          minWidth: getx.Get.width * 0.12,
-          minHeight: getx.Get.width * 0.12,
+    return InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(getx.Get.width * 0.05),
+      child: Container(
+        height: getx.Get.width * 0.15,
+        width: getx.Get.width * 0.15,
+        decoration: BoxDecoration(
+          color: isEndCall ? color : (color == ThemeConstants.mainColor ? ThemeConstants.white : ThemeConstants.mainColorInActive),
+          borderRadius: BorderRadius.circular(getx.Get.width * 0.12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        padding: EdgeInsets.all(getx.Get.width * 0.025),
+        child: Icon(
+          icon,
+          color: isEndCall ? Colors.white : color,
+          size: getx.Get.width * 0.06,
         ),
       ),
     );

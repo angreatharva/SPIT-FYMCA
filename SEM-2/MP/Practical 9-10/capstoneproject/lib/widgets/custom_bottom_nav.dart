@@ -16,7 +16,7 @@ class CustomBottomNav extends GetView<NavigationController> {
         vertical: Get.height * 0.012
       ),
       decoration: BoxDecoration(
-        color: Color(0XFF284C1C),
+        color: ThemeConstants.mainColor,
         borderRadius: BorderRadius.circular(Get.width * 0.12),
         boxShadow: [
           BoxShadow(
