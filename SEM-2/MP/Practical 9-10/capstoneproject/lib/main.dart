@@ -30,15 +30,24 @@ class VideoCallApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final storageService = StorageService.instance;
     
-    // Get caller ID from storage or generate a new one
-    String selfCallerID = storageService.getCallerId();
-    if (selfCallerID.isEmpty) {
-      selfCallerID = Random().nextInt(999999).toString().padLeft(6, '0');
-      storageService.saveCallerId(selfCallerID);
-      dev.log('Generated new caller ID: $selfCallerID');
+    // Always get fresh caller ID from user information
+    // We'll clear any previously stored caller ID to force using the user ID
+    String selfCallerID = '';
+    
+    // Try to get the user data to use their ID
+    final user = storageService.getUserData();
+    if (user != null) {
+      // If user is logged in, use their ID
+      selfCallerID = user.id;
+      dev.log('Using user ID as caller ID: ${user.id}');
     } else {
-      dev.log('Using stored caller ID: $selfCallerID');
+      // Generate a random ID if no user is logged in
+      selfCallerID = Random().nextInt(999999).toString().padLeft(6, '0');
+      dev.log('No user logged in, generated random caller ID: $selfCallerID');
     }
+    
+    // Save the caller ID for current session
+    storageService.saveCallerId(selfCallerID);
 
     // Initialize signaling service
     SignallingService.instance.init(

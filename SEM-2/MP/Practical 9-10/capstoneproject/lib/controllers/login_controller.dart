@@ -6,6 +6,7 @@ import 'dart:convert';
 import '../models/user_model.dart';
 import '../routes/app_routes.dart';
 import '../services/auth_service.dart';
+import '../services/signalling.service.dart';
 import '../services/storage_service.dart';
 import '../controllers/user_controller.dart';
 import '../controllers/health_controller.dart';
@@ -110,6 +111,25 @@ class LoginController extends GetxController {
         
         await StorageService.instance.saveUserData(userModel);
         dev.log('User data saved to storage');
+        
+        // Update the caller ID to use the user ID after login
+        dev.log('Updating caller ID to use user ID: $userId');
+        await StorageService.instance.saveCallerId(userId);
+        
+        // Verify the caller ID was saved correctly
+        final savedCallerId = StorageService.instance.getCallerId();
+        dev.log('Verified caller ID in storage: $savedCallerId');
+        
+        // Update the caller ID in the signaling service
+        dev.log('Updating signaling service with new caller ID: $userId');
+        SignallingService.instance.updateCallerId(userId);
+        
+        // Update the injected caller ID
+        dev.log('Updating injected caller ID to: $userId');
+        if (Get.isRegistered(tag: 'selfCallerId')) {
+          Get.delete(tag: 'selfCallerId');
+        }
+        Get.put(userId, tag: 'selfCallerId', permanent: true);
         
         // Update the UserController
         try {
