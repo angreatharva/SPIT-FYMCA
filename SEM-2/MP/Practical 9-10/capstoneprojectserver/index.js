@@ -6,6 +6,8 @@ const express = require('express');
 const IO = require('socket.io');
 const cors = require('cors');
 const path = require('path');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpecs = require('./config/swagger.config');
 
 // Import configuration
 const config = require('./config/server.config');
@@ -26,6 +28,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Swagger UI setup
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, { explorer: true }));
+
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -43,22 +48,25 @@ app.use('/api/blogs', require('./routes/blog.routes'));
 // Error handling middleware (must be after routes)
 app.use(errorHandler);
 
-// Create HTTP server and attach socket.io
-const server = app.listen(config.port, () => console.log(`Server running on port ${config.port}`));
-const io = IO(server, {
-  cors: {
-    origin: true,
-    methods: ["GET", "POST"],
-  },
-});
+// Only start the server if this file is run directly, not when imported for testing
+if (process.env.NODE_ENV !== 'test') {
+  // Create HTTP server and attach socket.io
+  const server = app.listen(config.port, () => console.log(`Server running on port ${config.port}`));
+  const io = IO(server, {
+    cors: {
+      origin: true,
+      methods: ["GET", "POST"],
+    },
+  });
 
-// Setup socket.io server
-setupSocketServer(io);
+  // Setup socket.io server
+  setupSocketServer(io);
 
-// Setup ngrok for public access
-setupNgrok();
+  // Setup ngrok for public access
+  setupNgrok();
 
-// Setup daily health tracking refresh
-setupDailyHealthTrackingRefresh();
+  // Setup daily health tracking refresh
+  setupDailyHealthTrackingRefresh();
+}
 
 module.exports = app;

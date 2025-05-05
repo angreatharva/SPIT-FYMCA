@@ -1,6 +1,51 @@
 const mongoose = require("../config/db");
 const { Schema } = mongoose;
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     HealthQuestion:
+ *       type: object
+ *       required:
+ *         - question
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: Auto-generated MongoDB ObjectId
+ *         question:
+ *           type: string
+ *           description: The health question text
+ *         isDefault:
+ *           type: boolean
+ *           description: Indicates if this is a default system question
+ *           default: false
+ *         order:
+ *           type: integer
+ *           description: Display order of the question
+ *           default: 0
+ *         role:
+ *           type: string
+ *           enum: [patient, doctor, both]
+ *           description: The target role for this question
+ *           default: patient
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Timestamp when the question was created
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Timestamp when the question was last updated
+ *       example:
+ *         _id: 60d0fe4f5311236168a109d0
+ *         question: Did you drink 3 liters of water today?
+ *         isDefault: true
+ *         order: 1
+ *         role: patient
+ *         createdAt: 2023-05-01T00:00:00.000Z
+ *         updatedAt: 2023-05-01T00:00:00.000Z
+ */
 // Define the health question schema
 const healthQuestionSchema = new Schema({
   question: {
@@ -22,6 +67,70 @@ const healthQuestionSchema = new Schema({
   }
 }, { timestamps: true });
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     HealthTracking:
+ *       type: object
+ *       required:
+ *         - userId
+ *         - date
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: Auto-generated MongoDB ObjectId
+ *         userId:
+ *           type: string
+ *           description: ID of the user (patient or doctor)
+ *         date:
+ *           type: string
+ *           format: date
+ *           description: Date of the health tracking record
+ *         questions:
+ *           type: array
+ *           description: List of health questions for tracking
+ *           items:
+ *             type: object
+ *             properties:
+ *               questionId:
+ *                 type: string
+ *                 description: ID of the health question
+ *               question:
+ *                 type: string
+ *                 description: Text of the health question
+ *               completed:
+ *                 type: boolean
+ *                 description: Whether the question has been completed
+ *                 default: false
+ *               completedAt:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Timestamp when the question was completed
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Timestamp when the record was created
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Timestamp when the record was last updated
+ *       example:
+ *         _id: 60d0fe4f5311236168a109d1
+ *         userId: 60d0fe4f5311236168a109ca
+ *         date: 2023-05-25
+ *         questions:
+ *           - questionId: 60d0fe4f5311236168a109d0
+ *             question: Did you drink 3 liters of water today?
+ *             completed: true
+ *             completedAt: 2023-05-25T15:30:00.000Z
+ *           - questionId: 60d0fe4f5311236168a109d2
+ *             question: Did you work out today?
+ *             completed: false
+ *             completedAt: null
+ *         createdAt: 2023-05-25T00:00:00.000Z
+ *         updatedAt: 2023-05-25T15:30:00.000Z
+ */
 // Define the user health tracking schema
 const healthTrackingSchema = new Schema({
   userId: {
@@ -57,6 +166,60 @@ const healthTrackingSchema = new Schema({
 // Create compound index on userId and date to ensure one record per user per day
 healthTrackingSchema.index({ userId: 1, date: 1 }, { unique: true });
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     HealthActivity:
+ *       type: object
+ *       required:
+ *         - userId
+ *         - date
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: Auto-generated MongoDB ObjectId
+ *         userId:
+ *           type: string
+ *           description: ID of the user (patient or doctor)
+ *         date:
+ *           type: string
+ *           format: date
+ *           description: Date of the health activity
+ *         completedTasks:
+ *           type: integer
+ *           description: Number of health tasks completed on this date
+ *           default: 0
+ *           minimum: 0
+ *         totalTasks:
+ *           type: integer
+ *           description: Total number of health tasks for this date
+ *           default: 0
+ *           minimum: 0
+ *         score:
+ *           type: number
+ *           description: Health score for this date (0-100)
+ *           default: 0
+ *           minimum: 0
+ *           maximum: 100
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Timestamp when the record was created
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Timestamp when the record was last updated
+ *       example:
+ *         _id: 60d0fe4f5311236168a109d3
+ *         userId: 60d0fe4f5311236168a109ca
+ *         date: 2023-05-25
+ *         completedTasks: 3
+ *         totalTasks: 5
+ *         score: 60
+ *         createdAt: 2023-05-25T00:00:00.000Z
+ *         updatedAt: 2023-05-25T23:59:59.000Z
+ */
 // Define health activity stats schema for heatmap
 const healthActivitySchema = new Schema({
   userId: {

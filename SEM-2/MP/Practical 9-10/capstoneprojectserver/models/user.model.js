@@ -3,6 +3,52 @@ const bcrypt = require("bcrypt");
 
 const { Schema } = mongoose;
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - userName
+ *         - phone
+ *         - age
+ *         - gender
+ *         - email
+ *         - password
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: Auto-generated MongoDB ObjectId
+ *         userName:
+ *           type: string
+ *           description: User's full name
+ *         phone:
+ *           type: string
+ *           description: User's phone number
+ *         age:
+ *           type: integer
+ *           description: User's age
+ *         gender:
+ *           type: string
+ *           description: User's gender
+ *           enum: [male, female, other]
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: User's email address (unique)
+ *         password:
+ *           type: string
+ *           format: password
+ *           description: User's hashed password
+ *       example:
+ *         _id: 60d0fe4f5311236168a109ca
+ *         userName: John Doe
+ *         phone: "1234567890"
+ *         age: 30
+ *         gender: male
+ *         email: john.doe@example.com
+ */
 const userSchema = new Schema({
   userName: {
     type: String,

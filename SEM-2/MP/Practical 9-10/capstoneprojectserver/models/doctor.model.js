@@ -3,6 +3,77 @@ const bcrypt = require("bcrypt");
 
 const { Schema } = mongoose;
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Doctor:
+ *       type: object
+ *       required:
+ *         - doctorName
+ *         - phone
+ *         - age
+ *         - gender
+ *         - email
+ *         - qualification
+ *         - specialization
+ *         - licenseNumber
+ *         - image
+ *         - password
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: Auto-generated MongoDB ObjectId
+ *         doctorName:
+ *           type: string
+ *           description: Doctor's full name
+ *         phone:
+ *           type: string
+ *           description: Doctor's phone number
+ *         age:
+ *           type: integer
+ *           description: Doctor's age
+ *         gender:
+ *           type: string
+ *           description: Doctor's gender
+ *           enum: [male, female, other]
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Doctor's email address (unique)
+ *         qualification:
+ *           type: string
+ *           description: Doctor's medical qualification
+ *         specialization:
+ *           type: string
+ *           description: Doctor's medical specialization
+ *         licenseNumber:
+ *           type: string
+ *           description: Doctor's medical license number (unique)
+ *         image:
+ *           type: string
+ *           format: binary
+ *           description: Doctor's profile image
+ *         isActive:
+ *           type: boolean
+ *           description: Doctor's availability status
+ *           default: false
+ *         password:
+ *           type: string
+ *           format: password
+ *           description: Doctor's hashed password
+ *       example:
+ *         _id: 60d0fe4f5311236168a109cb
+ *         doctorName: Dr. Jane Smith
+ *         phone: "9876543210"
+ *         age: 40
+ *         gender: female
+ *         email: dr.jane.smith@example.com
+ *         qualification: MBBS, MD
+ *         specialization: Cardiology
+ *         licenseNumber: MED12345
+ *         isActive: true
+ */
 const doctorSchema = new Schema({
   doctorName: {
     type: String,

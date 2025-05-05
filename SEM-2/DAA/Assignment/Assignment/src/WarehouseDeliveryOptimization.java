@@ -2,6 +2,7 @@
 // This program demonstrates various Design and Analysis of Algorithms (DAA)
 // concepts applied to a warehouse delivery optimization problem.
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class WarehouseDeliveryOptimization {
