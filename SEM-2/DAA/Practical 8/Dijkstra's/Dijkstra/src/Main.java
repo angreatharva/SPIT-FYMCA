@@ -17,32 +17,35 @@ public class Main {
 
         // Input edges
         System.out.println("Enter edges in format: source target weight");
+        int lastTarget = -1;
         for (int i = 0; i < e; i++) {
             int src = scanner.nextInt();
             int tgt = scanner.nextInt();
             int wgt = scanner.nextInt();
             graph.get(src).add(new DijkstraAlgorithm.Edge(tgt, wgt));
-            // If undirected graph, also add the reverse edge
-            // graph.get(tgt).add(new Edge(src, wgt));
+            lastTarget = tgt; // Keep updating to get the last entered vertex
         }
 
         // Input source vertex
         System.out.print("Enter source vertex: ");
         int source = scanner.nextInt();
 
-        DijkstraAlgorithm.dijkstra(graph, source);
+        System.out.println();
+        DijkstraAlgorithm.dijkstra(graph, source, lastTarget);
 
         scanner.close();
     }
 }
 
-//Enter number of vertices: 5
-//Enter number of edges: 6
+//Enter number of vertices: 6
+//Enter number of edges: 8
 //Enter edges in format: source target weight
+//0 2 4
 //0 1 4
-//        0 2 1
-//        2 1 2
-//        1 3 1
-//        2 3 5
-//        3 4 3
+//1 2 2
+//2 3 3
+//2 5 6
+//2 4 1
+//3 5 2
+//4 5 3
 //Enter source vertex: 0

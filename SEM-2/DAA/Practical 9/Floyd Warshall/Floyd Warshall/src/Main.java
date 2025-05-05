@@ -10,7 +10,7 @@ public class Main {
 
         int[][] graph = new int[V][V];
 
-        System.out.println("Enter the adjacency matrix (use " + FloydWarshall.INF + " for no direct edge):");
+        System.out.println("Enter the adjacency matrix (use " + FloydWarshall.INF + " for no direct edge (infinity)):");
         for (int i = 0; i < V; i++) {
             for (int j = 0; j < V; j++) {
                 graph[i][j] = sc.nextInt();

@@ -12,31 +12,36 @@ public class FloydWarshall {
             for (int j = 0; j < V; j++)
                 dist[i][j] = graph[i][j];
 
-        // Floyd Warshall core logic
+        // Floyd Warshall core logic with intermediate printing
         for (int k = 0; k < V; k++) {
             for (int i = 0; i < V; i++) {
                 for (int j = 0; j < V; j++) {
-                    if (dist[i][k] + dist[k][j] < dist[i][j])
+                    if (dist[i][k] != INF && dist[k][j] != INF && dist[i][k] + dist[k][j] < dist[i][j])
                         dist[i][j] = dist[i][k] + dist[k][j];
                 }
             }
+
+            // Print matrix after each step
+            System.out.println("After step " + (k + 1) + " (using vertex " + k + "):");
+            printMatrix(dist, V);
         }
 
-        // Print final shortest distance matrix
-        printSolution(dist, V);
+        // Final result
+        System.out.println("Final All Pairs Shortest Distances:");
+        printMatrix(dist, V);
     }
 
-    public static void printSolution(int[][] dist, int V) {
-        System.out.println("All Pairs Shortest Distances:");
+    public static void printMatrix(int[][] dist, int V) {
         for (int i = 0; i < V; ++i) {
             for (int j = 0; j < V; ++j) {
                 if (dist[i][j] == INF)
-                    System.out.print("INF ");
+                    System.out.print("X   ");
                 else
                     System.out.print(dist[i][j] + "   ");
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     public static void main(String[] args) {
@@ -47,7 +52,7 @@ public class FloydWarshall {
 
         int[][] graph = new int[V][V];
 
-        System.out.println("Enter the adjacency matrix (use " + INF + " for no direct edge):");
+        System.out.println("Enter the adjacency matrix (use " + INF + " for no direct edge (infinity)):");
         for (int i = 0; i < V; i++) {
             for (int j = 0; j < V; j++) {
                 graph[i][j] = sc.nextInt();

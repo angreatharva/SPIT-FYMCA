@@ -45,19 +45,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+                body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
+                credentials: 'include'
             });
 
-            const data = await response.json();
+            let data;
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+            } else {
+                data = await response.text();
+            }
             
             if (response.ok) {
                 showMessage('Login successful!');
-                // You can redirect to a dashboard or home page here
-                // window.location.href = '/dashboard';
+                window.location.href = '/home';
             } else {
-                showMessage(data || 'Login failed', true);
+                const errorMessage = data.error || data || 'Login failed';
+                showMessage(errorMessage, true);
             }
         } catch (error) {
+            console.error('Login error:', error);
             showMessage('An error occurred during login', true);
         }
     });
