@@ -57,7 +57,6 @@ public class RabinKarp {
 
         int q = 101; // A prime number
 
-        System.out.println("\nSearching for pattern using Rabin-Karp Algorithm...");
         rabinKarpSearch(text, pattern, q);
     }
 }

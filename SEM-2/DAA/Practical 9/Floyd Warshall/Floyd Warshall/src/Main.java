@@ -24,10 +24,10 @@ public class Main {
 
 //Enter number of vertices: 4
 //Enter the adjacency matrix (use 99999 for no direct edge):
-//        0 3 99999 7
-//        8 0 2 99999
-//        5 99999 0 1
-//        2 99999 99999 0
+//0 3 99999 7
+//8 0 2 99999
+//5 99999 0 1
+//2 99999 99999 0
 //All Pairs Shortest Distances:
 //        0   3   5   6
 //        5   0   2   3
