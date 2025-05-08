@@ -25,7 +25,6 @@ public class TSPBranchAndBound {
     }
 
     public void solve() {
-        // Start from city 0 arbitrarily
         visited[0] = true;
         ArrayList<Integer> path = new ArrayList<>();
         path.add(0);
@@ -34,7 +33,6 @@ public class TSPBranchAndBound {
 
     public void branchAndBound(int currentCity, int level, int currentCost, List<Integer> path) {
         if (level == n) {
-            // Close the tour by returning to start
             int totalCost = currentCost + cost[currentCity][0];
             if (totalCost < bestCost) {
                 bestCost = totalCost;
@@ -43,7 +41,6 @@ public class TSPBranchAndBound {
             }
             return;
         }
-        // Try all next cities
         for (int next = 0; next < n; next++) {
             if (!visited[next]) {
                 int tempCost = currentCost + cost[currentCity][next];
