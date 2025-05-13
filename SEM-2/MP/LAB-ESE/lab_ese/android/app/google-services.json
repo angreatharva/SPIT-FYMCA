@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "239637526998",
+    "project_id": "mp-lab-ese-2fea2",
+    "storage_bucket": "mp-lab-ese-2fea2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239637526998:android:f0d85f7a3033610448cc77",
+        "android_client_info": {
+          "package_name": "com.example.lab_ese"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlPX3N2sJkHsCQT2AXkqvNbLVFvIjZ-gA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
