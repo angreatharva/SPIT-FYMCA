@@ -1,7 +1,25 @@
-const app = require("./app");
+const express = require("express");
+const bodyParser = require("body-parser");
+const studentController = require("./controller/student.controller");
 
 const port = 3001;
+
+
+const app = express();
 
 app.listen(port, () => {
   console.log(`Server Listening on port http://localhost:${port}`);
 });
+
+
+app.use(bodyParser.json({ limit: "100mb" }));
+app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
+
+app.post("/registerStudent", studentController.registerStudent);
+app.get("/students", studentController.getAllStudents);
+app.get("/studentsById", studentController.getStudentById);
+app.put("/updateStudent", studentController.updateStudent);
+app.patch("/patchStudent", studentController.patchStudent);
+app.delete("/deleteStudent", studentController.deleteStudent);
+
+module.exports = app;
